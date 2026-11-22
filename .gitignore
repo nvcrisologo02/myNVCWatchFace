@@ -1,28 +1,34 @@
-# Machine-specific / secrets
-local.properties
-
-# Gradle
+# Gradle / Android
 .gradle/
 build/
-app/build/
+*/build/
+local.properties
 captures/
+.externalNativeBuild/
 .cxx/
+*.apk
+*.aab
+*.ap_
+output-metadata.json
 
-# Android Studio / IntelliJ
-.idea/
-*.iml
-.navigation/
-*.hprof
-*.log
-
-# Keystores (never commit signing material)
+# Firma: los keystores viven fuera del repo (C:\Users\criso\keystores\nvc-watchface\)
 *.jks
 *.keystore
 keystore.properties
 
-# OS
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Claude Code (ajustes locales)
+.claude/settings.local.json
+
+# SO
 .DS_Store
 Thumbs.db
-
-# VS Code workspace state (workspace file itself is fine to keep)
-.vscode/
+desktop.ini
