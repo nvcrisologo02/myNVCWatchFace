@@ -193,8 +193,9 @@ Decisiones provisionales del diseñador (marcadas ✎):
 
 ## 7. Riesgos y desconocidos, por orden
 
-1. **¿Se puede instalar una esfera WFF por adb en el OnePlus Watch 3?** Si no, el enfoque entero
-   cambia. Primera tarea: una esfera mínima instalada y seleccionada en el reloj.
+1. **¿Se puede instalar una esfera WFF por adb en el OnePlus Watch 3?** **Resuelto: sí**
+   (2026-11-22). Una esfera WFF v2 mínima se instaló, se seleccionó por adb y se capturó en el
+   reloj; ver `docs/pruebas/01-instalacion.md`.
 2. **Versión de Wear OS del reloj** → qué versión de WFF se puede usar y, por tanto, qué
    elementos están disponibles. Mirarlo en el reloj antes de escribir el XML definitivo.
 3. **Qué envía la complicación de glucosa de Gluroo** (proveedor decidido, §5.5). De ella

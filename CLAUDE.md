@@ -13,10 +13,13 @@ El usuario escribe en español; respóndele en español.
 
 ## Estado
 
-Diseño visual cerrado (maqueta v4). Construcción no empezada. Siguiente paso: plan de
-construcción a partir del diseño, cuya **primera tarea es la prueba de instalación**: una esfera
-WFF mínima instalada por adb y seleccionada en el reloj. Ninguna fuente confirma que el OnePlus
-Watch 3 lo admita; si falla, el enfoque entero cambia.
+Diseño cerrado. Plan en `docs/superpowers/plans/2026-11-22-nvc-watchface-build.md`.
+**Tarea 1 hecha (2026-11-22):** el reloj (Wear OS 5.0, SDK 34) instala, selecciona por adb y
+dibuja una esfera WFF v2 propia; detalle y trampas en `docs/pruebas/01-instalacion.md`.
+Siguiente: tarea 2, inspeccionar las complicaciones de Gluroo y OHealth en el reloj.
+
+Ciclo completo: `scripts/watch.sh "<serial>" all <nombre-captura>`. Serial del reloj:
+`adb-H631104000081G14004R-e9DEII._adb-tls-connect._tcp.` (con el punto final).
 
 ## Reglas
 
