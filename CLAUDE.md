@@ -16,7 +16,10 @@ El usuario escribe en español; respóndele en español.
 Diseño cerrado. Plan en `docs/superpowers/plans/2026-11-22-nvc-watchface-build.md`.
 **Tarea 1 hecha (2026-11-22):** el reloj (Wear OS 5.0, SDK 34) instala, selecciona por adb y
 dibuja una esfera WFF v2 propia; detalle y trampas en `docs/pruebas/01-instalacion.md`.
-Siguiente: tarea 2, inspeccionar las complicaciones de Gluroo y OHealth en el reloj.
+**Tarea 2 a medias:** Gluroo sí tiene complicación de antigüedad (`BglTimeSince`) y de rango;
+falta leer el contenido exacto de cada campo. Estado y pasos en `docs/pruebas/02-complicaciones.md`.
+En el reloj está puesta la esfera de inspección (temporal) de `watchface.xml`.
+Para trabajar: Bluetooth del reloj apagado (si no, suelta el Wi-Fi) y serial mDNS, no IP.
 
 Ciclo completo: `scripts/watch.sh "<serial>" all <nombre-captura>`. Serial del reloj:
 `adb-H631104000081G14004R-e9DEII._adb-tls-connect._tcp.` (con el punto final).
