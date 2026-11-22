@@ -1,0 +1,284 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Esfera Mapamundi Oro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+  /* Vitrina oscura: selector de relieve, dos relojes, el fondo de cerca y las notas de montaje. Un solo tema oscuro, a propósito. */
+  :root{
+    --ink:#060607;
+    --panel:#0C0C0E;
+    --line:#1E1E21;
+    --gold:#C9A86A;
+    --gold-hi:#E6CD95;
+    --text:#E6E4DF;
+    --muted:#8C8A84;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+  .wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+  h1{font-family:"Space Grotesk",Inter,sans-serif;font-weight:600;font-size:clamp(1.5rem,4vw,2rem);letter-spacing:-.01em;margin:0 0 .35rem;text-wrap:balance}
+  h2{font-family:"Space Grotesk",Inter,sans-serif;font-size:1.05rem;margin:0 0 12px;font-weight:600}
+  .sub{color:var(--muted);margin:0 0 2rem;max-width:64ch}
+  .eyebrow{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 .5rem;font-weight:600}
+
+  .controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 30px}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .seg label{position:relative;cursor:pointer}
+  .seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+  .seg span{display:block;padding:7px 16px;border-radius:999px;font-size:.84rem;color:var(--muted)}
+  .seg input:checked + span{background:var(--gold);color:#121212;font-weight:600}
+  .seg input:focus-visible + span{outline:2px solid var(--gold-hi);outline-offset:2px}
+  .tgl{display:inline-flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:.84rem;cursor:pointer;color:var(--text)}
+  .tgl:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+  .tgl input{accent-color:var(--gold);margin:0;width:15px;height:15px}
+
+  .stage{display:flex;flex-wrap:wrap;gap:36px;justify-content:center;align-items:flex-start;margin-bottom:34px}
+  .unit{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0}
+  .unit figure{margin:0;width:min(400px,88vw)}
+  .unit svg{display:block;width:100%;height:auto;max-width:100%}
+  .cap{font-size:.78rem;color:var(--muted);text-align:center;margin:0}
+  .cap b{color:var(--text);font-weight:500;display:block;font-size:.88rem}
+
+  .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:0 0 48px;padding:0;list-style:none}
+  .legend li{display:flex;gap:11px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-width:0}
+  .num{flex:0 0 auto;width:21px;height:21px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-size:.72rem;display:grid;place-items:center;margin-top:1px;font-variant-numeric:tabular-nums}
+  .legend h3{margin:0 0 2px;font-size:.88rem;font-weight:600}
+  .legend p{margin:0;font-size:.8rem;color:var(--muted)}
+
+  .closeup{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:30px;align-items:center;border-top:1px solid var(--line);padding-top:30px;margin-bottom:44px}
+  .closeup img{display:block;width:100%;max-width:100%;height:auto;border-radius:50%}
+  .closeup ul{margin:0;padding-left:1.1rem;color:var(--muted);font-size:.86rem;display:grid;gap:8px}
+  .closeup ul b{color:var(--text);font-weight:600}
+  @media (max-width:720px){.closeup{grid-template-columns:1fr}}
+
+  .notes{border-top:1px solid var(--line);padding-top:26px}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:.82rem}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--gold);font-weight:600;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+  td code{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:.78rem;color:var(--gold-hi);background:#121214;padding:1px 5px;border-radius:4px;white-space:nowrap}
+  .small{font-size:.76rem;color:var(--muted);margin:10px 0 0}
+  .warn{margin-top:22px;border-left:2px solid var(--gold);padding:2px 0 2px 14px;color:var(--muted);font-size:.85rem;max-width:74ch}
+  .warn strong{color:var(--text);font-weight:600}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">OnePlus Watch 3 · 466 × 466 · versión 4</p>
+  <h1>Esfera Mapamundi Oro</h1>
+  <p class="sub">Elegido: mapa en bajo relieve, glucosa en la sub-esfera central y logo un 25 % más pequeño. El selector sigue ahí por si quieres volver a comparar con el relieve. Los valores son de ejemplo.</p>
+
+  <div class="controls">
+    <div class="seg" role="radiogroup" aria-label="Acabado del mapa">
+      <label><input type="radio" name="relief" id="r-bajo" value="bajo" checked><span>Bajo relieve</span></label>
+      <label><input type="radio" name="relief" id="r-alto" value="alto"><span>Relieve</span></label>
+    </div>
+    <label class="tgl"><input type="checkbox" id="marks" checked> Numerar las zonas</label>
+    <label class="tgl"><input type="checkbox" id="seconds" checked> Segundero</label>
+  </div>
+
+  <div class="stage">
+    <div class="unit">
+      <figure id="faceMain"></figure>
+      <p class="cap"><b>Pantalla activa</b>Lo que ves al levantar la muñeca</p>
+    </div>
+    <div class="unit">
+      <figure id="faceAod"></figure>
+      <p class="cap"><b>Always-On Display</b>Sin fondo: contornos, logo atenuado y glucosa</p>
+    </div>
+  </div>
+
+  <ol class="legend">
+    <li><span class="num">1</span><div><h3>Actividad</h3><p>Sub-esfera izquierda. La tocas y abre el entrenamiento que le asignes en el reloj.</p></div></li>
+    <li><span class="num">2</span><div><h3>Glucosa</h3><p>Sub-esfera central, la mayor: valor, tendencia, aro según tu rango y minutos desde la lectura.</p></div></li>
+    <li><span class="num">3</span><div><h3>Tiempo</h3><p>Sub-esfera derecha: icono y temperatura actual.</p></div></li>
+    <li><span class="num">4</span><div><h3>Fecha</h3><p>Ventana a las 3: día de la semana y del mes.</p></div></li>
+    <li><span class="num">5</span><div><h3>Batería</h3><p>Ventana a las 9: porcentaje, que se vuelve rojo con la batería baja.</p></div></li>
+  </ol>
+
+  <section class="closeup" aria-labelledby="closeup-h">
+    <img id="closeImg" src="bg_bajo.png" width="932" height="932" alt="Fondo de la esfera a resolución de exportación, con el acabado elegido arriba">
+    <div>
+      <h2 id="closeup-h">El fondo, de cerca</h2>
+      <ul>
+        <li><b>Una sola luz, arriba a la izquierda,</b> para todas las piezas. Por eso ningún relieve contradice a otro.</li>
+        <li id="reliefNote"></li>
+        <li><b>Rayos y minutería grabados</b> en la superficie de la esfera, cortados en la línea de costa.</li>
+        <li><b>Sub-esferas hundidas con aro dorado.</b> La central es mayor y su aro corta los de las laterales, así que queda en primer plano. Los fondos llevan un caracoleado fino.</li>
+        <li><b>Oro en las doce horas:</b> doble barra a las 12, 3, 6 y 9, barra simple en el resto. Mismo tono que tu logo.</li>
+        <li><b>Costa simplificada a escala de reloj:</b> fuera las islas menores de un par de píxeles, que en la pantalla real serían ruido.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h2>Cómo se monta cada pieza en Watch Face Studio</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Zona</th><th>Elemento en WFS</th><th>Dato</th></tr></thead>
+        <tbody>
+          <tr><td>Fondo, mapa, índices, logo</td><td>Una sola imagen de fondo, 932 × 932 px</td><td>estático</td></tr>
+          <tr><td>Agujas</td><td>Analog Hands (imagen propia)</td><td>hora, minuto, segundo</td></tr>
+          <tr><td>1 · Actividad</td><td>Complicación · Small Image / App Shortcut</td><td>la app que asignes en el reloj</td></tr>
+          <tr><td>2 · Glucosa</td><td>Complicación · Ranged Value, por encima de las otras dos</td><td>tu app de glucosa</td></tr>
+          <tr><td>3 · Tiempo</td><td>Complicación · Short Text con icono</td><td>proveedor meteorológico</td></tr>
+          <tr><td>4 · Fecha</td><td>Text + Tag Expression</td><td><code>[DAY_WEEK_S]</code> <code>[DAY_1_31]</code></td></tr>
+          <tr><td>5 · Batería</td><td>Text + Tag Expression, color condicional</td><td><code>[BATT_PER]</code> · <code>[BATT_IS_LOW]</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">Tags comprobados en el propio Watch Face Studio 1.9.9.</p>
+
+    <p class="warn"><strong>Tres avisos.</strong> El aro de glucosa necesita una complicación de tipo <em>Ranged Value</em>: si tu app sólo ofrece <em>Short Text</em>, ese círculo queda en número y flecha. Al solaparse, la complicación central debe ir por encima en el orden de capas, para que el toque en la zona compartida abra la glucosa y no la de al lado. Y en Always-On hay un límite de píxeles encendidos, por eso ahí desaparece el fondo y el logo baja de brillo.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var GOLD='#C9A86A', GOLD_HI='#E6CD95', GOLD_DIM='#6E5A33', WHITE='#EFEDE7', MUTED='#8C8A84';
+  var C=233;
+  var NOTES={
+    bajo:'<b>Bajo relieve:</b> los continentes están fresados en la esfera, con el fondo granallado y más oscuro. Sólo brillan las paredes que miran a la luz. La regla es simple: todo lo negro está hundido y sólo sobresale el oro.',
+    alto:'<b>Relieve:</b> los continentes sobresalen como mesetas mates con el bisel brillante, igual en todos. Son lo único negro que sube; el resto de lo negro está hundido.'
+  };
+
+  function pol(cx,cy,r,deg){ var a=(deg-90)*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
+  function arcPath(cx,cy,r,from,to){
+    if(to-from>359.9) to=from+359.9;
+    var p0=pol(cx,cy,r,from), p1=pol(cx,cy,r,to);
+    return 'M'+p0[0].toFixed(2)+' '+p0[1].toFixed(2)+'A'+r+' '+r+' 0 '+((to-from)>180?1:0)+' 1 '+p1[0].toFixed(2)+' '+p1[1].toFixed(2);
+  }
+  function txt(x,y,size,fill,s,extra){
+    return '<text x="'+x+'" y="'+y+'" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-size="'+size+'" fill="'+fill+'" '+(extra||'')+'>'+s+'</text>';
+  }
+  function runner(cx,cy,color){
+    return '<g transform="translate('+cx+','+cy+')">'+
+      '<circle cx="0" cy="-9.5" r="3.1" fill="'+color+'"/>'+
+      '<path d="M-1.5 -5 L4 -2 L1.5 2.5 L5 9 M1.5 2.5 L-4.5 4 L-6.5 10 M-1.5 -5 L-6 -1.5 L-9 -3.5" fill="none" stroke="'+color+'" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></g>';
+  }
+  function sun(cx,cy,color){
+    var s='<g transform="translate('+cx+','+cy+')"><circle cx="0" cy="0" r="5.2" fill="none" stroke="'+color+'" stroke-width="1.5"/><g stroke="'+color+'" stroke-width="1.3" stroke-linecap="round">';
+    for(var i=0;i<8;i++){ var a=i*45*Math.PI/180; s+='<line x1="'+(Math.sin(a)*8.4).toFixed(2)+'" y1="'+(-Math.cos(a)*8.4).toFixed(2)+'" x2="'+(Math.sin(a)*10.6).toFixed(2)+'" y2="'+(-Math.cos(a)*10.6).toFixed(2)+'"/>'; }
+    return s+'</g></g>';
+  }
+
+  /* sub-esferas, en coordenadas del reloj (466 px) */
+  var LEFT={x:161,y:295}, CENTER={x:233,y:321}, RIGHT={x:305,y:295};
+
+  function face(opts){
+    var aod=!!opts.aod, marks=!!opts.marks, secs=!!opts.seconds, relief=opts.relief;
+    var p=[];
+
+    if(!aod){
+      p.push('<image href="bg_'+relief+'.png" x="0" y="0" width="466" height="466"/>');
+    }else{
+      p.push('<circle cx="233" cy="233" r="233" fill="#000"/>');
+      for(var h=0;h<12;h++){
+        var offs=(h%3===0)?[-1.9,1.9]:[0], r0=(h%3===0)?194:197;
+        for(var k=0;k<offs.length;k++){
+          var a=h*30*Math.PI/180, ux=Math.sin(a), uy=-Math.cos(a), tx=Math.cos(a), ty=Math.sin(a), o=offs[k];
+          p.push('<line x1="'+(C+ux*r0+tx*o).toFixed(1)+'" y1="'+(C+uy*r0+ty*o).toFixed(1)+'" x2="'+(C+ux*212+tx*o).toFixed(1)+'" y2="'+(C+uy*212+ty*o).toFixed(1)+'" stroke="'+GOLD_DIM+'" stroke-width="1.6" stroke-linecap="round"/>');
+        }
+      }
+      p.push('<image href="logo.png" x="197" y="96" width="72" height="62" opacity=".32"/>');
+    }
+
+    /* 4 · fecha (ventana a las 3) */
+    if(!aod){
+      p.push('<text x="371" y="237.6" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-size="12.5" letter-spacing=".6"><tspan fill="'+GOLD+'">DOM</tspan><tspan fill="'+WHITE+'" font-weight="600" dx="4">22</tspan></text>');
+    }else{
+      p.push(txt(371,237.6,12,GOLD_DIM,'DOM 22'));
+    }
+
+    /* 5 · batería (ventana a las 9) */
+    if(!aod){
+      p.push('<g transform="translate(78,229)"><rect x="0" y="0" width="12" height="7" rx="1.4" fill="none" stroke="'+GOLD+'" stroke-width="1.1"/><rect x="12.4" y="2.2" width="1.4" height="2.6" rx=".5" fill="'+GOLD+'"/><rect x="1.6" y="1.6" width="'+(8.8*0.86).toFixed(2)+'" height="3.8" rx=".6" fill="'+GOLD_HI+'"/></g>');
+      p.push(txt(105,237.6,12.5,WHITE,'86%','font-weight="600"'));
+    }
+
+    /* 1 · actividad (izquierda; contenido desplazado lejos del solape) */
+    if(!aod){
+      p.push(runner(LEFT.x-3,LEFT.y-6,GOLD_HI));
+      p.push(txt(LEFT.x-3,LEFT.y+19,7.8,GOLD,'ACTIVIDAD','letter-spacing="1.2" opacity=".9"'));
+    }
+
+    /* 3 · tiempo (derecha) */
+    if(!aod){
+      p.push(sun(RIGHT.x+3,RIGHT.y-7,GOLD_HI));
+      p.push(txt(RIGHT.x+3,RIGHT.y+22,15,WHITE,'15°','font-weight="500"'));
+    }
+
+    /* 2 · glucosa (central, mayor) */
+    var gVal=112, gLo=70, gHi=180, frac=Math.max(0,Math.min(1,(gVal-gLo)/(gHi-gLo)));
+    var gx=CENTER.x, gy=CENTER.y;
+    if(!aod){
+      p.push('<path d="'+arcPath(gx,gy,38.5,0,360)+'" fill="none" stroke="#1B1B1E" stroke-width="3"/>');
+      p.push('<path d="'+arcPath(gx,gy,38.5,0,360*frac)+'" fill="none" stroke="'+GOLD_HI+'" stroke-width="3" stroke-linecap="round"/>');
+      p.push(txt(gx-4,gy+3,31,WHITE,'112','font-weight="600"'));
+      p.push('<path d="M'+(gx+16)+' '+(gy-6)+' L'+(gx+23)+' '+(gy-13)+' M'+(gx+23)+' '+(gy-13)+' L'+(gx+23)+' '+(gy-8)+' M'+(gx+23)+' '+(gy-13)+' L'+(gx+18)+' '+(gy-13)+'" fill="none" stroke="'+GOLD_HI+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>');
+      p.push(txt(gx,gy+16,10,GOLD,'mg/dL','letter-spacing=".8"'));
+      p.push(txt(gx,gy+28,10,MUTED,'hace 4 min'));
+    }else{
+      p.push('<path d="'+arcPath(gx,gy,38.5,0,360*frac)+'" fill="none" stroke="'+GOLD_DIM+'" stroke-width="2.2" stroke-linecap="round"/>');
+      p.push(txt(gx-4,gy+7,30,'#AEA99B','112','font-weight="600"'));
+      p.push('<path d="M'+(gx+16)+' '+(gy-3)+' L'+(gx+22.5)+' '+(gy-9.5)+' M'+(gx+22.5)+' '+(gy-9.5)+' L'+(gx+22.5)+' '+(gy-5)+' M'+(gx+22.5)+' '+(gy-9.5)+' L'+(gx+18)+' '+(gy-9.5)+'" fill="none" stroke="'+GOLD_DIM+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>');
+    }
+
+    /* agujas: 10:09:30 */
+    var hA=(10+9/60)*30, mA=9*6, sA=30*6;
+    if(!aod){
+      p.push('<g transform="rotate('+hA+' 233 233)" filter="url(#hs)">'+
+        '<path d="M230.2 240 L230.6 124 L233 116 L235.4 124 L235.8 240 Z" fill="'+GOLD_HI+'"/>'+
+        '<path d="M233 118 L233 236" stroke="#5A4520" stroke-width=".8" opacity=".55"/>'+
+        '<rect x="231.2" y="236" width="3.6" height="22" rx="1.8" fill="'+GOLD+'"/></g>');
+      p.push('<g transform="rotate('+mA+' 233 233)" filter="url(#hs)">'+
+        '<path d="M231 240 L231.4 64 L233 56 L234.6 64 L235 240 Z" fill="'+GOLD_HI+'"/>'+
+        '<path d="M233 58 L233 236" stroke="#5A4520" stroke-width=".7" opacity=".5"/>'+
+        '<rect x="231.6" y="236" width="2.8" height="26" rx="1.4" fill="'+GOLD+'"/></g>');
+      if(secs){
+        p.push('<g transform="rotate('+sA+' 233 233)" filter="url(#hs)">'+
+          '<rect x="232.35" y="44" width="1.3" height="198" fill="#DCD6C8"/>'+
+          '<circle cx="233" cy="270" r="5.2" fill="none" stroke="#DCD6C8" stroke-width="1.3"/></g>');
+      }
+      p.push('<circle cx="233" cy="233" r="7" fill="#0C0C0E" stroke="'+GOLD_HI+'" stroke-width="1.6"/>');
+      p.push('<circle cx="233" cy="233" r="2.1" fill="'+GOLD_HI+'"/>');
+    }else{
+      p.push('<g transform="rotate('+hA+' 233 233)"><path d="M230.2 240 L230.6 124 L233 116 L235.4 124 L235.8 240 Z" fill="none" stroke="'+GOLD_DIM+'" stroke-width="1.3"/></g>');
+      p.push('<g transform="rotate('+mA+' 233 233)"><path d="M231 240 L231.4 64 L233 56 L234.6 64 L235 240 Z" fill="none" stroke="'+GOLD_DIM+'" stroke-width="1.3"/></g>');
+      p.push('<circle cx="233" cy="233" r="5.4" fill="#000" stroke="'+GOLD_DIM+'" stroke-width="1.3"/>');
+    }
+
+    /* numeritos de zona */
+    if(marks){
+      var badges=[[1,113,262],[2,233,382],[3,353,262],[4,371,206],[5,95,206]];
+      for(var i=0;i<badges.length;i++){
+        var b=badges[i];
+        p.push('<g><circle cx="'+b[1]+'" cy="'+b[2]+'" r="10" fill="#060607" stroke="'+GOLD+'" stroke-width="1.2"/>'+
+          '<text x="'+b[1]+'" y="'+(b[2]+3.8)+'" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="'+GOLD+'">'+b[0]+'</text></g>');
+      }
+    }
+
+    var defs='<defs><filter id="hs" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="1.6" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".75"/></filter>'+
+      '<clipPath id="round"><circle cx="233" cy="233" r="233"/></clipPath></defs>';
+    var label=aod?'Esfera en modo Always-On: índices y agujas en contorno, logo atenuado, fecha y glucosa':
+      'Esfera activa con el mapa en '+(relief==='bajo'?'bajo relieve':'relieve')+': logo NVC, ventanas de fecha y batería, sub-esferas de actividad, glucosa (central, mayor) y tiempo, agujas doradas';
+    return '<svg viewBox="0 0 466 466" role="img" aria-label="'+label+'">'+defs+'<g clip-path="url(#round)">'+p.join('')+'</g></svg>';
+  }
+
+  var elMain=document.getElementById('faceMain'), elAod=document.getElementById('faceAod'),
+      cbMarks=document.getElementById('marks'), cbSecs=document.getElementById('seconds'),
+      closeImg=document.getElementById('closeImg'), note=document.getElementById('reliefNote');
+
+  function relief(){ return document.getElementById('r-alto').checked ? 'alto' : 'bajo'; }
+  function render(){
+    var r=relief();
+    elMain.innerHTML=face({aod:false,marks:cbMarks.checked,seconds:cbSecs.checked,relief:r});
+    elAod.innerHTML=face({aod:true,marks:cbMarks.checked,seconds:false,relief:r});
+    closeImg.src='bg_'+r+'.png';
+    note.innerHTML=NOTES[r];
+  }
+  [cbMarks,cbSecs,document.getElementById('r-bajo'),document.getElementById('r-alto')].forEach(function(el){ el.addEventListener('change',render); });
+  render();
+})();
+</script>
