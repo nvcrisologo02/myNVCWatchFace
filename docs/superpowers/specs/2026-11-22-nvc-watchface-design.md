@@ -1,6 +1,7 @@
 # Esfera NVC para OnePlus Watch 3 — diseño
 
-Fecha: 2026-11-22 · Estado: diseño visual cerrado (maqueta v4), pendiente de plan de construcción.
+Fecha: 2026-11-22 · Estado: diseño cerrado (maqueta v4 y decisiones de glucosa e instalación),
+pendiente de plan de construcción.
 
 ## 1. Intención
 
@@ -146,10 +147,32 @@ Decisiones provisionales del diseñador (marcadas ✎):
   muestra en Always-On, en pequeño bajo el valor. Es el modo en que la complicación se refresca
   menos y donde más falta hace.
 
-**Pendiente del usuario** (ver §7, riesgos 3, 8 y 9):
-- qué app da la glucosa y qué hacer si no manda la antigüedad de la lectura;
-- qué rango cubre el aro y si salirse de él cambia el color;
-- qué hacer si la esfera no se puede instalar por adb.
+**Decisiones del usuario** (2026-11-22; resuelven §7, riesgos 3, 8 y 9):
+
+- **Proveedor: Gluroo.** Es la app que da hoy la glucosa en su esfera actual. Según su web,
+  publica en Wear OS una complicación de texto («Big BG via Gluroo») y otra de rango («CGM
+  (Range) via Gluroo»), además de gráfica, COB e IOB
+  ([gluroo.com/watchface](https://gluroo.com/watchface/)). Sus versiones para Wear OS 5 usan
+  una app aparte, «Gluroo CGM Watchface». **No consta** que ninguna complicación mande la
+  antigüedad de la lectura; hay que verlo en el reloj (plan, tarea de inspección de
+  complicaciones). El propio soporte de Gluroo admite que la complicación puede quedarse con una
+  lectura vieja, lo que confirma que el anti-objetivo nº 1 es real con este proveedor.
+- **Si la complicación de glucosa no manda la antigüedad: segunda complicación.** La sub-esfera
+  central lleva un segundo hueco de complicación, pequeño, bajo el valor, para la antigüedad o
+  la hora de la última lectura, si Gluroo la ofrece en alguna de sus complicaciones. Condiciones:
+  - el toque en cualquier punto de la sub-esfera central abre la glucosa, nunca la antigüedad
+    (el hueco de antigüedad no recibe toques o queda tapado por el de glucosa);
+  - con el hueco vacío se muestra «sin hora» en gris, nunca una hora inventada;
+  - si ninguna complicación de Gluroo da la antigüedad, **se para y se vuelve a decidir con el
+    usuario** antes de seguir con la glucosa.
+- **Rango del aro: 70–180 mg/dL fijo, calculado por la esfera** con el valor numérico de la
+  complicación, no con el mínimo y máximo del proveedor. El aro se satura en los extremos.
+- **Color fuera de rango:** dentro de 70–180, oro; **por debajo de 70, rojo**; **por encima de
+  180, ámbar**. Cambian el valor y el aro. En Always-On se mantiene el mismo criterio con tonos
+  apagados, porque una hipoglucemia es justo lo que más importa ver en ambiente. El rojo y el
+  ámbar exactos quedan a criterio de quien construya, con contraste suficiente sobre negro.
+- **Si sólo hay *Short Text*** (sin valor numérico), no hay aro ni color: se muestra el texto tal
+  cual. El color depende de tener el valor como número.
 
 ## 6. Construcción (partes decididas)
 
@@ -174,14 +197,14 @@ Decisiones provisionales del diseñador (marcadas ✎):
    cambia. Primera tarea: una esfera mínima instalada y seleccionada en el reloj.
 2. **Versión de Wear OS del reloj** → qué versión de WFF se puede usar y, por tanto, qué
    elementos están disponibles. Mirarlo en el reloj antes de escribir el XML definitivo.
-3. **Qué app da la glucosa y qué envía su complicación.** No se sabe aún qué app usa el usuario
-   (se configura «desde el reloj o desde O-Health»). De ella depende:
+3. **Qué envía la complicación de glucosa de Gluroo** (proveedor decidido, §5.5). De ella
+   depende:
    - si hay *Ranged Value* (aro) o sólo *Short Text*;
    - si la tendencia llega como flecha dentro del texto;
    - si la antigüedad de la lectura llega en algún campo.
    WFF no ofrece por sí mismo la hora de la última actualización de una complicación, así que el
-   anti-objetivo de «valor viejo sin avisar» depende de lo que mande el proveedor. Si no manda
-   nada, hay que decidir con el usuario qué hacer.
+   anti-objetivo de «valor viejo sin avisar» depende de lo que mande el proveedor. Decidido: una
+   segunda complicación para la antigüedad; si Gluroo no la ofrece, se vuelve a decidir (§5.5).
 4. **Qué proveedor lanza los entrenamientos de OHealth** en la esfera actual, y con qué tipo de
    complicación (para elegir los tipos admitidos en la sub-esfera izquierda).
 5. **Nombres de las fuentes de datos en WFF** para fecha y batería. Los *tags* comprobados en
@@ -190,13 +213,14 @@ Decisiones provisionales del diseñador (marcadas ✎):
 6. **Prioridad de toque donde se solapan las sub-esferas.** Hay que comprobar en el reloj que el
    toque en la zona compartida va a la glucosa.
 7. **Límite de píxeles encendidos en Always-On.** Medir sobre una captura del modo ambiente.
-8. **Qué rango representa el aro de glucosa.** La maqueta usa 70–180 mg/dL fijos, que parece un
-   rango objetivo; el rango que manda un proveedor *Ranged Value* suele ser el del sensor
-   (~40–400), y con él un 112 normal dejaría el aro casi vacío. Si es el rango del usuario, la
-   esfera calcula el aro con sus límites, no con los del proveedor.
-9. **Qué hacer si no se puede instalar por adb.** Watch Face Studio no es salida: también instala
-   por adb. Las alternativas reales son una pista de pruebas internas privada de Google Play
-   (requiere cuenta de desarrollador) o parar.
+8. **Rango del aro de glucosa: resuelto.** 70–180 mg/dL fijos, calculado por la esfera, con rojo
+   por debajo y ámbar por encima (§5.5). Queda por comprobar que WFF permite el cálculo y el
+   color condicional con el valor de la complicación: los nombres exactos de expresiones y
+   fuentes de datos se buscan en la documentación oficial antes de usarlos.
+9. **Si no se puede instalar por adb: parar e investigar.** Decisión del usuario: la construcción
+   se detiene, se investigan alternativas (O-Health, pista de pruebas internas de Google Play,
+   otras vías) y se vuelve a decidir con lo que salga. Watch Face Studio no es salida: también
+   instala por adb.
 
 ## 8. Lo que queda a criterio de quien construya
 
