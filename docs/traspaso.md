@@ -51,5 +51,14 @@ las pruebas que ya se hicieron. Lo vigente es el diseño; esto es contexto.
 
 Pega esto como primer mensaje:
 
-> Lee `CLAUDE.md` y el diseño en `docs/superpowers/specs/`. Vamos a planificar la construcción de
-> la esfera: empieza por la prueba de instalación en el OnePlus Watch 3, que es el riesgo nº 1.
+> Retomamos la esfera NVC para mi OnePlus Watch 3. Lee primero `CLAUDE.md`, el diseño en
+> `docs/superpowers/specs/2026-11-22-nvc-watchface-design.md` y `docs/traspaso.md`.
+>
+> El diseño visual está cerrado (maqueta v4) y elegimos construirla escribiendo Watch Face Format
+> a mano y compilándola con el SDK de Android. Quedan tres preguntas sin responder (§5.5 y §7,
+> riesgos 3, 8 y 9): qué app uso para la glucosa y qué hacer si no manda la antigüedad de la
+> lectura; cuál es mi rango objetivo y si salirme de él debe cambiar el color; y qué hacemos si
+> el reloj no deja instalar por adb. Házmelas, actualiza el diseño con mis respuestas y, cuando lo
+> apruebe, súbelo a GitHub (el primer commit está en local, sin push) y pasa al plan de
+> construcción. La primera tarea del plan es la prueba de instalación de una esfera mínima en el
+> reloj.
