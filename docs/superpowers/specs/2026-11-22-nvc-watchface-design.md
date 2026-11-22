@@ -42,7 +42,7 @@ Uso personal: se instala por adb y no se publica en ninguna tienda.
 | Tema | Hecho | Estado |
 |---|---|---|
 | Reloj | OnePlus Watch 3: AMOLED LTPO redonda 1,5", **466×466**, Wear OS 5 + RTOS, Snapdragon W5, 2 GB RAM | confirmado (fichas técnicas) |
-| Versión de Wear OS del reloj del usuario | Salió con Wear OS 5; puede haber recibido 6 | **a comprobar en el reloj**: decide la versión de WFF |
+| Versión de Wear OS del reloj del usuario | **Wear OS 5** (dicho por el usuario, 2026-11-22). Wear OS 5 admite WFF v2; si es 5.1, v3. El SDK exacto se lee por adb en la tarea 1 | confirmado por el usuario; subversión por leer |
 | Formato | Desde enero de 2026 Wear OS sólo instala esferas en **Watch Face Format** (XML declarativo, sin código) | confirmado (blog de Android Developers, 2025-06) |
 | Instalación | Sideload por adb con depuración inalámbrica. **Ninguna fuente confirma que el OnePlus Watch 3 admita esferas instaladas así**; la vía oficial de OnePlus es O-Health | **riesgo nº 1** |
 | Complicaciones | El usuario ya usa en su esfera actual una complicación de glucosa y otra que lanza entrenamientos de OHealth → el reloj admite complicaciones de terceros | confirmado por el usuario |
