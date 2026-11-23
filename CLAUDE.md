@@ -4,6 +4,10 @@ Esfera personal (Wear OS, Watch Face Format) para el **OnePlus Watch 3** del usu
 dorada, mapamundi en bajo relieve, logo «NVC zZz», glucosa en la sub-esfera central y acceso de
 un toque a un entrenamiento. Uso personal, instalación por adb, sin tienda.
 
+**¿Esfera nueva?** Empieza por `docs/guia-nueva-esfera.md`: qué está ya decidido, qué preguntar,
+receta paso a paso (módulo, Blender, scripts, XML), medidas que se leen bien en el reloj, WFF
+comprobado y errores a no repetir. Mantenla al día con cada lección nueva.
+
 **Antes de proponer nada, lee el diseño:**
 `docs/superpowers/specs/2026-11-22-nvc-watchface-design.md`. Ahí están las decisiones, la
 geometría exacta, los riesgos por orden y lo que queda a tu criterio. La historia de cómo se
