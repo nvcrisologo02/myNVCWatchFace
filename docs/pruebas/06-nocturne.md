@@ -16,6 +16,13 @@
 - Fuente: Bodoni Moda (SIL OFL, `docs/licencias/OFL-BodoniModa.txt`), en lugar de la Bodoni de
   Windows, que no se puede redistribuir.
 
+## Versión 2: contadores y fase lunar más grandes, III y IX
+
+![Versión 2](capturas/06-nocturne-v2.png)
+
+Contadores r 44, ventana lunar r 44 con lunas r 14; vuelven el III y el IX (sólo falta el VI,
+donde va la fecha). Aguja de glucosa en oro.
+
 ## Cómo se reconstruye
 
 ```

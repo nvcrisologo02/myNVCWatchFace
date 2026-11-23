@@ -53,11 +53,11 @@ dial = wk.cylinder("dial", 0, 0, 212.8, -0.3, 0.0, DIAL, verts=256)
 wk.torus("chapter_edge", 0, 0, 150, 0.06, 0.0, GOLD_POL)
 
 # moon phase at 12: semicircular aperture (r 34) with the two classic "humps" that hide the moons
-# at new moon. Moons ride the disc at r 20 from its centre, which is the aperture centre.
-MX, MY, MR = 0, -92, 34
-HUMP_X, HUMP_R = 20, 12.5
+# at new moon. Moons ride the disc at r 26 from its centre, which is the aperture centre.
+MX, MY, MR = 0, -98, 44      # enlarged on the user's request (2026-11-23; was (0, -92), r 34)
+HUMP_X, HUMP_R = 26, 16
 cut = wk.cylinder("cut_moon", MX, MY, MR, -1, 1, NAVY_INK)
-for nm, obj in [("half", wk.box("cut_moon_half", MX, MY + 20, 80, 40, -2, 2, 0, NAVY_INK, bevel=0)),
+for nm, obj in [("half", wk.box("cut_moon_half", MX, MY + 30, 120, 60, -2, 2, 0, NAVY_INK, bevel=0)),
                 ("hump_l", wk.cylinder("hump_l", MX - HUMP_X, MY, HUMP_R, -2, 2, NAVY_INK)),
                 ("hump_r", wk.cylinder("hump_r", MX + HUMP_X, MY, HUMP_R, -2, 2, NAVY_INK))]:
     md = cut.modifiers.new(nm, "BOOLEAN")
@@ -67,14 +67,14 @@ for nm, obj in [("half", wk.box("cut_moon_half", MX, MY + 20, 80, 40, -2, 2, 0, 
     obj.hide_render = True
 wk.boolean_cut(dial, cut)
 arch = wk.torus("moon_rim", MX, MY, MR + 0.8, 0.08, 0.0, GOLD_POL)
-wk.boolean_cut(arch, wk.box("rim_cut", MX, MY + 20, 80, 40, -2, 2, 0, NAVY_INK, bevel=0))
+wk.boolean_cut(arch, wk.box("rim_cut", MX, MY + 30, 120, 60, -2, 2, 0, NAVY_INK, bevel=0))
 for side in (-1, 1):  # gold edge on each hump
     hr = wk.torus(f"hump_rim{side}", MX + side * HUMP_X, MY, HUMP_R + 0.6, 0.06, 0.0, GOLD_POL)
-    wk.boolean_cut(hr, wk.box(f"hump_rim_cut{side}", MX + side * HUMP_X, MY + 20, 40, 40, -2, 2, 0, NAVY_INK,
+    wk.boolean_cut(hr, wk.box(f"hump_rim_cut{side}", MX + side * HUMP_X, MY + 30, 60, 60, -2, 2, 0, NAVY_INK,
                               bevel=0))
 if not BG:  # sketch only: in the watch face the disc is a separate, turning layer under the dial
-    wk.cylinder("sky", MX, MY, 40, -0.9, -0.6, SKY)
-    bpy.ops.mesh.primitive_uv_sphere_add(radius=1.1, location=(*wk.W(MX, MY - 20), -0.6))
+    wk.cylinder("sky", MX, MY, 52, -0.9, -0.6, SKY)
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=1.4, location=(*wk.W(MX, MY - 26), -0.6))
     moon = bpy.context.active_object
     moon.scale = (1, 1, 0.35)
     moon.data.materials.append(GOLD_MOON)
@@ -84,11 +84,11 @@ if not BG:  # sketch only: in the watch face the disc is a separate, turning lay
 wk.logo(0, -42, 54, 0.04, wk.logo_material(gold=(0.95, 0.76, 0.44, 1), roughness=0.2))
 
 # sub-dials 9 (activity + reserve) and 3 (weather): recessed, snailed, gold rims
-for x, nm in [(-90, "activity"), (90, "weather")]:
-    wk.boolean_cut(dial, wk.cylinder("cut_" + nm, x, 8, 36, -1, 1, NAVY_INK))
-    wk.cylinder("floor_" + nm, x, 8, 36.5, -0.45, -0.25, wk.snail_material(
+for x, nm in [(-92, "activity"), (92, "weather")]:  # r 44 (2026-11-23; was (+-90, 8), r 36)
+    wk.boolean_cut(dial, wk.cylinder("cut_" + nm, x, 10, 44, -1, 1, NAVY_INK))
+    wk.cylinder("floor_" + nm, x, 10, 44.5, -0.45, -0.25, wk.snail_material(
         "floor_" + nm, {"Base Color": (0.01, 0.022, 0.07, 1), "Metallic": 0.5, "Roughness": 0.3}, PRINT, scale=22))
-    wk.torus("rim_" + nm, x, 8, 36.8, 0.08, 0.0, GOLD_POL)
+    wk.torus("rim_" + nm, x, 10, 44.8, 0.08, 0.0, GOLD_POL)
 
 # date at 6 in the chapter ring
 wk.boolean_cut(dial, wk.box("cut_date", 0, 178, 22, 16, -1, 1, 0, NAVY_INK, bevel=0))
@@ -105,8 +105,8 @@ if not BG:
     wk.text_obj("date_num", str(DAY), wk.BODONI, 13, 0, 178, -0.585, NAVY_INK)
     wk.text_obj("gval", str(GLUCOSE), wk.BODONI, 20, 0, 132, 0.01, GLUC_TXT)
     wk.text_obj("gtrend", "→", wk.SYMBOLS, 14, 26, 133, 0.01, GLUC_TXT)
-    wk.hand("reserve", -60 + 1.2 * BATTERY, 2.5, 0.4, 0.18, 0.06, -0.2, 0.04, GOLD_HAND, pivot=(-90, 8))
-    wk.cylinder("rcap", -90, 8, 2.2, -0.2, -0.1, GOLD_HAND, verts=48)
+    wk.hand("reserve", -60 + 1.2 * BATTERY, 3.2, 0.5, 0.22, 0.08, -0.2, 0.04, GOLD_HAND, pivot=(-92, 10))
+    wk.cylinder("rcap", -92, 10, 2.6, -0.2, -0.1, GOLD_HAND, verts=48)
     wk.hand("gneedle", f2deg(GLUCOSE), 7.1, 0.8, 0.22, 0.06, 0.05, 0.04, BLUED, pivot=(0, 40))
     wk.cylinder("gcap", 0, 40, 3.2, 0.05, 0.14, BLUED, verts=48)
     hd, md_, sd = wk.hand_angles(TIME)

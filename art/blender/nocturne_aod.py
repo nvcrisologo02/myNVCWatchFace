@@ -18,8 +18,8 @@ N = 932
 K = 2.0
 C = N / 2
 DIM = 0.42
-MX, MY, MR = 0, -92, 34          # aperture (watch px from the centre), as art/blender/nocturne.py
-HUMP_X, HUMP_R = 20, 12.5
+MX, MY, MR = 0, -98, 44          # aperture (watch px from the centre), as art/blender/nocturne.py
+HUMP_X, HUMP_R = 26, 16
 
 
 def P(x, y):
@@ -41,8 +41,8 @@ def dial(art: Path, prints: Path):
     # keep numerals, track and glucose fan; drop the sub-dial scales (hidden in ambient)
     keep = Image.new("L", (N, N), 255)
     kd = ImageDraw.Draw(keep)
-    for x in (-90, 90):
-        kd.ellipse([*P(x - 38, 8 - 38), *P(x + 38, 8 + 38)], fill=0)
+    for x in (-92, 92):
+        kd.ellipse([*P(x - 46, 10 - 46), *P(x + 46, 10 + 46)], fill=0)
     a = ImageChops.multiply(pr.getchannel("A"), keep).point(lambda v: round(v * DIM))
     ink = pr.copy()
     ink.putalpha(a)

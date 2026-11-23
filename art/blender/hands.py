@@ -85,15 +85,15 @@ def nocturne(name, m):
         wk.cylinder("gcap", 0, 0, 3.2, 0.05, 0.14, gold, verts=48)
     elif name in ("reserve", "reserve_low"):
         mat = m["red_metal"] if name == "reserve_low" else gold
-        wk.hand(name, 0, 2.6, 0.45, 0.22, 0.08, 0.05, 0.04, mat)
-        wk.cylinder("rcap", 0, 0, 2.4, 0.05, 0.13, gold, verts=48)
-    elif name == "moon":        # moon disc: two gold moons opposite, r 20 from the centre
+        wk.hand(name, 0, 3.2, 0.5, 0.24, 0.09, 0.05, 0.04, mat)
+        wk.cylinder("rcap", 0, 0, 2.8, 0.05, 0.13, gold, verts=48)
+    elif name == "moon":        # moon disc: two gold moons opposite, r 26 from the centre
         sky = wk.projected_color_material("disc_sky", wk.BUILD / "nocturne_moon_disc.png",
                                           {"Roughness": 0.35, "Coat Weight": 0.5})
-        wk.cylinder("disc", 0, 0, 40, -0.3, 0.0, sky, verts=128)
+        wk.cylinder("disc", 0, 0, 52, -0.3, 0.0, sky, verts=160)
         moon_mat = wk.simple("moon", **{"Base Color": (1.0, 0.80, 0.45, 1), "Metallic": 1.0, "Roughness": 0.45})
-        for y in (-20, 20):
-            bpy.ops.mesh.primitive_uv_sphere_add(radius=1.1, location=(*wk.W(0, y), 0.0))
+        for y in (-26, 26):
+            bpy.ops.mesh.primitive_uv_sphere_add(radius=1.4, location=(*wk.W(0, y), 0.0))
             mo = bpy.context.active_object
             mo.scale = (1, 1, 0.35)
             mo.data.materials.append(moon_mat)

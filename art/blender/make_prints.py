@@ -165,7 +165,7 @@ def nocturne(out: Path):
     d = ImageDraw.Draw(img)
     romans = ["XII", "I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
     for h, rn in enumerate(romans):
-        if h in (3, 6, 9):
+        if h == 6:  # the date window sits at 6; III and IX fit outside the sub-dials (user, 2026-11-23)
             continue
         label(img, rn, BODONI, 24 if h else 26, *polar(178, h * 30), NGOLD, rot=h * 30)
     # railroad minute track
@@ -175,9 +175,9 @@ def nocturne(out: Path):
         tick(d, m * 6, 202.6, 209.0, 1.6 if m % 5 == 0 else 0.7, NGOLD)
     # sub-dial ticks: reserve scale on the 9 o'clock dial, plain ticks on the 3 o'clock dial
     for i in range(6):
-        tick(d, -60 + i * 24, 24, 29, 0.9, NGOLD, -90, 8)
+        tick(d, -60 + i * 24, 30, 36, 1.1, NGOLD, -92, 10)
     for i in range(12):
-        tick(d, i * 30, 31, 34.5, 0.8, NGOLD, 90, 8)
+        tick(d, i * 30, 38.5, 42.5, 0.9, NGOLD, 92, 10)
     # glucose fan
     fx, fy, fr = FAN
     for lo, hi, c in [(40, 70, RED), (70, 180, NGOLD), (180, 300, AMBER)]:
@@ -197,8 +197,8 @@ def nocturne(out: Path):
     # moon-phase sky (projected on the disc under the aperture)
     sky = Image.new("RGBA", (N, N), (0, 0, 0, 0))
     sd = ImageDraw.Draw(sky)
-    mx, my = 0.0, -92.0
-    sd.ellipse([*P(mx - 40, my - 40), *P(mx + 40, my + 40)], fill=(16, 34, 104, 255))
+    mx, my = 0.0, -98.0
+    sd.ellipse([*P(mx - 52, my - 52), *P(mx + 52, my + 52)], fill=(16, 34, 104, 255))
     for sx, sy, sr in [(-22, -16, 1.3), (-12, -26, 0.9), (6, -28, 1.1), (19, -18, 1.4), (25, -6, 0.9),
                        (-27, -4, 1.0), (13, -8, 0.8), (-4, -18, 0.6)]:
         sd.ellipse([*P(mx + sx - sr, my + sy - sr), *P(mx + sx + sr, my + sy + sr)], fill=(244, 214, 140, 255))
@@ -208,11 +208,11 @@ def nocturne(out: Path):
     # centred on the image centre because the disc is rendered at the origin
     disc = Image.new("RGBA", (N, N), (0, 0, 0, 0))
     dd = ImageDraw.Draw(disc)
-    dd.ellipse([*P(-40, -40), *P(40, 40)], fill=(16, 34, 104, 255))
+    dd.ellipse([*P(-52, -52), *P(52, 52)], fill=(16, 34, 104, 255))
     import random
     rnd = random.Random(29)
-    for _ in range(46):
-        r = 22 + 17 * math.sqrt(rnd.random())
+    for _ in range(60):
+        r = 30 + 21 * math.sqrt(rnd.random())
         a = rnd.random() * 2 * math.pi
         sx, sy, sr = r * math.cos(a), r * math.sin(a), 0.5 + 0.8 * rnd.random()
         dd.ellipse([*P(sx - sr, sy - sr), *P(sx + sr, sy + sr)], fill=(244, 214, 140, 255))

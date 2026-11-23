@@ -84,7 +84,7 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
 
         <!-- ===== Moon disc, UNDER the dial: it shows through the transparent aperture of the
              background. Two moons opposite: new moon = moons hidden by the humps (90 deg). ===== -->
-{ind(needle("disco_lunar", "moon", "noc_hand3d_moon", 233, 141, MOON_ANGLE), 8)}
+{ind(needle("disco_lunar", "moon", "noc_hand3d_moon", 233, 135, MOON_ANGLE), 8)}
 
         <!-- ===== Dial (Blender, with the aperture as a hole) and Always-On dial (opaque black
              with the same hole; numerals, track, aperture rim and glucose scale in dim gold) ===== -->
@@ -107,7 +107,7 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
             </Text>
         </PartText>
 
-        <!-- ===== 9 o'clock: activity (icon) + power reserve (battery), centre (143, 241), r 36 ===== -->
+        <!-- ===== 9 o'clock: activity (icon) + power reserve (battery), centre (141, 243), r 44 ===== -->
         <Group name="reserva" x="0" y="0" width="466" height="466">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
@@ -116,37 +116,37 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
                 </Expressions>
                 <Compare expression="baja">
                     <Group name="reserva_baja" x="0" y="0" width="466" height="466">
-{ind(shadowed("reserva_aguja", "reserve_low", 143, 241, R_ANGLE), 24)}
+{ind(shadowed("reserva_aguja", "reserve_low", 141, 243, R_ANGLE), 24)}
                     </Group>
                 </Compare>
                 <Default>
                     <Group name="reserva_normal" x="0" y="0" width="466" height="466">
-{ind(shadowed("reserva_aguja", "reserve", 143, 241, R_ANGLE), 24)}
+{ind(shadowed("reserva_aguja", "reserve", 141, 243, R_ANGLE), 24)}
                     </Group>
                 </Default>
             </Condition>
         </Group>
-        <ComplicationSlot slotId="10" displayName="Actividad" x="107" y="205" width="72" height="72"
+        <ComplicationSlot slotId="10" displayName="Actividad" x="97" y="199" width="88" height="88"
             supportedTypes="MONOCHROMATIC_IMAGE SMALL_IMAGE SHORT_TEXT EMPTY">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.heytap.wearable.sports/com.heytap.wearable.sports.complications.SportFreeTrainingComplicationService"
                 primaryProviderType="MONOCHROMATIC_IMAGE" />
-            <BoundingOval x="0" y="0" width="72" height="72" />
+            <BoundingOval x="0" y="0" width="88" height="88" />
             <Complication type="MONOCHROMATIC_IMAGE">
                 <!-- OHealth sends a green icon; hue rotated to gold as on the NVC face -->
-                <PartImage x="20" y="36" width="32" height="32">
+                <PartImage x="25" y="42" width="38" height="38">
                     <ImageFilters><HsbFilter hueRotate="115" saturate="0.7" /></ImageFilters>
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
             </Complication>
             <Complication type="SMALL_IMAGE">
-                <PartImage x="20" y="36" width="32" height="32">
+                <PartImage x="25" y="42" width="38" height="38">
                     <Image resource="[COMPLICATION.SMALL_IMAGE]" />
                 </PartImage>
             </Complication>
             <Complication type="SHORT_TEXT">
-                <PartText x="6" y="40" width="60" height="22">
+                <PartText x="8" y="48" width="72" height="24">
                     <Text align="CENTER" ellipsis="TRUE">
                         <Font family="bodoni_moda" size="16" color="{CREAM}">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
@@ -157,21 +157,21 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== 3 o'clock: weather, centre (323, 241), r 36 ===== -->
-        <ComplicationSlot slotId="11" displayName="Tiempo" x="287" y="205" width="72" height="72"
+        <!-- ===== 3 o'clock: weather, centre (325, 243), r 44 ===== -->
+        <ComplicationSlot slotId="11" displayName="Tiempo" x="281" y="199" width="88" height="88"
             supportedTypes="SHORT_TEXT EMPTY">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.heytap.wearable.weather/com.heytap.wearable.weather.complication.wearos.TemperatureProviderService"
                 primaryProviderType="SHORT_TEXT" />
-            <BoundingOval x="0" y="0" width="72" height="72" />
+            <BoundingOval x="0" y="0" width="88" height="88" />
             <Complication type="SHORT_TEXT">
-                <PartImage x="24" y="10" width="24" height="24" tintColor="#ffd6b470">
+                <PartImage x="29" y="12" width="30" height="30" tintColor="#ffd6b470">
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
-                <PartText x="6" y="34" width="60" height="28">
+                <PartText x="8" y="42" width="72" height="34">
                     <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="bodoni_moda" size="22" color="{CREAM}">
+                        <Font family="bodoni_moda" size="27" color="{CREAM}">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
                         </Font>
                     </Text>

@@ -50,11 +50,11 @@ Coordenadas en píxeles del reloj, centro (233, 233), y hacia abajo.
 |---|---|---|
 | Caja / bisel | oro amarillo pulido, r 213–233, perfil redondeado | fondo 3D |
 | Esfera | azul noche lacado; **clous de Paris** en el centro (r < 150); anillo de horas liso r 150–213 con filete de oro en r 150 | fondo 3D |
-| Números | romanos Bodoni impresos en oro a r 178 (sin III, VI ni IX); minutería de vía de tren r 202,6–209 | fondo 3D |
-| **Fase lunar** | apertura semicircular centrada en (233, 141), r 34, con aro de oro; disco detrás con cielo lapislázuli, estrellas y dos lunas de oro | fondo con hueco + disco dinámico |
+| Números | romanos Bodoni Moda impresos en oro a r 178 (sin VI, que es la fecha; **III y IX añadidos el 2026-11-23**: caben fuera de los contadores); minutería de vía de tren r 202,6–209 | fondo 3D |
+| **Fase lunar** | apertura semicircular centrada en **(233, 135), r 44** (agrandada el 2026-11-23; era (233, 141), r 34), jorobas en ±26 r 16, lunas r 14 a 26 del eje, con aro de oro; disco detrás con cielo lapislázuli, estrellas y dos lunas de oro | fondo con hueco + disco dinámico |
 | Logo NVC | (233, 191), 54 de ancho, oro | fondo 3D |
-| Contador 9 h · actividad + reserva | centro (143, 241), r 36, hundido con caracoleado, aro de oro; arco de reserva −60°…+60° arriba; icono abajo | fondo; icono y aguja dinámicos |
-| Contador 3 h · tiempo | centro (323, 241), r 36 | fondo; icono + temperatura dinámicos |
+| Contador 9 h · actividad + reserva | centro **(141, 243), r 44** (agrandado el 2026-11-23; era (143, 241), r 36), hundido con caracoleado, aro de oro; arco de reserva −60°…+60° arriba; icono abajo | fondo; icono y aguja dinámicos |
+| Contador 3 h · tiempo | centro **(325, 243), r 44** (agrandado el 2026-11-23) | fondo; icono + temperatura dinámicos |
 | **Glucosa** | abanico retrógrado con pivote (233, 273), r 74, de 40 (a 240°) a 300 (a 120°); zonas rojo < 70, oro 70–180, ámbar > 180; marcas 70 y 180 | escala en el fondo; aguja azulada dinámica |
 | Valor de glucosa | (233, 365), número Bodoni 20 px + flecha; color por rango; «mg/dL» impreso debajo | dinámico |
 | Fecha | ventana a las 6 en el anillo de horas, (233, 411), 22×16, disco crema | ventana en el fondo; número dinámico |

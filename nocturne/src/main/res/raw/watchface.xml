@@ -14,7 +14,7 @@
 
         <!-- ===== Moon disc, UNDER the dial: it shows through the transparent aperture of the
              background. Two moons opposite: new moon = moons hidden by the humps (90 deg). ===== -->
-        <PartImage name="disco_lunar" x="188" y="97" width="90" height="89" pivotX="0.5" pivotY="0.5">
+        <PartImage name="disco_lunar" x="176" y="79" width="114" height="113" pivotX="0.5" pivotY="0.5">
             <Transform target="angle" value="90 + [MOON_PHASE_POSITION] * 180 / 29.53" />
             <Image resource="noc_hand3d_moon" />
         </PartImage>
@@ -40,7 +40,7 @@
             </Text>
         </PartText>
 
-        <!-- ===== 9 o'clock: activity (icon) + power reserve (battery), centre (143, 241), r 36 ===== -->
+        <!-- ===== 9 o'clock: activity (icon) + power reserve (battery), centre (141, 243), r 44 ===== -->
         <Group name="reserva" x="0" y="0" width="466" height="466">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
@@ -49,11 +49,11 @@
                 </Expressions>
                 <Compare expression="baja">
                     <Group name="reserva_baja" x="0" y="0" width="466" height="466">
-                        <PartImage name="reserva_aguja_sombra" x="137" y="213" width="14" height="39" pivotX="0.5" pivotY="0.769231">
+                        <PartImage name="reserva_aguja_sombra" x="135" y="209" width="14" height="46" pivotX="0.5" pivotY="0.782609">
                             <Transform target="angle" value="-60 + 1.2 * clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="noc_hand3d_reserve_low_shadow" />
                         </PartImage>
-                        <PartImage name="reserva_aguja" x="136" y="211" width="14" height="39" pivotX="0.5" pivotY="0.769231">
+                        <PartImage name="reserva_aguja" x="134" y="207" width="14" height="46" pivotX="0.5" pivotY="0.782609">
                             <Transform target="angle" value="-60 + 1.2 * clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="noc_hand3d_reserve_low" />
                         </PartImage>
@@ -61,11 +61,11 @@
                 </Compare>
                 <Default>
                     <Group name="reserva_normal" x="0" y="0" width="466" height="466">
-                        <PartImage name="reserva_aguja_sombra" x="137" y="213" width="14" height="39" pivotX="0.5" pivotY="0.769231">
+                        <PartImage name="reserva_aguja_sombra" x="135" y="209" width="14" height="46" pivotX="0.5" pivotY="0.782609">
                             <Transform target="angle" value="-60 + 1.2 * clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="noc_hand3d_reserve_shadow" />
                         </PartImage>
-                        <PartImage name="reserva_aguja" x="136" y="211" width="14" height="39" pivotX="0.5" pivotY="0.769231">
+                        <PartImage name="reserva_aguja" x="134" y="207" width="14" height="46" pivotX="0.5" pivotY="0.782609">
                             <Transform target="angle" value="-60 + 1.2 * clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="noc_hand3d_reserve" />
                         </PartImage>
@@ -73,27 +73,27 @@
                 </Default>
             </Condition>
         </Group>
-        <ComplicationSlot slotId="10" displayName="Actividad" x="107" y="205" width="72" height="72"
+        <ComplicationSlot slotId="10" displayName="Actividad" x="97" y="199" width="88" height="88"
             supportedTypes="MONOCHROMATIC_IMAGE SMALL_IMAGE SHORT_TEXT EMPTY">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.heytap.wearable.sports/com.heytap.wearable.sports.complications.SportFreeTrainingComplicationService"
                 primaryProviderType="MONOCHROMATIC_IMAGE" />
-            <BoundingOval x="0" y="0" width="72" height="72" />
+            <BoundingOval x="0" y="0" width="88" height="88" />
             <Complication type="MONOCHROMATIC_IMAGE">
                 <!-- OHealth sends a green icon; hue rotated to gold as on the NVC face -->
-                <PartImage x="20" y="36" width="32" height="32">
+                <PartImage x="25" y="42" width="38" height="38">
                     <ImageFilters><HsbFilter hueRotate="115" saturate="0.7" /></ImageFilters>
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
             </Complication>
             <Complication type="SMALL_IMAGE">
-                <PartImage x="20" y="36" width="32" height="32">
+                <PartImage x="25" y="42" width="38" height="38">
                     <Image resource="[COMPLICATION.SMALL_IMAGE]" />
                 </PartImage>
             </Complication>
             <Complication type="SHORT_TEXT">
-                <PartText x="6" y="40" width="60" height="22">
+                <PartText x="8" y="48" width="72" height="24">
                     <Text align="CENTER" ellipsis="TRUE">
                         <Font family="bodoni_moda" size="16" color="#fff0e8d4">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
@@ -104,21 +104,21 @@
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== 3 o'clock: weather, centre (323, 241), r 36 ===== -->
-        <ComplicationSlot slotId="11" displayName="Tiempo" x="287" y="205" width="72" height="72"
+        <!-- ===== 3 o'clock: weather, centre (325, 243), r 44 ===== -->
+        <ComplicationSlot slotId="11" displayName="Tiempo" x="281" y="199" width="88" height="88"
             supportedTypes="SHORT_TEXT EMPTY">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.heytap.wearable.weather/com.heytap.wearable.weather.complication.wearos.TemperatureProviderService"
                 primaryProviderType="SHORT_TEXT" />
-            <BoundingOval x="0" y="0" width="72" height="72" />
+            <BoundingOval x="0" y="0" width="88" height="88" />
             <Complication type="SHORT_TEXT">
-                <PartImage x="24" y="10" width="24" height="24" tintColor="#ffd6b470">
+                <PartImage x="29" y="12" width="30" height="30" tintColor="#ffd6b470">
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
-                <PartText x="6" y="34" width="60" height="28">
+                <PartText x="8" y="42" width="72" height="34">
                     <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="bodoni_moda" size="22" color="#fff0e8d4">
+                        <Font family="bodoni_moda" size="27" color="#fff0e8d4">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
                         </Font>
                     </Text>
