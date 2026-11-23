@@ -34,7 +34,7 @@ SIDE_WELLS = [(-82.0, 74.0, 41.0, 43.2), (82.0, 74.0, 41.0, 43.2)]   # era (+-72
 WELLS = [CENTER_WELL] + SIDE_WELLS
 WIN_W, WIN_H, WIN_RAD, WIN_FRAME = 58.0, 24.0, 5.0, 1.6   # agrandadas a peticion del usuario (2026-11-23)
 WINDOWS = [(138.0, 0.0), (-138.0, 0.0)]               # 3 h: fecha | 9 h: bateria
-LOGO_CX, LOGO_CY, LOGO_W = 0.0, -106.0, 72.0
+LOGO_CX, LOGO_CY, LOGO_W = 0.0, -123.0, 72.0   # subido 17 a peticion del usuario (2026-11-23); era -106
 
 # ---------------- proyeccion del mapa (Mercator) ----------------------------
 LON0 = 10.0               # meridiano central

@@ -100,7 +100,7 @@ cierran canales de menos de ~1,7 unidades.
 | Índices de 12, 3, 6 y 9 | dos barras radiales r 194–212, 2,3 de ancho, separadas ±1,9 del eje |
 | Índices del resto de horas | una barra r 197–212, 2,6 de ancho |
 | Puntos de minutería | r 207, radio 1,3; no hay punto en las horas |
-| Logo NVC | centrado en (233, 127), 72 de ancho (proporción del original: 144×124 a 2×) |
+| Logo NVC | centrado en **(233, 110)** (subido el 2026-11-23; era (233, 127)), 72 de ancho (proporción del original: 144×124 a 2×) |
 | Ventana de fecha (3 h) | centro (371, 233), hueco **58×24**, radio 5 (agrandada el 2026-11-23; era 46×19), marco dorado 1,6 |
 | Ventana de batería (9 h) | centro (95, 233), mismas medidas |
 | Sub-esfera izquierda · actividad | centro **(151, 307)**, fondo **r 41**, aro hasta r 43,2 (2026-11-23: más grande y más abajo; era (161, 295), r 36) |
@@ -256,5 +256,5 @@ Decisiones provisionales del diseñador (marcadas ✎):
   ni colores; el usuario había elegido por error la glucosa en texto. Se elimina el caso «sólo
   texto» de §5.5.
 - **Flecha de tendencia:** último carácter del texto de la propia complicación de rango («185→»).
-- Tamaños, mapa y sub-esferas: ver §5.2 a §5.4 (marcados con fecha 2026-11-23).
+- Tamaños, mapa, sub-esferas y logo: ver §5.2 a §5.4 (marcados con fecha 2026-11-23). Tiempo: icono 38, temperatura 28 px.
 - Gluroo no define acción al tocar su complicación: tocar la glucosa no abre nada.

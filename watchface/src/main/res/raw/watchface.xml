@@ -151,12 +151,12 @@
             <BoundingOval x="0" y="0" width="82" height="82" />
             <!-- icon and temperature pushed right, away from the overlap -->
             <Complication type="SHORT_TEXT">
-                <PartImage x="34" y="10" width="30" height="30" tintColor="#ffc9a86a">
+                <PartImage x="30" y="6" width="38" height="38" tintColor="#ffc9a86a">
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
-                <PartText x="16" y="40" width="62" height="28">
+                <PartText x="12" y="40" width="68" height="34">
                     <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="barlow_condensed_medium" size="22" color="#ffefede7">
+                        <Font family="barlow_condensed_medium" size="28" color="#ffefede7">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
                         </Font>
                     </Text>

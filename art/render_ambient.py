@@ -15,7 +15,7 @@ SCALE = 2
 SS = 4
 SIZE = 466
 GOLD_DIM = (110, 90, 51, 255)   # #6E5A33
-LOGO_CENTER = (233, 127)
+LOGO_CENTER = (233, 110)   # must match LOGO_CY in render_bg.py (233 - 123)
 LOGO_WIDTH = 72
 LOGO_OPACITY = 0.32
 
