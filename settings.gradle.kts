@@ -25,3 +25,5 @@ include(":watchface")
 include(":fakeglucose")
 // Second watch face (design docs/superpowers/specs/2026-11-23-navigator-design.md).
 include(":navigator")
+// Third watch face (design docs/superpowers/specs/2026-11-23-nocturne-design.md).
+include(":nocturne")

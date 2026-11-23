@@ -14,7 +14,7 @@ BUILD = ROOT / "art/blender/build"
 HDRI = Path("C:/Users/criso/.claude/tools/blender/hdri/studio_small_09_2k.hdr")
 LOGO = ROOT / "art/out/logo.png"
 BARLOW = ROOT / "watchface/src/main/res/font/barlow_condensed_semibold.ttf"
-BODONI = Path("C:/Windows/Fonts/BOD_R.TTF")
+BODONI = Path(__file__).resolve().parents[2] / "nocturne/src/main/res/font/bodoni_moda.ttf"  # SIL OFL
 SYMBOLS = Path("C:/Windows/Fonts/seguisym.ttf")
 SIZE = 46.6  # full screen width in units
 

@@ -26,6 +26,12 @@ el reloj todavía**. Siguiente: `scripts/watch.sh <serial> all 03-completa`, rev
 los casos de `docs/pruebas/06-glucosa.md`. En el reloj sigue puesta la esfera de inspección.
 Para trabajar: Bluetooth del reloj apagado (si no, suelta el Wi-Fi) y serial mDNS, no IP.
 
+**Tres esferas instaladas (2026-11-23):** NVC (`watchface/`, arte Blender), **Navigator**
+(`navigator/`, diseño `2026-11-23-navigator-design.md`) y **Nocturne** (`nocturne/`, diseño
+`2026-11-23-nocturne-design.md`). Arte: `scripts/render_3d.sh 256 [nvc|navigator|nocturne]`; XML de
+las dos nuevas generado con `scripts/gen_<cara>_xml.py`; instalar con `FACE=<módulo> scripts/watch.sh`.
+Registros en `docs/pruebas/04` a `06`.
+
 Ciclo completo: `scripts/watch.sh "<serial>" all <nombre-captura>`. Serial del reloj:
 `adb-H631104000081G14004R-e9DEII._adb-tls-connect._tcp.` (con el punto final).
 

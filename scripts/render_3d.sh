@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Render the 3D art of a watch face with Blender.
-#   scripts/render_3d.sh [samples] [nvc|navigator]
+#   scripts/render_3d.sh [samples] [nvc|navigator|nocturne]
 # nvc (default):  art/out/bg_3d.png, art/out/hand3d_*.png      -> scripts/sync_art.sh
-# navigator:      art/out/navigator/{bg_3d,ambient_dial,hand3d_*}.png -> scripts/sync_navigator.sh
+# navigator, nocturne: art/out/<face>/{bg_3d,ambient_dial,hand3d_*}.png -> scripts/sync_face.sh <face>
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
@@ -48,6 +48,18 @@ case "$FACE" in
     cp "$BUILD/hands_navigator/placement.json" "$OUT/hand3d_placement.json"
     round_crop "$BUILD/navigator_bg_raw.png" "$OUT/bg_3d.png"
     python -I art/blender/navigator_aod.py "$OUT" "$BUILD" >/dev/null
+    ;;
+  nocturne)
+    OUT=art/out/nocturne
+    mkdir -p "$OUT"
+    "$BLENDER" -b -P art/blender/nocturne.py -- "$ROOT/$BUILD/nocturne_bg_raw.png" "$SAMPLES" bg 2>&1 \
+      | grep -E "rendered|Error"
+    "$BLENDER" -b -P art/blender/hands.py -- "$ROOT/$BUILD/hands_nocturne" 128 nocturne 2>&1 | grep -E "Error" || true
+    python -I art/blender/cut_hands.py "$BUILD/hands_nocturne" "$OUT" >/dev/null
+    cp "$BUILD/hands_nocturne/placement.json" "$OUT/hand3d_placement.json"
+    # keep the render's alpha: the moon aperture is a hole the turning disc shows through
+    python -I art/blender/round_alpha.py "$BUILD/nocturne_bg_raw.png" "$OUT/bg_3d.png"
+    python -I art/blender/nocturne_aod.py "$OUT" "$BUILD" >/dev/null
     ;;
   *) echo "cara desconocida: $FACE" >&2; exit 2 ;;
 esac

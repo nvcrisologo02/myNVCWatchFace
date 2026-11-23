@@ -151,7 +151,7 @@ def navigator(out: Path):
     ImageChops.multiply(m, cut).save(out / "navigator_map.png")
 
 
-BODONI = Path("C:/Windows/Fonts/BOD_R.TTF")
+BODONI = Path(__file__).resolve().parents[2] / "nocturne/src/main/res/font/bodoni_moda.ttf"  # SIL OFL
 NGOLD = (214, 180, 112, 255)
 FAN = (0.0, 40.0, 74.0)  # pivot x, y and radius of the retrograde glucose fan
 
@@ -178,9 +178,6 @@ def nocturne(out: Path):
         tick(d, -60 + i * 24, 24, 29, 0.9, NGOLD, -90, 8)
     for i in range(12):
         tick(d, i * 30, 31, 34.5, 0.8, NGOLD, 90, 8)
-    runner(d, -90, 15, 14, NGOLD)
-    sun(d, 90, -5, 10, NGOLD)
-    label(img, "8°", BODONI, 17, 92, 18, (236, 230, 214, 255))
     # glucose fan
     fx, fy, fr = FAN
     for lo, hi, c in [(40, 70, RED), (70, 180, NGOLD), (180, 300, AMBER)]:
@@ -191,6 +188,10 @@ def nocturne(out: Path):
     for v in (70, 180):
         label(img, str(v), BODONI, 8, *polar(fr - 14, f2deg(v), fx, fy), NGOLD)
     label(img, "mg/dL", BODONI, 7, 0, 146, (170, 170, 176, 255))
+    img.save(out / "nocturne_print_bg.png")  # production: no sample content
+    runner(d, -90, 15, 14, NGOLD)
+    sun(d, 90, -5, 10, NGOLD)
+    label(img, "8°", BODONI, 17, 92, 18, (236, 230, 214, 255))
     img.save(out / "nocturne_print.png")
 
     # moon-phase sky (projected on the disc under the aperture)
@@ -202,6 +203,20 @@ def nocturne(out: Path):
                        (-27, -4, 1.0), (13, -8, 0.8), (-4, -18, 0.6)]:
         sd.ellipse([*P(mx + sx - sr, my + sy - sr), *P(mx + sx + sr, my + sy + sr)], fill=(244, 214, 140, 255))
     sky.save(out / "nocturne_sky.png")
+
+    # moon disc of the watch face (turns under the aperture): lapis sky with stars all round,
+    # centred on the image centre because the disc is rendered at the origin
+    disc = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    dd = ImageDraw.Draw(disc)
+    dd.ellipse([*P(-40, -40), *P(40, 40)], fill=(16, 34, 104, 255))
+    import random
+    rnd = random.Random(29)
+    for _ in range(46):
+        r = 22 + 17 * math.sqrt(rnd.random())
+        a = rnd.random() * 2 * math.pi
+        sx, sy, sr = r * math.cos(a), r * math.sin(a), 0.5 + 0.8 * rnd.random()
+        dd.ellipse([*P(sx - sr, sy - sr), *P(sx + sr, sy + sr)], fill=(244, 214, 140, 255))
+    disc.save(out / "nocturne_moon_disc.png")
 
     # clous de Paris height map (centre of the dial, r < 150)
     import numpy as np
