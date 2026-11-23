@@ -1,6 +1,6 @@
 """Crop the 3D hand renders into watch face sprites and make their drop shadows.
 
-  python art/blender/cut_hands.py <raw_dir> <out_dir>
+  python art/blender/cut_hands.py <raw_dir> <out_dir>      (every raw_<name>.png in raw_dir)
 
 For each hand writes hand3d_<name>.png and hand3d_<name>_shadow.png (2x, pointing up, pivot on
 the vertical centre line) and prints the WFF placement: x, y, width, height, pivotY.
@@ -44,6 +44,7 @@ def cut(raw: Path, out: Path, name: str) -> dict:
 if __name__ == "__main__":
     raw, out = Path(sys.argv[1]), Path(sys.argv[2])
     out.mkdir(parents=True, exist_ok=True)
-    placement = {n: cut(raw, out, n) for n in ("hour", "minute", "second", "cap")}
+    names = sorted(p.stem[4:] for p in raw.glob("raw_*.png"))
+    placement = {n: cut(raw, out, n) for n in names}
     (raw / "placement.json").write_text(json.dumps(placement, indent=2))
     print(json.dumps(placement, indent=2))

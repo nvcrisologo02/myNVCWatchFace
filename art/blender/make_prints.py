@@ -129,6 +129,7 @@ def navigator(out: Path):
     label(img, "100", BARLOW_M, 6.5, *polar(39, 50, pcx, pcy), GREY)
     label(img, "RESERVA", BARLOW_M, 5.5, pcx, pcy - 13, GREY)
     label(img, "NAVIGATOR", BARLOW_M, 8, 0, -84, (210, 210, 204, 255))
+    img.save(out / "navigator_print_bg.png")  # production: no sample content
     # sample complication content (in the real face these come from the providers)
     sun(d, 95, -14, 11, GOLD)
     label(img, "8°", BARLOW, 22, 97, 13, WHITE)

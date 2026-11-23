@@ -1,7 +1,10 @@
 """NVC Navigator: pilot chronograph inspired by the user's Citizen Promaster (BY3006-53E).
 
   python art/blender/make_prints.py
-  blender -b -P art/blender/navigator.py -- <out.png> [samples]
+  blender -b -P art/blender/navigator.py -- <out.png> [samples] [bg]
+
+With "bg" it renders the production background for the watch face: no hands, no crystal and none
+of the dynamic content (complication icons, temperature, glucose number, date number).
 """
 import math
 import sys
@@ -14,7 +17,8 @@ argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 OUT = Path(argv[0]) if argv else wk.ROOT / "docs/mockup/propuestas/navigator_3d.png"
 SAMPLES = int(argv[1]) if len(argv) > 1 else 192
 TIME, GLUCOSE, BATTERY, DAY = (10, 8, 32), 112, 76, 23
-PRINT = wk.BUILD / "navigator_print.png"
+BG = len(argv) > 2 and argv[2] == "bg"
+PRINT = wk.BUILD / ("navigator_print_bg.png" if BG else "navigator_print.png")
 
 wk.setup(SAMPLES, world_strength=0.5, key_energy=14000)
 
@@ -58,7 +62,8 @@ wk.boolean_cut(dial, wk.box("cut_date", dx, dy, 24, 16, -1, 1, 45, BLACK, bevel=
 frame = wk.box("date_frame", dx, dy, 27, 19, -0.02, 0.06, 45, STEEL_POL, bevel=0.02)
 wk.boolean_cut(frame, wk.box("cut_frame", dx, dy, 24, 16, -1, 1, 45, BLACK, bevel=0))
 wk.cylinder("date_disc", dx, dy, 20, -0.7, -0.6, DATE_DISC)
-wk.text_obj("date_num", str(DAY), wk.BARLOW, 12, dx, dy, -0.585, BLACK, rot=45)
+if not BG:
+    wk.text_obj("date_num", str(DAY), wk.BARLOW, 12, dx, dy, -0.585, BLACK, rot=45)
 
 # applied indices: polished steel with lume inserts
 for h in range(12):
@@ -81,26 +86,28 @@ gcx, gcy = 0, 95
 wk.box("gwin", gcx, gcy + 26, 34, 16, -0.01, 0.03, 0, BLACK, bevel=0.02)
 gf = wk.box("gwin_frame", gcx, gcy + 26, 37, 19, -0.02, 0.05, 0, STEEL_POL, bevel=0.02)
 wk.boolean_cut(gf, wk.box("cut_gwin", gcx, gcy + 26, 34, 16, -1, 1, 0, BLACK, bevel=0))
-wk.text_obj("gval", str(GLUCOSE), wk.BARLOW, 13, gcx - 4, gcy + 26, 0.04, GOLD_TXT)
-wk.text_obj("gtrend", "→", wk.SYMBOLS, 10, gcx + 11, gcy + 26, 0.04, GOLD_TXT)
+if not BG:
+    wk.text_obj("gval", str(GLUCOSE), wk.BARLOW, 13, gcx - 4, gcy + 26, 0.04, GOLD_TXT)
+    wk.text_obj("gtrend", "→", wk.SYMBOLS, 10, gcx + 11, gcy + 26, 0.04, GOLD_TXT)
 
 
-def g2deg(v):
-    return -135 + 270 * (min(max(v, 40), 300) - 40) / 260
+    def g2deg(v):
+        return -135 + 270 * (min(max(v, 40), 300) - 40) / 260
 
 
-wk.hand("gneedle", g2deg(GLUCOSE), 3.9, 0.8, 0.26, 0.10, 0.05, 0.05, STEEL_POL, pivot=(gcx, gcy))
-wk.cylinder("gcap", gcx, gcy, 3.4, 0.05, 0.16, STEEL_POL, verts=48)
-wk.hand("reserve", -50 + BATTERY, 2.6, 0.5, 0.22, 0.08, 0.05, 0.04, STEEL_POL, pivot=(0, -30))
-wk.cylinder("rcap", 0, -30, 2.4, 0.05, 0.13, STEEL_POL, verts=48)
+    wk.hand("gneedle", g2deg(GLUCOSE), 3.9, 0.8, 0.26, 0.10, 0.05, 0.05, STEEL_POL, pivot=(gcx, gcy))
+    wk.cylinder("gcap", gcx, gcy, 3.4, 0.05, 0.16, STEEL_POL, verts=48)
+    wk.hand("reserve", -50 + BATTERY, 2.6, 0.5, 0.22, 0.08, 0.05, 0.04, STEEL_POL, pivot=(0, -30))
+    wk.cylinder("rcap", 0, -30, 2.4, 0.05, 0.13, STEEL_POL, verts=48)
 
-hd, md, sd = wk.hand_angles(TIME)
-wk.hand("hour", hd, 11.8, 1.8, 1.0, 0.6, 0.45, 0.12, STEEL_HAND, lume=(0.25, 0.78, 0.45), lume_mat=LUME)
-wk.hand("minute", md, 17.6, 2.2, 0.8, 0.45, 0.62, 0.11, STEEL_HAND, lume=(0.22, 0.86, 0.36), lume_mat=LUME)
-wk.hand("second", sd, 19.0, 4.2, 0.12, 0.08, 0.80, 0.02, RED)
-a = math.radians(sd)
-wk.cylinder("sec_dot", 150 * math.sin(a), -150 * math.cos(a), 3.0, 0.80, 0.83, RED, verts=32)
-wk.cylinder("cap", 0, 0, 6.5, 0.80, 0.95, STEEL_HAND, verts=64)
-wk.cylinder("crystal", 0, 0, 212, 1.6, 1.75, GLASS, verts=256)
+    hd, md, sd = wk.hand_angles(TIME)
+    wk.hand("hour", hd, 11.8, 1.8, 1.0, 0.6, 0.45, 0.12, STEEL_HAND, lume=(0.25, 0.78, 0.45), lume_mat=LUME)
+    wk.hand("minute", md, 17.6, 2.2, 0.8, 0.45, 0.62, 0.11, STEEL_HAND, lume=(0.22, 0.86, 0.36), lume_mat=LUME)
+    wk.hand("second", sd, 19.0, 4.2, 0.12, 0.08, 0.80, 0.02, RED)
+    a = math.radians(sd)
+    wk.cylinder("sec_dot", 150 * math.sin(a), -150 * math.cos(a), 3.0, 0.80, 0.83, RED, verts=32)
+    wk.cylinder("cap", 0, 0, 6.5, 0.80, 0.95, STEEL_HAND, verts=64)
+    wk.cylinder("crystal", 0, 0, 212, 1.6, 1.75, GLASS, verts=256)
+
 
 wk.render(OUT)
