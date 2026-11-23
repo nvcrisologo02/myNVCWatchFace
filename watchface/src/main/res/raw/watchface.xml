@@ -29,49 +29,49 @@
             <Image resource="ambient_dial" />
         </PartImage>
 
-        <!-- ===== Date window at 3 o'clock: hole centred on (371, 233), 46x19 ===== -->
-        <Group name="fecha" x="348" y="223" width="46" height="20">
+        <!-- ===== Date window at 3 o'clock: hole centred on (371, 233), 58x24 ===== -->
+        <Group name="fecha" x="342" y="221" width="58" height="24">
             <Variant mode="AMBIENT" target="alpha" value="150" />
-            <PartText x="0" y="0" width="26" height="20">
+            <PartText x="1" y="0" width="32" height="24">
                 <Text align="CENTER">
-                    <Font family="barlow_condensed_semibold" size="12.5" color="#ffc9a86a">
+                    <Font family="barlow_condensed_semibold" size="17" color="#ffc9a86a">
                         <Upper><Template>%s<Parameter expression="subText([DAY_OF_WEEK_S], 0, 3)" /></Template></Upper>
                     </Font>
                 </Text>
             </PartText>
-            <PartText x="24" y="0" width="20" height="20">
+            <PartText x="31" y="0" width="26" height="24">
                 <Text align="CENTER">
-                    <Font family="barlow_condensed_semibold" size="12.5" color="#ffefede7">
+                    <Font family="barlow_condensed_semibold" size="17" color="#ffefede7">
                         <Template>%s<Parameter expression="[DAY]" /></Template>
                     </Font>
                 </Text>
             </PartText>
         </Group>
 
-        <!-- ===== Battery window at 9 o'clock: hole centred on (95, 233), 46x19 ===== -->
-        <Group name="bateria" x="72" y="223" width="46" height="20">
+        <!-- ===== Battery window at 9 o'clock: hole centred on (95, 233), 58x24 ===== -->
+        <Group name="bateria" x="66" y="221" width="58" height="24">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
                 <Expressions>
                     <Expression name="baja"><![CDATA[[BATTERY_IS_LOW]]]></Expression>
                 </Expressions>
                 <Compare expression="baja">
-                    <Group name="bateria_baja" x="0" y="0" width="46" height="20">
-                        <PartDraw x="3" y="6" width="16" height="9">
-                            <Rectangle x="0.5" y="0.5" width="13" height="7">
+                    <Group name="bateria_baja" x="0" y="0" width="58" height="24">
+                        <PartDraw x="4" y="6" width="21" height="12">
+                            <Rectangle x="0.5" y="0.5" width="17" height="10">
                                 <Stroke color="#ffe5483c" thickness="1" />
                             </Rectangle>
-                            <Rectangle x="14" y="2.5" width="1.5" height="3">
+                            <Rectangle x="18" y="3.5" width="2" height="4">
                                 <Fill color="#ffe5483c" />
                             </Rectangle>
-                            <Rectangle x="2" y="2" width="10" height="4">
-                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) / 10" />
+                            <Rectangle x="2" y="2" width="14" height="7">
+                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) * 0.14" />
                                 <Fill color="#ffe5483c" />
                             </Rectangle>
                         </PartDraw>
-                        <PartText x="19" y="0" width="26" height="20">
+                        <PartText x="25" y="0" width="33" height="24">
                             <Text align="CENTER">
-                                <Font family="barlow_condensed_semibold" size="12.5" color="#ffe5483c">
+                                <Font family="barlow_condensed_semibold" size="17" color="#ffe5483c">
                                     <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
                                 </Font>
                             </Text>
@@ -79,22 +79,22 @@
                     </Group>
                 </Compare>
                 <Default>
-                    <Group name="bateria_normal" x="0" y="0" width="46" height="20">
-                        <PartDraw x="3" y="6" width="16" height="9">
-                            <Rectangle x="0.5" y="0.5" width="13" height="7">
+                    <Group name="bateria_normal" x="0" y="0" width="58" height="24">
+                        <PartDraw x="4" y="6" width="21" height="12">
+                            <Rectangle x="0.5" y="0.5" width="17" height="10">
                                 <Stroke color="#ffc9a86a" thickness="1" />
                             </Rectangle>
-                            <Rectangle x="14" y="2.5" width="1.5" height="3">
+                            <Rectangle x="18" y="3.5" width="2" height="4">
                                 <Fill color="#ffc9a86a" />
                             </Rectangle>
-                            <Rectangle x="2" y="2" width="10" height="4">
-                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) / 10" />
+                            <Rectangle x="2" y="2" width="14" height="7">
+                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) * 0.14" />
                                 <Fill color="#ffc9a86a" />
                             </Rectangle>
                         </PartDraw>
-                        <PartText x="19" y="0" width="26" height="20">
+                        <PartText x="25" y="0" width="33" height="24">
                             <Text align="CENTER">
-                                <Font family="barlow_condensed_semibold" size="12.5" color="#ffefede7">
+                                <Font family="barlow_condensed_semibold" size="17" color="#ffefede7">
                                     <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
                                 </Font>
                             </Text>
@@ -114,12 +114,15 @@
             <BoundingOval x="0" y="0" width="72" height="72" />
             <!-- icon pushed left, away from the overlap with the glucose dial -->
             <Complication type="MONOCHROMATIC_IMAGE">
-                <PartImage x="14" y="20" width="30" height="30" tintColor="#ffc9a86a">
+                <!-- OHealth sends its icon already coloured green; tinting only darkened it on the
+                     watch, so the hue is rotated from green to the gold of the dial (115°, checked on the watch: 275° gives blue, 85° yellow-green). -->
+                <PartImage x="10" y="17" width="38" height="38">
+                    <ImageFilters><HsbFilter hueRotate="115" saturate="0.7" /></ImageFilters>
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
             </Complication>
             <Complication type="SMALL_IMAGE">
-                <PartImage x="14" y="20" width="30" height="30">
+                <PartImage x="10" y="17" width="38" height="38">
                     <Image resource="[COMPLICATION.SMALL_IMAGE]" />
                 </PartImage>
             </Complication>
@@ -129,7 +132,7 @@
                 </PartImage>
                 <PartText x="4" y="34" width="52" height="20">
                     <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="barlow_condensed_medium" size="14" color="#ffefede7">
+                        <Font family="barlow_condensed_medium" size="17" color="#ffefede7">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
                         </Font>
                     </Text>
@@ -148,12 +151,12 @@
             <BoundingOval x="0" y="0" width="72" height="72" />
             <!-- icon and temperature pushed right, away from the overlap -->
             <Complication type="SHORT_TEXT">
-                <PartImage x="32" y="14" width="22" height="22" tintColor="#ffc9a86a">
+                <PartImage x="30" y="9" width="26" height="26" tintColor="#ffc9a86a">
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
-                <PartText x="18" y="36" width="50" height="22">
+                <PartText x="14" y="35" width="56" height="26">
                     <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="barlow_condensed_medium" size="15" color="#ffefede7">
+                        <Font family="barlow_condensed_medium" size="20" color="#ffefede7">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
                         </Font>
                     </Text>
@@ -188,9 +191,9 @@
                                     <Stroke color="#ffe5483c" thickness="3" />
                                 </Arc>
                             </PartDraw>
-                            <PartText x="4" y="20" width="80" height="36">
+                            <PartText x="0" y="12" width="80" height="42">
                                 <Text align="CENTER">
-                                    <Font family="barlow_condensed_semibold" size="31" color="#ffe5483c">
+                                    <Font family="barlow_condensed_semibold" size="36" color="#ffe5483c">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
@@ -205,9 +208,9 @@
                                     <Stroke color="#ffe3a63a" thickness="3" />
                                 </Arc>
                             </PartDraw>
-                            <PartText x="4" y="20" width="80" height="36">
+                            <PartText x="0" y="12" width="80" height="42">
                                 <Text align="CENTER">
-                                    <Font family="barlow_condensed_semibold" size="31" color="#ffe3a63a">
+                                    <Font family="barlow_condensed_semibold" size="36" color="#ffe3a63a">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
@@ -228,18 +231,18 @@
                                 </Arc>
                             </PartDraw>
                             <!-- gold value when active, light grey in ambient (design §5.4) -->
-                            <PartText x="4" y="20" width="80" height="36">
+                            <PartText x="0" y="12" width="80" height="42">
                                 <Variant mode="AMBIENT" target="alpha" value="0" />
                                 <Text align="CENTER">
-                                    <Font family="barlow_condensed_semibold" size="31" color="#ffe6cd95">
+                                    <Font family="barlow_condensed_semibold" size="36" color="#ffe6cd95">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="4" y="20" width="80" height="36" alpha="0">
+                            <PartText x="0" y="12" width="80" height="42" alpha="0">
                                 <Variant mode="AMBIENT" target="alpha" value="255" />
                                 <Text align="CENTER">
-                                    <Font family="barlow_condensed_semibold" size="31" color="#ffc8c6c0">
+                                    <Font family="barlow_condensed_semibold" size="36" color="#ffc8c6c0">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
@@ -247,10 +250,19 @@
                         </Group>
                     </Default>
                 </Condition>
-                <PartText x="14" y="52" width="60" height="12">
+                <!-- Trend: last character of the provider text ("185→"; seen on the watch 2026-11-23).
+                     Empty text, no arrow. -->
+                <PartText x="64" y="20" width="18" height="28">
+                    <Text align="CENTER">
+                        <Font family="SYNC_TO_DEVICE" size="22" color="#ffefede7">
+                            <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
+                        </Font>
+                    </Text>
+                </PartText>
+                <PartText x="14" y="52" width="60" height="13">
                     <Variant mode="AMBIENT" target="alpha" value="0" />
                     <Text align="CENTER">
-                        <Font family="barlow_condensed_medium" size="9" color="#ff8c8a84">mg/dL</Font>
+                        <Font family="barlow_condensed_medium" size="11" color="#ff8c8a84">mg/dL</Font>
                     </Text>
                 </PartText>
             </Complication>
@@ -262,9 +274,9 @@
                         <Stroke color="#ff1b1b1e" thickness="3" />
                     </Arc>
                 </PartDraw>
-                <PartText x="4" y="24" width="80" height="32">
+                <PartText x="0" y="16" width="88" height="36">
                     <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="barlow_condensed_semibold" size="26" color="#ffefede7">
+                        <Font family="barlow_condensed_semibold" size="30" color="#ffefede7">
                             <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
                         </Font>
                     </Text>
@@ -278,55 +290,35 @@
                         <Stroke color="#ff1b1b1e" thickness="3" />
                     </Arc>
                 </PartDraw>
-                <PartText x="4" y="20" width="80" height="36">
+                <PartText x="4" y="12" width="80" height="42">
                     <Text align="CENTER">
-                        <Font family="barlow_condensed_semibold" size="31" color="#ff8c8a84">--</Font>
+                        <Font family="barlow_condensed_semibold" size="36" color="#ff8c8a84">--</Font>
                     </Text>
                 </PartText>
             </Complication>
-        </ComplicationSlot>
-
-        <!-- ===== Trend arrow: last character of Gluroo's glucose text (e.g. "176→"). The ranged
-             complication carries no trend (checked on the watch 2026-11-23). ===== -->
-        <ComplicationSlot slotId="2" displayName="Tendencia" x="256" y="297" width="18" height="24"
-            supportedTypes="SHORT_TEXT EMPTY">
-            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
-                primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.BglDataProviderService"
-                primaryProviderType="SHORT_TEXT" />
-            <BoundingBox x="0" y="0" width="18" height="24" />
-            <Complication type="SHORT_TEXT">
-                <PartText x="0" y="0" width="18" height="24">
-                    <Text align="CENTER">
-                        <Font family="SYNC_TO_DEVICE" size="16" color="#ffefede7">
-                            <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
-                        </Font>
-                    </Text>
-                </PartText>
-            </Complication>
-            <Complication type="EMPTY" />
         </ComplicationSlot>
 
         <!-- ===== Age of the reading under the value (design §5.5): Gluroo "BglTimeSince".
              Shown in ambient too. Empty slot: "sin hora", never an invented time. ===== -->
-        <ComplicationSlot slotId="3" displayName="Antigüedad" x="203" y="341" width="60" height="14"
+        <ComplicationSlot slotId="3" displayName="Antigüedad" x="198" y="343" width="70" height="18"
             supportedTypes="SHORT_TEXT EMPTY">
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.BglTimeSinceProviderService"
                 primaryProviderType="SHORT_TEXT" />
-            <BoundingBox x="0" y="0" width="60" height="14" />
+            <BoundingBox x="0" y="0" width="70" height="18" />
             <Complication type="SHORT_TEXT">
-                <PartText x="0" y="0" width="60" height="14">
+                <PartText x="0" y="0" width="70" height="18">
                     <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="barlow_condensed_medium" size="11" color="#ffb5b2aa">
+                        <Font family="barlow_condensed_medium" size="14" color="#ffb5b2aa">
                             <Template>hace %s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
                         </Font>
                     </Text>
                 </PartText>
             </Complication>
             <Complication type="EMPTY">
-                <PartText x="0" y="0" width="60" height="14">
+                <PartText x="0" y="0" width="70" height="18">
                     <Text align="CENTER">
-                        <Font family="barlow_condensed_medium" size="11" color="#ff8c8a84">sin hora</Font>
+                        <Font family="barlow_condensed_medium" size="14" color="#ff8c8a84">sin hora</Font>
                     </Text>
                 </PartText>
             </Complication>

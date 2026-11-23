@@ -32,7 +32,7 @@ BEZEL_IN, BEZEL_OUT = 221.0, 233.0
 CENTER_WELL = (0.0, 88.0, 44.0, 46.4)
 SIDE_WELLS = [(-72.0, 62.0, 36.0, 38.2), (72.0, 62.0, 36.0, 38.2)]
 WELLS = [CENTER_WELL] + SIDE_WELLS
-WIN_W, WIN_H, WIN_RAD, WIN_FRAME = 46.0, 19.0, 4.0, 1.6
+WIN_W, WIN_H, WIN_RAD, WIN_FRAME = 58.0, 24.0, 5.0, 1.6   # agrandadas a peticion del usuario (2026-11-23)
 WINDOWS = [(138.0, 0.0), (-138.0, 0.0)]               # 3 h: fecha | 9 h: bateria
 LOGO_CX, LOGO_CY, LOGO_W = 0.0, -106.0, 72.0
 
@@ -293,11 +293,11 @@ def main():
     sheen = np.clip(1 - np.hypot(xx + 60, yy + 80) / 320.0, 0, 1)
     grain = gauss(rng.normal(0, 1, (S, S)).astype(np.float32), 0.6)
 
-    ocean = 0.072 + 0.022 * sheen - 0.030 * rays_v - 0.035 * dots
+    ocean = 0.060 + 0.020 * sheen - 0.028 * rays_v - 0.032 * dots
     if sign > 0:
         land_alb = 0.112 + 0.022 * sheen + 0.008 * grain
     else:
-        land_alb = 0.056 + 0.016 * sheen + 0.016 * grain     # fondo fresado y granallado
+        land_alb = 0.135 + 0.030 * sheen + 0.022 * grain     # fondo fresado y granallado, mas claro que el oceano para que el mapa se lea en el reloj (2026-11-23)
     alb = ocean * (1 - land_v) + land_alb * land_v
 
     d_c = np.hypot(xx - CENTER_WELL[0], yy - CENTER_WELL[1])

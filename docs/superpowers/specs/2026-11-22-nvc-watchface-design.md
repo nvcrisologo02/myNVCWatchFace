@@ -82,7 +82,7 @@ sobresale el oro.**
 | Pieza | Acabado |
 |---|---|
 | Esfera (océano) | negro satinado con un brillo suave arriba a la izquierda |
-| Continentes | **bajo relieve**: fresados, fondo granallado más oscuro; sólo brillan las paredes que miran a la luz |
+| Continentes | **bajo relieve**: fresados, fondo granallado **más claro que el océano** (cambio del 2026-11-23: en el reloj el mapa apenas se distinguía); sólo brillan las paredes que miran a la luz |
 | Rayos (72, cada 5°) y puntos de minutería | grabados en la superficie; los rayos se cortan en la costa |
 | Sub-esferas y ventanas | hundidas, con fondo liso (las sub-esferas, con caracoleado fino) |
 | Índices, aros de sub-esferas y ventanas, logo | oro champán en relieve |
@@ -101,7 +101,7 @@ cierran canales de menos de ~1,7 unidades.
 | Índices del resto de horas | una barra r 197–212, 2,6 de ancho |
 | Puntos de minutería | r 207, radio 1,3; no hay punto en las horas |
 | Logo NVC | centrado en (233, 127), 72 de ancho (proporción del original: 144×124 a 2×) |
-| Ventana de fecha (3 h) | centro (371, 233), hueco 46×19, radio 4, marco dorado 1,6 |
+| Ventana de fecha (3 h) | centro (371, 233), hueco **58×24**, radio 5 (agrandada el 2026-11-23; era 46×19), marco dorado 1,6 |
 | Ventana de batería (9 h) | centro (95, 233), mismas medidas |
 | Sub-esfera izquierda · actividad | centro (161, 295), fondo r 36, aro hasta r 38,2 |
 | **Sub-esfera central · glucosa** | centro (233, 321), fondo r 44, aro hasta r 46,4; **queda por encima**: su aro corta los de las laterales |
@@ -119,11 +119,11 @@ capas dinámicas de §5.4.
 
 | Zona | Contenido en pantalla activa | Fuente del dato |
 |---|---|---|
-| Fecha (ventana 3 h) | «DOM» en oro + «22» en blanco, ~12,5 px | día de la semana abreviado y día del mes, en el idioma del reloj (español) |
+| Fecha (ventana 3 h) | «DOM» en oro + «22» en blanco, **17 px** (era ~12,5; en el reloj se veía pequeño; WFF sólo admite tamaños enteros) | día de la semana abreviado y día del mes, en el idioma del reloj (español) |
 | Batería (ventana 9 h) | icono de pila con relleno proporcional + «86%»; en **rojo** cuando está baja | porcentaje de batería |
 | Actividad (izquierda) | el icono que mande la complicación asignada, centrado y algo desplazado hacia la izquierda, lejos del solape | complicación de imagen / atajo de app |
-| **Glucosa (centro)** | aro de progreso r 38,5 (trazo 3) según el valor dentro del rango; valor grande (~31 px, peso 600); flecha de tendencia; unidad «mg/dL»; antigüedad de la lectura («hace 4 min») | complicación *Ranged Value*; si el proveedor sólo ofrece *Short Text*, número y texto sin aro |
-| Tiempo (derecha) | icono + temperatura (~15 px), algo desplazados hacia la derecha | complicación *Short Text* con icono |
+| **Glucosa (centro)** | aro de progreso r 38,5 (trazo 3) según el valor dentro del rango; valor grande (**36 px**, peso 600); flecha de tendencia (último carácter del texto de la propia complicación, «185→»); unidad «mg/dL»; antigüedad de la lectura («hace 4 min») | complicación *Ranged Value*; si el proveedor sólo ofrece *Short Text*, número y texto sin aro |
+| Tiempo (derecha) | icono + temperatura (**20 px**, icono 26), algo desplazados hacia la derecha | complicación *Short Text* con icono |
 | Agujas | horaria y minutero dorados, ahusados, con sombra; segundero claro y fino con contrapeso en anillo; tapa central r 7 con aro dorado | hora del sistema |
 
 Longitudes de agujas desde el centro: horaria hasta r 117, minutero hasta r 177, segundero hasta
