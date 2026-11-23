@@ -116,13 +116,13 @@
             <Complication type="MONOCHROMATIC_IMAGE">
                 <!-- OHealth sends its icon already coloured green; tinting only darkened it on the
                      watch, so the hue is rotated from green to the gold of the dial (115°, checked on the watch: 275° gives blue, 85° yellow-green). -->
-                <PartImage x="12" y="20" width="42" height="42">
+                <PartImage x="3" y="9" width="64" height="64">
                     <ImageFilters><HsbFilter hueRotate="115" saturate="0.7" /></ImageFilters>
                     <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
                 </PartImage>
             </Complication>
             <Complication type="SMALL_IMAGE">
-                <PartImage x="12" y="20" width="42" height="42">
+                <PartImage x="3" y="9" width="64" height="64">
                     <Image resource="[COMPLICATION.SMALL_IMAGE]" />
                 </PartImage>
             </Complication>
