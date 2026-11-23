@@ -171,7 +171,7 @@
              from 70-180 mg/dL, NOT from the provider's min/max (Gluroo sends 20-400). Out of range
              the ring is drawn full in the warning colour. -->
         <ComplicationSlot slotId="1" displayName="Glucosa" x="183" y="283" width="100" height="100"
-            supportedTypes="RANGED_VALUE SHORT_TEXT EMPTY">
+            supportedTypes="RANGED_VALUE EMPTY">
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.GlucoseRangeDataProviderService"
                 primaryProviderType="RANGED_VALUE" />
@@ -191,7 +191,7 @@
                                     <Stroke color="#ffe5483c" thickness="3" />
                                 </Arc>
                             </PartDraw>
-                            <PartText x="0" y="16" width="90" height="46">
+                            <PartText x="0" y="22" width="90" height="46">
                                 <Text align="CENTER">
                                     <Font family="barlow_condensed_semibold" size="40" color="#ffe5483c">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
@@ -208,7 +208,7 @@
                                     <Stroke color="#ffe3a63a" thickness="3" />
                                 </Arc>
                             </PartDraw>
-                            <PartText x="0" y="16" width="90" height="46">
+                            <PartText x="0" y="22" width="90" height="46">
                                 <Text align="CENTER">
                                     <Font family="barlow_condensed_semibold" size="40" color="#ffe3a63a">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
@@ -231,7 +231,7 @@
                                 </Arc>
                             </PartDraw>
                             <!-- gold value when active, light grey in ambient (design §5.4) -->
-                            <PartText x="0" y="16" width="90" height="46">
+                            <PartText x="0" y="22" width="90" height="46">
                                 <Variant mode="AMBIENT" target="alpha" value="0" />
                                 <Text align="CENTER">
                                     <Font family="barlow_condensed_semibold" size="40" color="#ffe6cd95">
@@ -239,7 +239,7 @@
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="0" y="16" width="90" height="46" alpha="0">
+                            <PartText x="0" y="22" width="90" height="46" alpha="0">
                                 <Variant mode="AMBIENT" target="alpha" value="255" />
                                 <Text align="CENTER">
                                     <Font family="barlow_condensed_semibold" size="40" color="#ffc8c6c0">
@@ -252,14 +252,14 @@
                 </Condition>
                 <!-- Trend: last character of the provider text ("185→"; seen on the watch 2026-11-23).
                      Empty text, no arrow. -->
-                <PartText x="72" y="25" width="20" height="30">
+                <PartText x="72" y="31" width="20" height="30">
                     <Text align="CENTER">
                         <Font family="SYNC_TO_DEVICE" size="24" color="#ffefede7">
                             <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
                         </Font>
                     </Text>
                 </PartText>
-                <PartText x="20" y="60" width="60" height="14">
+                <PartText x="20" y="67" width="60" height="14">
                     <Variant mode="AMBIENT" target="alpha" value="0" />
                     <Text align="CENTER">
                         <Font family="barlow_condensed_medium" size="12" color="#ff8c8a84">mg/dL</Font>
@@ -267,21 +267,8 @@
                 </PartText>
             </Complication>
 
-            <!-- Provider without a number: show its text as is, no ring and no colour (design §5.5) -->
-            <Complication type="SHORT_TEXT">
-                <PartDraw x="0" y="0" width="100" height="100">
-                    <Arc centerX="50" centerY="50" width="87" height="87" startAngle="0" endAngle="360">
-                        <Stroke color="#ff1b1b1e" thickness="3" />
-                    </Arc>
-                </PartDraw>
-                <PartText x="0" y="20" width="100" height="40">
-                    <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="barlow_condensed_semibold" size="32" color="#ffefede7">
-                            <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
-                        </Font>
-                    </Text>
-                </PartText>
-            </Complication>
+            <!-- Only RANGED_VALUE is accepted (2026-11-23): range colours need the value as a number,
+                 and on the watch the user picked Gluroo's text-only provider by mistake. -->
 
             <!-- No data: never a made-up or last-known number (design §5.5) -->
             <Complication type="EMPTY">
@@ -290,35 +277,9 @@
                         <Stroke color="#ff1b1b1e" thickness="3" />
                     </Arc>
                 </PartDraw>
-                <PartText x="5" y="16" width="90" height="46">
+                <PartText x="5" y="22" width="90" height="46">
                     <Text align="CENTER">
                         <Font family="barlow_condensed_semibold" size="40" color="#ff8c8a84">--</Font>
-                    </Text>
-                </PartText>
-            </Complication>
-        </ComplicationSlot>
-
-        <!-- ===== Age of the reading under the value (design §5.5): Gluroo "BglTimeSince".
-             Shown in ambient too. Empty slot: "sin hora", never an invented time. ===== -->
-        <ComplicationSlot slotId="3" displayName="Antigüedad" x="193" y="357" width="80" height="20"
-            supportedTypes="SHORT_TEXT EMPTY">
-            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
-                primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.BglTimeSinceProviderService"
-                primaryProviderType="SHORT_TEXT" />
-            <BoundingBox x="0" y="0" width="80" height="20" />
-            <Complication type="SHORT_TEXT">
-                <PartText x="0" y="0" width="80" height="20">
-                    <Text align="CENTER" ellipsis="TRUE">
-                        <Font family="barlow_condensed_medium" size="15" color="#ffb5b2aa">
-                            <Template>hace %s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
-                        </Font>
-                    </Text>
-                </PartText>
-            </Complication>
-            <Complication type="EMPTY">
-                <PartText x="0" y="0" width="80" height="20">
-                    <Text align="CENTER">
-                        <Font family="barlow_condensed_medium" size="15" color="#ff8c8a84">sin hora</Font>
                     </Text>
                 </PartText>
             </Complication>

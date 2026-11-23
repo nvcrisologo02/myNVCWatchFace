@@ -1,6 +1,8 @@
 # Prueba 6 · Sub-esfera de glucosa
 
-**Estado (2026-11-23): construida y validada, sin probar en el reloj.** La esfera completa pasa el
+**Estado (2026-11-23):** en el reloj con Gluroo real: 185 → aro entero y valor en ámbar, flecha «→» (captura `03-completa-v11.png`). Antigüedad retirada y hueco sólo RANGED_VALUE (diseño §10). Los casos con el proveedor falso siguen pendientes.
+
+**Estado anterior:** construida y validada, sin probar en el reloj. La esfera completa pasa el
 validador de WFF v2 y compila; el proveedor falso compila. Nada de esta lista se ha visto aún en
 el reloj.
 

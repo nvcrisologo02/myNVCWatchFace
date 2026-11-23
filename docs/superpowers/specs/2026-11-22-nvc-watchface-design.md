@@ -243,3 +243,18 @@ Decisiones provisionales del diseñador (marcadas ✎):
   hay que quitar antes `ELECTRON_RUN_AS_NODE`, que se hereda de VS Code; si no, arranca como Node
   y se cierra al instante sin ventana.
 - **7-Zip 26.06** instalado con winget.
+
+## 10. Cambios decididos en el reloj (2026-11-23)
+
+- **Antigüedad de la lectura retirada (decisión del usuario).** El hueco bajo el valor era pequeño
+  y no conseguía asignarlo en el reloj. Se le advirtió del anti-objetivo nº 1: sin antigüedad, si
+  Gluroo deja de recibir lecturas, la esfera sigue mostrando el último valor con su color sin
+  avisar (ese mismo día se vio un 185 con 17 minutos de antigüedad). Riesgo aceptado por el
+  usuario. Si se recupera: más grande o en la sub-esfera del tiempo. Gluroo sí la ofrece
+  (`BglTimeSinceProviderService`, texto que se actualiza solo cada minuto).
+- **El hueco de glucosa sólo admite RANGED_VALUE.** Con texto no hay número y, por tanto, ni aro
+  ni colores; el usuario había elegido por error la glucosa en texto. Se elimina el caso «sólo
+  texto» de §5.5.
+- **Flecha de tendencia:** último carácter del texto de la propia complicación de rango («185→»).
+- Tamaños, mapa y sub-esferas: ver §5.2 a §5.4 (marcados con fecha 2026-11-23).
+- Gluroo no define acción al tocar su complicación: tocar la glucosa no abre nada.
