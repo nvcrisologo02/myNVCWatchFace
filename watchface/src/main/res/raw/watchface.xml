@@ -22,7 +22,7 @@
         <!-- ===== Dial: generated background (active) and ambient dial ===== -->
         <PartImage name="fondo" x="0" y="0" width="466" height="466">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <Image resource="bg_bajo" />
+            <Image resource="bg_3d" />  <!-- Blender render (scripts/render_3d.sh); 2D version: bg_bajo -->
         </PartImage>
         <PartImage name="esfera_ambiente" x="0" y="0" width="466" height="466" alpha="0">
             <Variant mode="AMBIENT" target="alpha" value="255" />
@@ -285,31 +285,47 @@
             </Complication>
         </ComplicationSlot>
 
-        <!-- ===== Hands (art/render_hands.py), pivot at (233, 233) ===== -->
+        <!-- ===== Hands. Active: 3D gold hands rendered in Blender (art/blender/hands.py, scripts/render_3d.sh).
+             Their drop shadows are a second clock shifted 2 px right and 3 px down: shifting the whole
+             clock moves every shadow by the same amount whatever the angle, as with a fixed light.
+             Ambient: outline hands from art/render_hands.py. Pivot at (233, 233). ===== -->
+        <AnalogClock x="2" y="3" width="466" height="466">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <HourHand resource="hand3d_hour_shadow" x="222" y="112" width="22" height="142"
+                pivotX="0.5" pivotY="0.852113" />
+            <MinuteHand resource="hand3d_minute_shadow" x="224" y="53" width="18" height="205"
+                pivotX="0.5" pivotY="0.880488" />
+            <SecondHand resource="hand3d_second_shadow" x="224" y="41" width="18" height="235"
+                pivotX="0.5" pivotY="0.819149" />
+        </AnalogClock>
         <AnalogClock x="0" y="0" width="466" height="466">
-            <HourHand resource="hand_hour" x="225" y="114" width="16" height="137"
-                pivotX="0.5" pivotY="0.868613">
+            <HourHand resource="hand3d_hour" x="222" y="112" width="22" height="142"
+                pivotX="0.5" pivotY="0.852113">
                 <Variant mode="AMBIENT" target="alpha" value="0" />
             </HourHand>
             <HourHand resource="hand_hour_aod" x="225" y="114" width="16" height="137"
                 pivotX="0.5" pivotY="0.868613" alpha="0">
                 <Variant mode="AMBIENT" target="alpha" value="255" />
             </HourHand>
-            <MinuteHand resource="hand_minute" x="227" y="54" width="12" height="201"
-                pivotX="0.5" pivotY="0.890547">
+            <MinuteHand resource="hand3d_minute" x="224" y="53" width="18" height="205"
+                pivotX="0.5" pivotY="0.880488">
                 <Variant mode="AMBIENT" target="alpha" value="0" />
             </MinuteHand>
             <MinuteHand resource="hand_minute_aod" x="227" y="54" width="12" height="201"
                 pivotX="0.5" pivotY="0.890547" alpha="0">
                 <Variant mode="AMBIENT" target="alpha" value="255" />
             </MinuteHand>
-            <SecondHand resource="hand_second" x="225" y="42" width="16" height="230"
-                pivotX="0.5" pivotY="0.830435">
+            <SecondHand resource="hand3d_second" x="224" y="41" width="18" height="235"
+                pivotX="0.5" pivotY="0.819149">
                 <Variant mode="AMBIENT" target="alpha" value="0" />
             </SecondHand>
         </AnalogClock>
-        <PartImage name="tapa" x="225" y="225" width="16" height="16">
-            <Image resource="hand_cap" />
+        <PartImage name="tapa_sombra" x="222" y="224" width="24" height="23">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <Image resource="hand3d_cap_shadow" />
+        </PartImage>
+        <PartImage name="tapa" x="221" y="222" width="24" height="23">
+            <Image resource="hand3d_cap" />
         </PartImage>
 
     </Scene>

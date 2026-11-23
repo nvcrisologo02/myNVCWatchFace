@@ -20,5 +20,7 @@ fi
 
 mkdir -p "$RES"
 cp "$OUT"/bg_bajo.png "$OUT"/logo.png "$OUT"/ambient_dial.png "$OUT"/hand_*.png "$RES"/
+# 3D art from scripts/render_3d.sh (Blender), committed in art/out like the rest
+cp "$OUT"/bg_3d.png "$OUT"/hand3d_*.png "$RES"/
 python -I art/render_preview.py "$OUT" "$RES/preview.png" >/dev/null
 echo "art synced to $RES"

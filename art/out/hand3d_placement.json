@@ -1,0 +1,30 @@
+{
+  "hour": {
+    "x": 222,
+    "y": 112,
+    "width": 22,
+    "height": 142,
+    "pivot_y": 0.852113
+  },
+  "minute": {
+    "x": 224,
+    "y": 53,
+    "width": 18,
+    "height": 205,
+    "pivot_y": 0.880488
+  },
+  "second": {
+    "x": 224,
+    "y": 41,
+    "width": 18,
+    "height": 235,
+    "pivot_y": 0.819149
+  },
+  "cap": {
+    "x": 221,
+    "y": 222,
+    "width": 24,
+    "height": 23,
+    "pivot_y": 0.5
+  }
+}

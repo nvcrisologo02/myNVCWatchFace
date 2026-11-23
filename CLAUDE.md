@@ -34,8 +34,12 @@ Ciclo completo: `scripts/watch.sh "<serial>" all <nombre-captura>`. Serial del r
 1. **Nada se da por bueno sin probarlo en el reloj real.** Compilar no basta: instalar,
    seleccionar la esfera, capturar con `adb exec-out screencap -p` y comparar con la maqueta.
    Di siempre dónde se probó y qué queda pendiente.
-2. **El fondo no se retoca a mano.** Sale de `art/render_bg.py`; cualquier cambio va en el script
-   y se regenera. Es determinista: la misma entrada da el mismo PNG byte a byte.
+2. **El arte no se retoca a mano.** Desde el 2026-11-23 el fondo y las agujas activas salen de
+   Blender: `scripts/render_3d.sh` (escenas en `art/blender/`, Blender portátil en
+   `C:\Users\criso\Apps\blender-5.3.0-windows-x64\`, entorno HDRI de Poly Haven CC0 en
+   `C:\Users\criso\.claude\tools\blender\hdri\`). Es determinista: se comprobó que dos renders
+   dan los mismos bytes. `art/render_bg.py` sigue dando el logo, el modo ambiente y el fondo 2D
+   anterior (`bg_bajo`). Cualquier cambio va en los scripts y se regenera.
 3. **No inventes nombres de WFF.** Elementos, atributos y fuentes de datos se comprueban en la
    documentación oficial de Watch Face Format antes de usarlos. Los *tags* de Watch Face Studio
    (`[BATT_PER]`, `[DAY_1_31]`…) no son los de WFF.

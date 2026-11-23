@@ -215,7 +215,14 @@ def nocturne(out: Path):
 
 
 def current(out: Path):
-    """Height and material masks of the installed face (same geometry as art/render_bg.py)."""
+    """Displacement and material masks of the installed face (geometry of art/render_bg.py).
+
+    current_height.png (16 bit): displacement in Blender units, encoded as 1 + H / 0.6
+      (1.0 = dial surface). Continents milled 0.10, rays 0.025, minute dots 0.04, sub-dials and
+      windows sunk 0.40, outside the dial 0.6.
+    current_land.png, current_wells.png, current_windows.png: material masks.
+    current_snail.png: concentric snailing of each sub-dial floor (bump).
+    """
     import numpy as np
     S = rb.S
     assert S == N
@@ -229,21 +236,42 @@ def current(out: Path):
     land *= np.clip((216.0 - rr) / 1.0 + 0.5, 0, 1)
     _, y_cut = rb.proj(0.0, rb.LAT_CUT)
     land *= np.clip((float(y_cut) - yy) / 0.5, 0, 1)
+
+    def soft(mask, px=0.35):
+        return np.clip(mask, 0, 1)
+
+    wells = np.zeros_like(land)
+    for cx, cy, r, ro in rb.WELLS:
+        wells = np.maximum(wells, np.clip((r - np.hypot(xx - cx, yy - cy)) * K / 2 + 0.5, 0, 1))
     covers = np.zeros_like(land)
-    for cx, cy, _r, ro in rb.WELLS:
-        covers = np.maximum(covers, (np.hypot(xx - cx, yy - cy) < ro + 1.0).astype(np.float32))
+    for cx, cy, r, ro in rb.WELLS:
+        covers = np.maximum(covers, np.clip((ro + 1.0 - np.hypot(xx - cx, yy - cy)) * K / 2 + 0.5, 0, 1))
+    wins = np.zeros_like(land)
     for cx, cy in rb.WINDOWS:
-        covers = np.maximum(covers, ((np.abs(xx - cx) < rb.WIN_W / 2 + 3) & (np.abs(yy - cy) < rb.WIN_H / 2 + 3))
-                            .astype(np.float32))
+        dx = np.abs(xx - cx) - rb.WIN_W / 2
+        dy = np.abs(yy - cy) - rb.WIN_H / 2
+        wins = np.maximum(wins, np.clip(-np.maximum(dx, dy) * K / 2 + 0.5, 0, 1))
+        covers = np.maximum(covers, np.clip(-np.maximum(dx - 3, dy - 3) * K / 2 + 0.5, 0, 1))
     land_v = land * (1 - covers)
     rays = rb.raster(rb.draw_rays)
     fade = np.clip((rr - 24.0) / 40.0, 0, 1) * np.clip((203.0 - rr) / 2.0, 0, 1)
     rays_v = rays * fade * (1 - np.clip(land * 1.5, 0, 1)) * (1 - covers)
     dots = rb.raster(rb.draw_dots)
-    # milled continents (deep), engraved rays and minute dots (shallow); 0.5 = dial surface
-    height = 0.5 - 0.45 * rb.gauss(land_v, 0.5 * K) - 0.12 * rb.gauss(rays_v, 0.15 * K) - 0.2 * rb.gauss(dots, 0.2 * K)
-    Image.fromarray((np.clip(height, 0, 1) * 65535).astype(np.uint16)).save(out / "current_height.png")
+    inside = np.clip((220.6 - rr) * K / 2 + 0.5, 0, 1)
+
+    H = (-0.10 * rb.gauss(land_v, 0.35 * K) - 0.025 * rays_v - 0.04 * rb.gauss(dots, 0.15 * K)
+         - 0.40 * np.maximum(wells, wins))
+    H = H * inside - 0.6 * (1 - inside)
+    enc = np.clip(1 + H / 0.6, 0, 1)
+    Image.fromarray((enc * 65535).astype(np.uint16)).save(out / "current_height.png")
     Image.fromarray((np.clip(land_v, 0, 1) * 255).astype(np.uint8), "L").save(out / "current_land.png")
+    Image.fromarray((np.clip(wells, 0, 1) * 255).astype(np.uint8), "L").save(out / "current_wells.png")
+    Image.fromarray((np.clip(wins, 0, 1) * 255).astype(np.uint8), "L").save(out / "current_windows.png")
+    snail = np.zeros_like(land)
+    for cx, cy, r, ro in rb.WELLS:
+        d = np.hypot(xx - cx, yy - cy)
+        snail = np.where(d < r + 1, 0.5 + 0.5 * np.sin(2 * math.pi * d / 1.0), snail)
+    Image.fromarray((snail * 255).astype(np.uint8), "L").save(out / "current_snail.png")
 
 
 if __name__ == "__main__":

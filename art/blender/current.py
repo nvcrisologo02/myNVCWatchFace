@@ -29,37 +29,68 @@ WHITE = wk.simple("white", **{"Base Color": (0.90, 0.89, 0.86, 1), "Metallic": 0
 
 BEZEL = wk.finish_material("bezel", {"Base Color": (0.42, 0.42, 0.44, 1), "Metallic": 1.0, "Roughness": 0.32,
                                      "Anisotropic": 0.85}, radial_tangent=True)
-# satin black dial; milled continents are lighter, bead-blasted (2026-11-23: map must read on the watch)
-DIAL = wk.finish_material(
-    "dial", {"Base Color": (0.03, 0.03, 0.034, 1), "Metallic": 0.5, "Roughness": 0.28, "Coat Weight": 0.3,
-             "Coat Roughness": 0.08},
-    height=wk.BUILD / "current_height.png", height_strength=1.0, height_distance=0.35,
-    inlay=(wk.BUILD / "current_land.png", {"Base Color": (0.11, 0.11, 0.115, 1), "Metallic": 0.5,
-                                            "Roughness": 0.62}))
+# ---- dial: one dense grid displaced by the height map (real milled walls, sunk sub-dials and
+# windows), materials split by projected masks
+import bpy  # noqa: E402
+
+
+def dial_material():
+    mat = bpy.data.materials.new("dial")
+    n, l = wk.nodes_of(mat)
+    out = n.new("ShaderNodeOutputMaterial")
+    satin = wk.principled(n, **{"Base Color": (0.028, 0.028, 0.032, 1), "Metallic": 0.5, "Roughness": 0.27,
+                                "Coat Weight": 0.3, "Coat Roughness": 0.08})
+    # milled floor: bead-blasted, lighter than the satin ocean (2026-11-23: the map must read)
+    blast = wk.principled(n, **{"Base Color": (0.10, 0.10, 0.105, 1), "Metallic": 0.55, "Roughness": 0.6})
+    snail = wk.principled(n, **{"Base Color": (0.075, 0.075, 0.08, 1), "Metallic": 0.85, "Roughness": 0.22})
+    hole = wk.principled(n, **{"Base Color": (0.015, 0.015, 0.017, 1), "Roughness": 0.5})
+    sn = wk.projected(n, l, wk.BUILD / "current_snail.png", "Non-Color")
+    bump = n.new("ShaderNodeBump")
+    bump.inputs["Strength"].default_value = 0.8
+    bump.inputs["Distance"].default_value = 0.02
+    l.new(sn.outputs["Color"], bump.inputs["Height"])
+    l.new(bump.outputs["Normal"], snail.inputs["Normal"])
+    shader = satin.outputs["BSDF"]
+    for mask, other in (("current_land.png", blast), ("current_wells.png", snail), ("current_windows.png", hole)):
+        m = wk.projected(n, l, wk.BUILD / mask, "Non-Color")
+        mx = n.new("ShaderNodeMixShader")
+        l.new(m.outputs["Color"], mx.inputs["Fac"])
+        l.new(shader, mx.inputs[1])
+        l.new(other.outputs["BSDF"], mx.inputs[2])
+        shader = mx.outputs["Shader"]
+    l.new(shader, out.inputs["Surface"])
+    return mat
+
+
+bpy.ops.mesh.primitive_grid_add(x_subdivisions=1400, y_subdivisions=1400, size=wk.SIZE, location=(0, 0, 0))
+dial = bpy.context.active_object
+dial.name = "dial"
+tex = bpy.data.textures.new("height", "IMAGE")
+tex.image = bpy.data.images.load(str(wk.BUILD / "current_height.png"))
+tex.image.colorspace_settings.name = "Non-Color"
+tex.extension = "EXTEND"
+disp = dial.modifiers.new("milling", "DISPLACE")
+disp.texture = tex
+disp.texture_coords = "UV"
+disp.direction = "Z"
+disp.mid_level = 1.0
+disp.strength = 0.6
+bpy.ops.object.shade_smooth()
+dial.data.materials.append(dial_material())
 
 # bezel
 wk.lathe("bezel", [(220.6, 0.05), (221.3, 0.45), (223.5, 0.70), (229.5, 0.66), (232.6, 0.35), (233, 0.0),
                    (233, -1.0)], BEZEL)
 
-# dial with the sub-dials and windows cut out
-dial = wk.cylinder("dial", 0, 0, 220.6, -0.3, 0.0, DIAL, verts=256)
 CENTER = (0.0, 100.0, 50.0, 52.4)
 SIDES = [(-82.0, 74.0, 41.0, 43.2), (82.0, 74.0, 41.0, 43.2)]
 for i, (x, y, r, ro) in enumerate(SIDES + [CENTER]):
-    nm = f"sub{i}"
-    wk.boolean_cut(dial, wk.cylinder("cut_" + nm, x, y, r, -1, 1, BLACK))
-    z = -0.45 if i < 2 else -0.40
-    wk.cylinder("floor_" + nm, x, y, r + 0.5, z - 0.2, z, wk.snail_material(
-        "floor_" + nm, {"Base Color": (0.035, 0.035, 0.04, 1), "Metallic": 0.6, "Roughness": 0.3},
-        wk.BUILD / "empty.png", scale=20))
     # gold rims; the centre one sits higher so it crosses over the side ones (design §5.3)
-    wk.torus("rim_" + nm, x, y, (r + ro) / 2, (ro - r) / 20 + 0.03, 0.22 if i == 2 else 0.0, GOLD_POL)
+    wk.torus(f"rim{i}", x, y, (r + ro) / 2, (ro - r) / 20 + 0.03, 0.22 if i == 2 else 0.0, GOLD_POL)
 
 for i, (x, y) in enumerate([(138.0, 0.0), (-138.0, 0.0)]):
-    wk.boolean_cut(dial, wk.box(f"cut_win{i}", x, y, 58, 24, -1, 1, 0, BLACK, bevel=0))
     fr = wk.box(f"win_frame{i}", x, y, 61.2, 27.2, -0.02, 0.08, 0, GOLD, bevel=0.04)
     wk.boolean_cut(fr, wk.box(f"cut_frame{i}", x, y, 58, 24, -1, 1, 0, BLACK, bevel=0))
-    wk.box(f"win_floor{i}", x, y, 60, 26, -0.5, -0.4, 0, WIN_FLOOR, bevel=0)
 
 # gold indices: double bars at 12, 3, 6 and 9; single bars elsewhere
 for h in range(12):
