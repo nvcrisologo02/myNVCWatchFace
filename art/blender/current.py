@@ -82,8 +82,8 @@ dial.data.materials.append(dial_material())
 wk.lathe("bezel", [(220.6, 0.05), (221.3, 0.45), (223.5, 0.70), (229.5, 0.66), (232.6, 0.35), (233, 0.0),
                    (233, -1.0)], BEZEL)
 
-CENTER = (0.0, 100.0, 50.0, 52.4)
-SIDES = [(-82.0, 74.0, 41.0, 43.2), (82.0, 74.0, 41.0, 43.2)]
+CENTER = (0.0, 112.0, 50.0, 52.4)   # must match art/render_bg.py
+SIDES = [(-82.0, 86.0, 41.0, 43.2), (82.0, 86.0, 41.0, 43.2)]
 # gold rims. The centre dial sits on top (design §5.3): its rim is whole and the side rims stop
 # against it, so nothing of the side dials shows inside the centre one (user, 2026-11-23).
 cx_, cy_, r_, ro_ = CENTER
@@ -93,8 +93,8 @@ for i, (x, y, r, ro) in enumerate(SIDES):
 wk.torus("rim_centre", cx_, cy_, (r_ + ro_) / 2, (ro_ - r_) / 20 + 0.03, 0.05, GOLD_POL)
 
 for i, (x, y) in enumerate([(138.0, 0.0), (-138.0, 0.0)]):
-    fr = wk.box(f"win_frame{i}", x, y, 61.2, 27.2, -0.02, 0.08, 0, GOLD, bevel=0.04)
-    wk.boolean_cut(fr, wk.box(f"cut_frame{i}", x, y, 58, 24, -1, 1, 0, BLACK, bevel=0))
+    fr = wk.box(f"win_frame{i}", x, y, 69.2, 31.2, -0.02, 0.08, 0, GOLD, bevel=0.04)  # window 66x28 + 1.6 frame
+    wk.boolean_cut(fr, wk.box(f"cut_frame{i}", x, y, 66, 28, -1, 1, 0, BLACK, bevel=0))
 
 # gold indices: double bars at 12, 3, 6 and 9; single bars elsewhere
 for h in range(12):

@@ -101,11 +101,11 @@ cierran canales de menos de ~1,7 unidades.
 | Índices del resto de horas | una barra r 197–212, 2,6 de ancho |
 | Puntos de minutería | r 207, radio 1,3; no hay punto en las horas |
 | Logo NVC | centrado en **(233, 110)** (subido el 2026-11-23; era (233, 127)), 72 de ancho (proporción del original: 144×124 a 2×) |
-| Ventana de fecha (3 h) | centro (371, 233), hueco **58×24**, radio 5 (agrandada el 2026-11-23; era 46×19), marco dorado 1,6 |
+| Ventana de fecha (3 h) | centro (371, 233), hueco **66×28**, radio 5,5 (agrandada el 2026-11-23; antes 58×24 y 46×19), marco dorado 1,6 |
 | Ventana de batería (9 h) | centro (95, 233), mismas medidas |
-| Sub-esfera izquierda · actividad | centro **(151, 307)**, fondo **r 41**, aro hasta r 43,2 (2026-11-23: más grande y más abajo; era (161, 295), r 36) |
-| **Sub-esfera central · glucosa** | centro **(233, 333)**, fondo **r 50**, aro hasta r 52,4 (2026-11-23; era (233, 321), r 44); aro de glucosa r 43,5; **queda por encima**: su aro corta los de las laterales |
-| Sub-esfera derecha · tiempo | centro **(315, 307)**, fondo **r 41**, aro hasta r 43,2 (2026-11-23; era (305, 295), r 36) |
+| Sub-esfera izquierda · actividad | centro **(151, 319)**, fondo **r 41**, aro hasta r 43,2 (2026-11-23: más grande y más abajo; era (161, 295), r 36) |
+| **Sub-esfera central · glucosa** | centro **(233, 345)**, fondo **r 50**, aro hasta r 52,4 (2026-11-23; era (233, 321), r 44); aro de glucosa r 43,5; **queda por encima**: su aro corta los de las laterales |
+| Sub-esfera derecha · tiempo | centro **(315, 319)**, fondo **r 41**, aro hasta r 43,2 (2026-11-23; era (305, 295), r 36) |
 | Mapa | proyección Mercator, meridiano central 10° E, 1,04 unidades por grado, latitudes 84° N a 57° S, centrado 11 unidades por encima del centro |
 
 Todo lo anterior va **dentro de la imagen de fondo** (`art/out/bg_bajo.png`). Encima sólo van las
@@ -119,7 +119,7 @@ capas dinámicas de §5.4.
 
 | Zona | Contenido en pantalla activa | Fuente del dato |
 |---|---|---|
-| Fecha (ventana 3 h) | «DOM» en oro + «22» en blanco, **17 px** (era ~12,5; en el reloj se veía pequeño; WFF sólo admite tamaños enteros) | día de la semana abreviado y día del mes, en el idioma del reloj (español) |
+| Fecha (ventana 3 h) | «DOM» en oro + «22» en blanco, **20 px** (antes 17 y ~12,5; en el reloj se veía pequeño; WFF sólo admite tamaños enteros) | día de la semana abreviado y día del mes, en el idioma del reloj (español) |
 | Batería (ventana 9 h) | icono de pila con relleno proporcional + «86%»; en **rojo** cuando está baja | porcentaje de batería |
 | Actividad (izquierda) | el icono que mande la complicación asignada, centrado y algo desplazado hacia la izquierda, lejos del solape | complicación de imagen / atajo de app |
 | **Glucosa (centro)** | aro de progreso r 38,5 (trazo 3) según el valor dentro del rango; valor grande (**36 px**, peso 600); flecha de tendencia (último carácter del texto de la propia complicación, «185→»); unidad «mg/dL»; antigüedad de la lectura («hace 4 min») | complicación *Ranged Value*; si el proveedor sólo ofrece *Short Text*, número y texto sin aro |

@@ -29,49 +29,49 @@
             <Image resource="ambient_dial" />
         </PartImage>
 
-        <!-- ===== Date window at 3 o'clock: hole centred on (371, 233), 58x24 ===== -->
-        <Group name="fecha" x="342" y="221" width="58" height="24">
+        <!-- ===== Date window at 3 o'clock: hole centred on (371, 233), 66x28 ===== -->
+        <Group name="fecha" x="338" y="219" width="66" height="28">
             <Variant mode="AMBIENT" target="alpha" value="150" />
-            <PartText x="1" y="0" width="32" height="24">
+            <PartText x="2" y="0" width="36" height="28">
                 <Text align="CENTER">
-                    <Font family="barlow_condensed_semibold" size="17" color="#ffc9a86a">
+                    <Font family="barlow_condensed_semibold" size="20" color="#ffc9a86a">
                         <Upper><Template>%s<Parameter expression="subText([DAY_OF_WEEK_S], 0, 3)" /></Template></Upper>
                     </Font>
                 </Text>
             </PartText>
-            <PartText x="31" y="0" width="26" height="24">
+            <PartText x="36" y="0" width="28" height="28">
                 <Text align="CENTER">
-                    <Font family="barlow_condensed_semibold" size="17" color="#ffefede7">
+                    <Font family="barlow_condensed_semibold" size="20" color="#ffefede7">
                         <Template>%s<Parameter expression="[DAY]" /></Template>
                     </Font>
                 </Text>
             </PartText>
         </Group>
 
-        <!-- ===== Battery window at 9 o'clock: hole centred on (95, 233), 58x24 ===== -->
-        <Group name="bateria" x="66" y="221" width="58" height="24">
+        <!-- ===== Battery window at 9 o'clock: hole centred on (95, 233), 66x28 ===== -->
+        <Group name="bateria" x="62" y="219" width="66" height="28">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Condition>
                 <Expressions>
                     <Expression name="baja"><![CDATA[[BATTERY_IS_LOW]]]></Expression>
                 </Expressions>
                 <Compare expression="baja">
-                    <Group name="bateria_baja" x="0" y="0" width="58" height="24">
-                        <PartDraw x="4" y="6" width="21" height="12">
-                            <Rectangle x="0.5" y="0.5" width="17" height="10">
+                    <Group name="bateria_baja" x="0" y="0" width="66" height="28">
+                        <PartDraw x="5" y="7" width="25" height="14">
+                            <Rectangle x="0.5" y="0.5" width="20" height="12">
                                 <Stroke color="#ffe5483c" thickness="1" />
                             </Rectangle>
-                            <Rectangle x="18" y="3.5" width="2" height="4">
+                            <Rectangle x="21" y="4" width="2.5" height="5">
                                 <Fill color="#ffe5483c" />
                             </Rectangle>
-                            <Rectangle x="2" y="2" width="14" height="7">
-                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) * 0.14" />
+                            <Rectangle x="2" y="2" width="17" height="9">
+                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) * 0.17" />
                                 <Fill color="#ffe5483c" />
                             </Rectangle>
                         </PartDraw>
-                        <PartText x="25" y="0" width="33" height="24">
+                        <PartText x="29" y="0" width="37" height="28">
                             <Text align="CENTER">
-                                <Font family="barlow_condensed_semibold" size="17" color="#ffe5483c">
+                                <Font family="barlow_condensed_semibold" size="20" color="#ffe5483c">
                                     <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
                                 </Font>
                             </Text>
@@ -79,22 +79,22 @@
                     </Group>
                 </Compare>
                 <Default>
-                    <Group name="bateria_normal" x="0" y="0" width="58" height="24">
-                        <PartDraw x="4" y="6" width="21" height="12">
-                            <Rectangle x="0.5" y="0.5" width="17" height="10">
+                    <Group name="bateria_normal" x="0" y="0" width="66" height="28">
+                        <PartDraw x="5" y="7" width="25" height="14">
+                            <Rectangle x="0.5" y="0.5" width="20" height="12">
                                 <Stroke color="#ffc9a86a" thickness="1" />
                             </Rectangle>
-                            <Rectangle x="18" y="3.5" width="2" height="4">
+                            <Rectangle x="21" y="4" width="2.5" height="5">
                                 <Fill color="#ffc9a86a" />
                             </Rectangle>
-                            <Rectangle x="2" y="2" width="14" height="7">
-                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) * 0.14" />
+                            <Rectangle x="2" y="2" width="17" height="9">
+                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) * 0.17" />
                                 <Fill color="#ffc9a86a" />
                             </Rectangle>
                         </PartDraw>
-                        <PartText x="25" y="0" width="33" height="24">
+                        <PartText x="29" y="0" width="37" height="28">
                             <Text align="CENTER">
-                                <Font family="barlow_condensed_semibold" size="17" color="#ffefede7">
+                                <Font family="barlow_condensed_semibold" size="20" color="#ffefede7">
                                     <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
                                 </Font>
                             </Text>
@@ -104,8 +104,8 @@
             </Condition>
         </Group>
 
-        <!-- ===== Left sub-dial: activity, centre (151, 307), r 41 ===== -->
-        <ComplicationSlot slotId="10" displayName="Actividad" x="110" y="266" width="82" height="82"
+        <!-- ===== Left sub-dial: activity, centre (151, 319), r 41 ===== -->
+        <ComplicationSlot slotId="10" displayName="Actividad" x="110" y="278" width="82" height="82"
             supportedTypes="MONOCHROMATIC_IMAGE SMALL_IMAGE SHORT_TEXT EMPTY">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
@@ -141,8 +141,8 @@
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== Right sub-dial: weather, centre (315, 307), r 41 ===== -->
-        <ComplicationSlot slotId="11" displayName="Tiempo" x="274" y="266" width="82" height="82"
+        <!-- ===== Right sub-dial: weather, centre (315, 319), r 41 ===== -->
+        <ComplicationSlot slotId="11" displayName="Tiempo" x="274" y="278" width="82" height="82"
             supportedTypes="SHORT_TEXT EMPTY">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
@@ -165,12 +165,12 @@
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== Central sub-dial: glucose, centre (233, 333), r 50. Declared after the side
+        <!-- ===== Central sub-dial: glucose, centre (233, 345), r 50. Declared after the side
              dials so it is drawn on top of them (design §5.3). Ring r 43.5, stroke 3. =====
              Range colours (design §5.5): < 70 red, > 180 amber, otherwise gold. The ring is computed
              from 70-180 mg/dL, NOT from the provider's min/max (Gluroo sends 20-400). Out of range
              the ring is drawn full in the warning colour. -->
-        <ComplicationSlot slotId="1" displayName="Glucosa" x="183" y="283" width="100" height="100"
+        <ComplicationSlot slotId="1" displayName="Glucosa" x="183" y="295" width="100" height="100"
             supportedTypes="RANGED_VALUE EMPTY">
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.GlucoseRangeDataProviderService"
