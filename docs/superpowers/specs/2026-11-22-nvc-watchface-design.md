@@ -103,9 +103,9 @@ cierran canales de menos de ~1,7 unidades.
 | Logo NVC | centrado en (233, 127), 72 de ancho (proporción del original: 144×124 a 2×) |
 | Ventana de fecha (3 h) | centro (371, 233), hueco **58×24**, radio 5 (agrandada el 2026-11-23; era 46×19), marco dorado 1,6 |
 | Ventana de batería (9 h) | centro (95, 233), mismas medidas |
-| Sub-esfera izquierda · actividad | centro (161, 295), fondo r 36, aro hasta r 38,2 |
-| **Sub-esfera central · glucosa** | centro (233, 321), fondo r 44, aro hasta r 46,4; **queda por encima**: su aro corta los de las laterales |
-| Sub-esfera derecha · tiempo | centro (305, 295), fondo r 36, aro hasta r 38,2 |
+| Sub-esfera izquierda · actividad | centro **(151, 307)**, fondo **r 41**, aro hasta r 43,2 (2026-11-23: más grande y más abajo; era (161, 295), r 36) |
+| **Sub-esfera central · glucosa** | centro **(233, 333)**, fondo **r 50**, aro hasta r 52,4 (2026-11-23; era (233, 321), r 44); aro de glucosa r 43,5; **queda por encima**: su aro corta los de las laterales |
+| Sub-esfera derecha · tiempo | centro **(315, 307)**, fondo **r 41**, aro hasta r 43,2 (2026-11-23; era (305, 295), r 36) |
 | Mapa | proyección Mercator, meridiano central 10° E, 1,04 unidades por grado, latitudes 84° N a 57° S, centrado 11 unidades por encima del centro |
 
 Todo lo anterior va **dentro de la imagen de fondo** (`art/out/bg_bajo.png`). Encima sólo van las

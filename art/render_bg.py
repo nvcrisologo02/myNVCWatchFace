@@ -29,8 +29,8 @@ DIAL_R = 219.6
 BEZEL_IN, BEZEL_OUT = 221.0, 233.0
 # sub-esferas: x, y, radio del fondo, radio exterior del aro.
 # La central es mayor y queda por encima: su aro corta los de las laterales.
-CENTER_WELL = (0.0, 88.0, 44.0, 46.4)
-SIDE_WELLS = [(-72.0, 62.0, 36.0, 38.2), (72.0, 62.0, 36.0, 38.2)]
+CENTER_WELL = (0.0, 100.0, 50.0, 52.4)   # mas grande y mas abajo a peticion del usuario (2026-11-23); era (0, 88, 44, 46.4)
+SIDE_WELLS = [(-82.0, 74.0, 41.0, 43.2), (82.0, 74.0, 41.0, 43.2)]   # era (+-72, 62, 36, 38.2)
 WELLS = [CENTER_WELL] + SIDE_WELLS
 WIN_W, WIN_H, WIN_RAD, WIN_FRAME = 58.0, 24.0, 5.0, 1.6   # agrandadas a peticion del usuario (2026-11-23)
 WINDOWS = [(138.0, 0.0), (-138.0, 0.0)]               # 3 h: fecha | 9 h: bateria
