@@ -23,6 +23,15 @@
 Contadores r 44, ventana lunar r 44 con lunas r 14; vuelven el III y el IX (sólo falta el VI,
 donde va la fecha). Aguja de glucosa en oro.
 
+## Versión 3: ventana lunar concéntrica y fecha a las 4
+
+![Versión 3](capturas/06-nocturne-v3.png)
+
+La ventana lunar sigue el borde de la esfera (franja r 100–140, ±40°, jorobas en los extremos) y
+el disco gira alrededor del centro del reloj; simulado en el PC para los días 0, 9, 12, 14,8, 18
+y 22 antes de instalar. La fecha pasa a las 4 (girada 30°) porque a las 6 chocaba con el punto
+de notificaciones; vuelve el VI.
+
 ## Cómo se reconstruye
 
 ```

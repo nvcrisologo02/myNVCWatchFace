@@ -9,6 +9,7 @@ With "bg" it renders the production background (design 2026-11-23-nocturne §6):
 so the moon aperture is a hole (alpha 0) through which the watch face shows the turning moon disc;
 no hands, no crystal and none of the dynamic content.
 """
+import math
 import sys
 from pathlib import Path
 
@@ -52,29 +53,79 @@ wk.lathe("bezel", [(212.6, 0.25), (213.4, 0.9), (216, 1.35), (222, 1.55), (229, 
 dial = wk.cylinder("dial", 0, 0, 212.8, -0.3, 0.0, DIAL, verts=256)
 wk.torus("chapter_edge", 0, 0, 150, 0.06, 0.0, GOLD_POL)
 
-# moon phase at 12: semicircular aperture (r 34) with the two classic "humps" that hide the moons
-# at new moon. Moons ride the disc at r 26 from its centre, which is the aperture centre.
-MX, MY, MR = 0, -98, 44      # enlarged on the user's request (2026-11-23; was (0, -92), r 34)
-HUMP_X, HUMP_R = 26, 16
-cut = wk.cylinder("cut_moon", MX, MY, MR, -1, 1, NAVY_INK)
-for nm, obj in [("half", wk.box("cut_moon_half", MX, MY + 30, 120, 60, -2, 2, 0, NAVY_INK, bevel=0)),
-                ("hump_l", wk.cylinder("hump_l", MX - HUMP_X, MY, HUMP_R, -2, 2, NAVY_INK)),
-                ("hump_r", wk.cylinder("hump_r", MX + HUMP_X, MY, HUMP_R, -2, 2, NAVY_INK))]:
-    md = cut.modifiers.new(nm, "BOOLEAN")
-    md.operation = "DIFFERENCE"
-    md.object = obj
+# moon phase at 12: a window following the dial (user, 2026-11-23): annular sector r 100..140 around
+# the dial centre, +-40 deg, closed by two gold "humps" (r 22) at its ends. The moon disc turns
+# around the dial centre underneath, moons at r 120: they rise through the left hump (waxing),
+# sit at 12 at full moon and set through the right one (waning).
+import bmesh  # noqa: E402
+
+R_IN, R_OUT, HALF, HUMP_R = 100, 140, 40, 22
+R_MID = (R_IN + R_OUT) / 2
+
+
+def prism(name, pts, z0=-2, z1=2):
+    """Vertical prism from a convex polygon in watch px."""
+    me = bpy.data.meshes.new(name)
+    bm = bmesh.new()
+    bot = [bm.verts.new((*wk.W(x, y), z0)) for x, y in pts]
+    top = [bm.verts.new((*wk.W(x, y), z1)) for x, y in pts]
+    bm.faces.new(bot[::-1])
+    bm.faces.new(top)
+    n = len(pts)
+    for i in range(n):
+        j = (i + 1) % n
+        bm.faces.new((bot[i], bot[j], top[j], top[i]))
+    bm.normal_update()
+    bm.to_mesh(me)
+    bm.free()
+    ob = wk.link(bpy.data.objects.new(name, me))
+    ob.data.materials.append(NAVY_INK)
+    return ob
+
+
+def polar(r, deg):
+    a = math.radians(deg)
+    return r * math.sin(a), -r * math.cos(a)
+
+
+def modify(obj, op, other):
+    md = obj.modifiers.new(other.name, "BOOLEAN")
+    md.operation = op
+    md.object = other
     md.solver = "EXACT"
-    obj.hide_render = True
-wk.boolean_cut(dial, cut)
-arch = wk.torus("moon_rim", MX, MY, MR + 0.8, 0.08, 0.0, GOLD_POL)
-wk.boolean_cut(arch, wk.box("rim_cut", MX, MY + 30, 120, 60, -2, 2, 0, NAVY_INK, bevel=0))
-for side in (-1, 1):  # gold edge on each hump
-    hr = wk.torus(f"hump_rim{side}", MX + side * HUMP_X, MY, HUMP_R + 0.6, 0.06, 0.0, GOLD_POL)
-    wk.boolean_cut(hr, wk.box(f"hump_rim_cut{side}", MX + side * HUMP_X, MY + 30, 60, 60, -2, 2, 0, NAVY_INK,
-                              bevel=0))
+    other.hide_render = True
+    other.hide_viewport = True
+
+
+def wedge(name):
+    return prism(name, [(0, 0), polar(300, -HALF), polar(300, 0), polar(300, HALF)])
+
+
+def humps(tag):
+    return [wk.cylinder(f"hump{tag}{s}", *polar(R_MID, s * HALF), HUMP_R, -2, 2, NAVY_INK) for s in (-1, 1)]
+
+
+window = wk.cylinder("cut_moon", 0, 0, R_OUT, -1, 1, NAVY_INK, verts=256)
+modify(window, "INTERSECT", wedge("wedge"))
+modify(window, "DIFFERENCE", wk.cylinder("cut_moon_in", 0, 0, R_IN, -2, 2, NAVY_INK, verts=256))
+for h in humps("w"):
+    modify(window, "DIFFERENCE", h)
+wk.boolean_cut(dial, window)
+# gold edges: outer and inner arcs between the humps, and the humps' own arcs inside the band
+for nm, r in (("rim_out", R_OUT + 0.7), ("rim_in", R_IN - 0.7)):
+    rim = wk.torus(nm, 0, 0, r, 0.07, 0.0, GOLD_POL)
+    modify(rim, "INTERSECT", wedge("wedge_" + nm))
+    for h in humps(nm):
+        modify(rim, "DIFFERENCE", h)
+for side in (-1, 1):
+    hr = wk.torus(f"hump_rim{side}", *polar(R_MID, side * HALF), HUMP_R + 0.6, 0.07, 0.0, GOLD_POL)
+    band = wk.cylinder(f"band{side}", 0, 0, R_OUT, -2, 2, NAVY_INK, verts=256)
+    modify(band, "DIFFERENCE", wk.cylinder(f"band_in{side}", 0, 0, R_IN, -3, 3, NAVY_INK, verts=256))
+    modify(hr, "INTERSECT", band)
+    modify(hr, "INTERSECT", wedge(f"wedge_h{side}"))
 if not BG:  # sketch only: in the watch face the disc is a separate, turning layer under the dial
-    wk.cylinder("sky", MX, MY, 52, -0.9, -0.6, SKY)
-    bpy.ops.mesh.primitive_uv_sphere_add(radius=1.4, location=(*wk.W(MX, MY - 26), -0.6))
+    wk.cylinder("sky", 0, 0, 146, -0.9, -0.6, SKY, verts=256)
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=1.7, location=(*wk.W(0, -R_MID), -0.6))
     moon = bpy.context.active_object
     moon.scale = (1, 1, 0.35)
     moon.data.materials.append(GOLD_MOON)
@@ -90,11 +141,13 @@ for x, nm in [(-92, "activity"), (92, "weather")]:  # r 44 (2026-11-23; was (+-9
         "floor_" + nm, {"Base Color": (0.01, 0.022, 0.07, 1), "Metallic": 0.5, "Roughness": 0.3}, PRINT, scale=22))
     wk.torus("rim_" + nm, x, 10, 44.8, 0.08, 0.0, GOLD_POL)
 
-# date at 6 in the chapter ring
-wk.boolean_cut(dial, wk.box("cut_date", 0, 178, 22, 16, -1, 1, 0, NAVY_INK, bevel=0))
-df = wk.box("date_frame", 0, 178, 25, 19, -0.02, 0.05, 0, GOLD_POL, bevel=0.02)
-wk.boolean_cut(df, wk.box("cut_date_frame", 0, 178, 22, 16, -1, 1, 0, NAVY_INK, bevel=0))
-wk.cylinder("date_disc", 0, 178, 16, -0.7, -0.6, DATE_DISC)
+# date at 4 o'clock in the chapter ring (r 178, 120 deg), turned 30 deg; moved from 6, where the
+# watch draws its notification dot (user, 2026-11-23)
+DX, DY = polar(178, 120)
+wk.boolean_cut(dial, wk.box("cut_date", DX, DY, 22, 16, -1, 1, 30, NAVY_INK, bevel=0))
+df = wk.box("date_frame", DX, DY, 25, 19, -0.02, 0.05, 30, GOLD_POL, bevel=0.02)
+wk.boolean_cut(df, wk.box("cut_date_frame", DX, DY, 22, 16, -1, 1, 30, NAVY_INK, bevel=0))
+wk.cylinder("date_disc", DX, DY, 16, -0.7, -0.6, DATE_DISC)
 
 
 def f2deg(v):
@@ -102,7 +155,7 @@ def f2deg(v):
 
 
 if not BG:
-    wk.text_obj("date_num", str(DAY), wk.BODONI, 13, 0, 178, -0.585, NAVY_INK)
+    wk.text_obj("date_num", str(DAY), wk.BODONI, 13, DX, DY, -0.585, NAVY_INK, rot=30)
     wk.text_obj("gval", str(GLUCOSE), wk.BODONI, 20, 0, 132, 0.01, GLUC_TXT)
     wk.text_obj("gtrend", "→", wk.SYMBOLS, 14, 26, 133, 0.01, GLUC_TXT)
     wk.hand("reserve", -60 + 1.2 * BATTERY, 3.2, 0.5, 0.22, 0.08, -0.2, 0.04, GOLD_HAND, pivot=(-92, 10))

@@ -82,9 +82,10 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
 
     <Scene backgroundColor="#ff000000">
 
-        <!-- ===== Moon disc, UNDER the dial: it shows through the transparent aperture of the
-             background. Two moons opposite: new moon = moons hidden by the humps (90 deg). ===== -->
-{ind(needle("disco_lunar", "moon", "noc_hand3d_moon", 233, 135, MOON_ANGLE), 8)}
+        <!-- ===== Moon disc, UNDER the dial, turning round the dial centre: it shows through the
+             transparent window of the background (band r 100..140, +-40 deg, humps at the ends).
+             Two moons at r 120, opposite: new moon = moons at 3 and 9, out of the window. ===== -->
+{ind(needle("disco_lunar", "moon", "noc_hand3d_moon", 233, 233, MOON_ANGLE), 8)}
 
         <!-- ===== Dial (Blender, with the aperture as a hole) and Always-On dial (opaque black
              with the same hole; numerals, track, aperture rim and glucose scale in dim gold) ===== -->
@@ -97,8 +98,9 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
             <Image resource="noc_ambient_dial" />
         </PartImage>
 
-        <!-- ===== Date at 6 in the chapter ring, window centred on (233, 411) ===== -->
-        <PartText name="fecha" x="219" y="400" width="28" height="22">
+        <!-- ===== Date at 4 in the chapter ring (moved from 6, where the watch draws its
+             notification dot): window centred on (387, 322), turned 30 deg ===== -->
+        <PartText name="fecha" x="373" y="311" width="28" height="22" angle="30">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Text align="CENTER">
                 <Font family="bodoni_moda" size="15" color="#ff0d1630">

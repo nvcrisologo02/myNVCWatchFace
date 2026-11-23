@@ -9,6 +9,7 @@ Writes in <art_dir>:
   hand3d_<n>_aod.png  hour / minute: the Breguet silhouette in dim gold (same size and pivot)
 Deterministic.
 """
+import math
 import sys
 from pathlib import Path
 
@@ -18,8 +19,8 @@ N = 932
 K = 2.0
 C = N / 2
 DIM = 0.42
-MX, MY, MR = 0, -98, 44          # aperture (watch px from the centre), as art/blender/nocturne.py
-HUMP_X, HUMP_R = 26, 16
+R_IN, R_OUT, HALF, HUMP_R = 100, 140, 40, 22   # moon window, as art/blender/nocturne.py
+R_MID = (R_IN + R_OUT) / 2
 
 
 def P(x, y):
@@ -29,9 +30,12 @@ def P(x, y):
 def aperture_mask():
     m = Image.new("L", (N, N), 0)
     d = ImageDraw.Draw(m)
-    d.pieslice([*P(MX - MR, MY - MR), *P(MX + MR, MY + MR)], 180, 360, fill=255)
+    d.pieslice([*P(-R_OUT, -R_OUT), *P(R_OUT, R_OUT)], -90 - HALF, -90 + HALF, fill=255)
+    d.ellipse([*P(-R_IN, -R_IN), *P(R_IN, R_IN)], fill=0)
     for s in (-1, 1):
-        d.ellipse([*P(MX + s * HUMP_X - HUMP_R, MY - HUMP_R), *P(MX + s * HUMP_X + HUMP_R, MY + HUMP_R)], fill=0)
+        a = math.radians(s * HALF)
+        hx, hy = R_MID * math.sin(a), -R_MID * math.cos(a)
+        d.ellipse([*P(hx - HUMP_R, hy - HUMP_R), *P(hx + HUMP_R, hy + HUMP_R)], fill=0)
     return m
 
 
@@ -49,7 +53,8 @@ def dial(art: Path, prints: Path):
     out = Image.alpha_composite(out, ink)
     d = ImageDraw.Draw(out)
     gold = (int(214 * DIM), int(180 * DIM), int(112 * DIM), 255)
-    d.arc([*P(MX - MR - 0.8, MY - MR - 0.8), *P(MX + MR + 0.8, MY + MR + 0.8)], 180, 360, fill=gold, width=2)
+    for r in (R_OUT + 0.7, R_IN - 0.7):
+        d.arc([*P(-r, -r), *P(r, r)], -90 - HALF + 9, -90 + HALF - 9, fill=gold, width=2)
     hole = aperture_mask()
     out.putalpha(ImageChops.subtract(out.getchannel("A"), hole))
     out.save(art / "ambient_dial.png", optimize=True)

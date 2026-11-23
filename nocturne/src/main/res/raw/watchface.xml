@@ -12,9 +12,10 @@
 
     <Scene backgroundColor="#ff000000">
 
-        <!-- ===== Moon disc, UNDER the dial: it shows through the transparent aperture of the
-             background. Two moons opposite: new moon = moons hidden by the humps (90 deg). ===== -->
-        <PartImage name="disco_lunar" x="176" y="79" width="114" height="113" pivotX="0.5" pivotY="0.5">
+        <!-- ===== Moon disc, UNDER the dial, turning round the dial centre: it shows through the
+             transparent window of the background (band r 100..140, +-40 deg, humps at the ends).
+             Two moons at r 120, opposite: new moon = moons at 3 and 9, out of the window. ===== -->
+        <PartImage name="disco_lunar" x="82" y="83" width="302" height="301" pivotX="0.5" pivotY="0.5">
             <Transform target="angle" value="90 + [MOON_PHASE_POSITION] * 180 / 29.53" />
             <Image resource="noc_hand3d_moon" />
         </PartImage>
@@ -30,8 +31,9 @@
             <Image resource="noc_ambient_dial" />
         </PartImage>
 
-        <!-- ===== Date at 6 in the chapter ring, window centred on (233, 411) ===== -->
-        <PartText name="fecha" x="219" y="400" width="28" height="22">
+        <!-- ===== Date at 4 in the chapter ring (moved from 6, where the watch draws its
+             notification dot): window centred on (387, 322), turned 30 deg ===== -->
+        <PartText name="fecha" x="373" y="311" width="28" height="22" angle="30">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Text align="CENTER">
                 <Font family="bodoni_moda" size="15" color="#ff0d1630">

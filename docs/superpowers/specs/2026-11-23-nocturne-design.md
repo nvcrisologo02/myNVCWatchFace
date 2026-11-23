@@ -51,17 +51,18 @@ Coordenadas en píxeles del reloj, centro (233, 233), y hacia abajo.
 | Caja / bisel | oro amarillo pulido, r 213–233, perfil redondeado | fondo 3D |
 | Esfera | azul noche lacado; **clous de Paris** en el centro (r < 150); anillo de horas liso r 150–213 con filete de oro en r 150 | fondo 3D |
 | Números | romanos Bodoni Moda impresos en oro a r 178 (sin VI, que es la fecha; **III y IX añadidos el 2026-11-23**: caben fuera de los contadores); minutería de vía de tren r 202,6–209 | fondo 3D |
-| **Fase lunar** | apertura semicircular centrada en **(233, 135), r 44** (agrandada el 2026-11-23; era (233, 141), r 34), jorobas en ±26 r 16, lunas r 14 a 26 del eje, con aro de oro; disco detrás con cielo lapislázuli, estrellas y dos lunas de oro | fondo con hueco + disco dinámico |
+| **Fase lunar** | **ventana concéntrica con la esfera** (2026-11-23, a petición del usuario): franja r 100–140 alrededor del centro, ±40°, cerrada por dos jorobas de oro r 22 en sus extremos; disco detrás que gira alrededor del centro del reloj, con dos lunas r 17 a r 120 | fondo con hueco + disco dinámico |
 | Logo NVC | (233, 191), 54 de ancho, oro | fondo 3D |
 | Contador 9 h · actividad + reserva | centro **(141, 243), r 44** (agrandado el 2026-11-23; era (143, 241), r 36), hundido con caracoleado, aro de oro; arco de reserva −60°…+60° arriba; icono abajo | fondo; icono y aguja dinámicos |
 | Contador 3 h · tiempo | centro **(325, 243), r 44** (agrandado el 2026-11-23) | fondo; icono + temperatura dinámicos |
 | **Glucosa** | abanico retrógrado con pivote (233, 273), r 74, de 40 (a 240°) a 300 (a 120°); zonas rojo < 70, oro 70–180, ámbar > 180; marcas 70 y 180 | escala en el fondo; aguja azulada dinámica |
 | Valor de glucosa | (233, 365), número Bodoni 20 px + flecha; color por rango; «mg/dL» impreso debajo | dinámico |
-| Fecha | ventana a las 6 en el anillo de horas, (233, 411), 22×16, disco crema | ventana en el fondo; número dinámico |
+| Fecha | **ventana a las 4** en el anillo de horas, (387, 322), 22×16 girada 30°, en lugar del IIII (2026-11-23: a las 6 chocaba con el punto de notificaciones del reloj); el VI vuelve | ventana en el fondo; número dinámico |
 | Agujas | Breguet de oro (anillo «pomme» cerca de la punta): horaria hasta r 112, minutero r 172; segundero de oro fino | 3D, sprites con sombra |
 
-**Fase lunar:** el disco gira `angle = [MOON_PHASE_POSITION] * 180 / 29.53` (media vuelta por
-lunación; con dos lunas opuestas, la luna llena queda centrada en la apertura a mitad de ciclo).
+**Fase lunar:** el disco gira `angle = 90 + [MOON_PHASE_POSITION] * 180 / 29.53` (media vuelta por
+lunación): en luna nueva las lunas están a las 3 y las 9, fuera de la ventana; la creciente entra
+por la joroba izquierda, la llena queda a las 12 y la menguante sale por la derecha.
 
 **Glucosa:** aguja con `angle = 240 - 120 * (clamp(v, 40, 300) - 40) / 260` (se satura en los
 extremos). Número `round(v)` + último carácter del `TEXT` (flecha), con `Condition` de color.
