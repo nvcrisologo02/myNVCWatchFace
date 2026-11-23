@@ -64,11 +64,11 @@ Coordenadas en píxeles del reloj, centro (233, 233), y hacia abajo.
 | Esfera | r ≤ 196, antracita con acabado sol; mapa en acero satinado con relieve | fondo 3D |
 | Índices | acero pulido aplicado con luminiscente; doble a las 12; cortos a las 3 y 9 | fondo 3D |
 | Logo NVC | (233, 111), 60 de ancho, oro aplicado; «NAVIGATOR» debajo | fondo 3D |
-| **Reserva de marcha = batería** | pivote (233, 203), arco −50°…+50°, r 26–33, 0 y 100 | escala en el fondo; aguja dinámica |
+| **Reserva de marcha = batería** | pivote (233, 203), arco −50°…+50°, **r 34–43** (agrandada el 2026-11-23; era r 26–33), 0 y 100; aguja blanca | escala en el fondo; aguja dinámica |
 | Contador 9 h · actividad | centro (138, 233), r 42, hundido con caracoleado, aro de acero | fondo; icono por complicación |
 | Contador 3 h · tiempo | centro (328, 233), r 42 | fondo; icono + temperatura por complicación |
-| **Contador 6 h · glucosa** | centro (233, 328), r 48; escala 40–300 en 270° (−135°…+135°); zonas rojo < 70, oro 70–180, ámbar > 180; marcas 70 y 180 | escala en el fondo; aguja y número dinámicos |
-| Ventana de glucosa | (233, 354), 34×16, marco de acero; número + flecha, color por rango | dinámica |
+| **Contador 6 h · glucosa** | centro (233, 328), **r 56** (agrandado el 2026-11-23; era r 48); aguja blanca; escala 40–300 en 270° (−135°…+135°); zonas rojo < 70, oro 70–180, ámbar > 180; marcas 70 y 180 | escala en el fondo; aguja y número dinámicos |
+| Ventana de glucosa | (233, 359), **44×20**, marco de acero; número de 20 px + flecha, color por rango | dinámica |
 | Fecha | ventana a las 4:30, r 160, 24×16 girada 45°, disco blanco con el día | ventana en el fondo; número dinámico girado |
 | Agujas | espada de acero facetado con luminiscente: horaria hasta r 118, minutero r 176; segundero rojo fino con punta redonda | 3D, sprites con sombra |
 

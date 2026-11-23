@@ -51,7 +51,7 @@ wk.lathe("rehaut", [(195.6, -0.02), (211.8, 0.62)], REHAUT)
 
 # dial with holes for the sub-dials and the date window
 dial = wk.cylinder("dial", 0, 0, 196.2, -0.3, 0.0, DIAL, verts=256)
-for x, y, r, nm in [(-95, 0, 42, "activity"), (95, 0, 42, "weather"), (0, 95, 48, "glucose")]:
+for x, y, r, nm in [(-95, 0, 42, "activity"), (95, 0, 42, "weather"), (0, 95, 56, "glucose")]:
     wk.boolean_cut(dial, wk.cylinder("cut_" + nm, x, y, r, -1, 1, BLACK))
     wk.cylinder("floor_" + nm, x, y, r + 0.5, -0.45, -0.25, wk.snail_material(
         "floor_" + nm, {"Base Color": (0.06, 0.062, 0.068, 1), "Metallic": 0.7, "Roughness": 0.32}, PRINT))
@@ -83,9 +83,9 @@ wk.logo(0, -122, 60, 0.08, wk.logo_material())
 
 # glucose value window
 gcx, gcy = 0, 95
-wk.box("gwin", gcx, gcy + 26, 34, 16, -0.01, 0.03, 0, BLACK, bevel=0.02)
-gf = wk.box("gwin_frame", gcx, gcy + 26, 37, 19, -0.02, 0.05, 0, STEEL_POL, bevel=0.02)
-wk.boolean_cut(gf, wk.box("cut_gwin", gcx, gcy + 26, 34, 16, -1, 1, 0, BLACK, bevel=0))
+wk.box("gwin", gcx, gcy + 31, 44, 20, -0.01, 0.03, 0, BLACK, bevel=0.02)
+gf = wk.box("gwin_frame", gcx, gcy + 31, 47, 23, -0.02, 0.05, 0, STEEL_POL, bevel=0.02)
+wk.boolean_cut(gf, wk.box("cut_gwin", gcx, gcy + 31, 44, 20, -1, 1, 0, BLACK, bevel=0))
 if not BG:
     wk.text_obj("gval", str(GLUCOSE), wk.BARLOW, 13, gcx - 4, gcy + 26, 0.04, GOLD_TXT)
     wk.text_obj("gtrend", "→", wk.SYMBOLS, 10, gcx + 11, gcy + 26, 0.04, GOLD_TXT)

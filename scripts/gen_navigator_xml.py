@@ -47,16 +47,16 @@ def ind(block, n):
 
 
 def glucose_value(color):
-    return f'''<PartText x="27" y="65" width="30" height="18">
+    return f'''<PartText x="28" y="77" width="36" height="20">
     <Text align="END">
-        <Font family="barlow_condensed_semibold" size="16" color="{color}">
+        <Font family="barlow_condensed_semibold" size="20" color="{color}">
             <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
         </Font>
     </Text>
 </PartText>
-<PartText x="57" y="65" width="14" height="18">
+<PartText x="64" y="77" width="14" height="20">
     <Text align="START">
-        <Font family="SYNC_TO_DEVICE" size="13" color="{color}">
+        <Font family="SYNC_TO_DEVICE" size="15" color="{color}">
             <Template>%s<Parameter expression="{TREND}" /></Template>
         </Font>
     </Text>
@@ -64,7 +64,7 @@ def glucose_value(color):
 
 
 def glucose_branch(name, color):
-    return (f'<Group name="{name}" x="0" y="0" width="96" height="96">\n'
+    return (f'<Group name="{name}" x="0" y="0" width="112" height="112">\n'
             f'{ind(glucose_value(color), 4)}\n</Group>')
 
 
@@ -178,16 +178,16 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== 6 o'clock counter: glucose gauge, centre (233, 328), r 48.
+        <!-- ===== 6 o'clock counter: glucose gauge, centre (233, 328), r 56 (enlarged 2026-11-23).
              Scale 40..300 over 270 deg is printed in the dial; the needle turns with the value
              (saturates at both ends). Window under it: value + trend arrow, coloured by range:
              < 70 red, > 180 amber, otherwise gold (design NVC §5.5). ===== -->
-        <ComplicationSlot slotId="1" displayName="Glucosa" x="185" y="280" width="96" height="96"
+        <ComplicationSlot slotId="1" displayName="Glucosa" x="177" y="272" width="112" height="112"
             supportedTypes="RANGED_VALUE EMPTY">
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.GlucoseRangeDataProviderService"
                 primaryProviderType="RANGED_VALUE" />
-            <BoundingOval x="0" y="0" width="96" height="96" />
+            <BoundingOval x="0" y="0" width="112" height="112" />
             <Complication type="RANGED_VALUE">
                 <Condition>
                     <Expressions>
@@ -204,16 +204,16 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
 {ind(glucose_branch("valor_rango", GOLD), 24)}
                     </Default>
                 </Condition>
-{ind(shadowed_needle("aguja_glucosa", "gauge", 48, 48, G_ANGLE), 16)}
+{ind(shadowed_needle("aguja_glucosa", "gauge", 56, 56, G_ANGLE), 16)}
             </Complication>
             <!-- No data: needle at rest, two grey dashes; never a made-up number -->
             <Complication type="EMPTY">
-                <PartText x="27" y="65" width="42" height="18">
+                <PartText x="34" y="77" width="44" height="20">
                     <Text align="CENTER">
-                        <Font family="barlow_condensed_semibold" size="16" color="{GREY}">--</Font>
+                        <Font family="barlow_condensed_semibold" size="20" color="{GREY}">--</Font>
                     </Text>
                 </PartText>
-{ind(shadowed_needle("aguja_glucosa", "gauge", 48, 48, "-135"), 16)}
+{ind(shadowed_needle("aguja_glucosa", "gauge", 56, 56, "-135"), 16)}
             </Complication>
         </ComplicationSlot>
 

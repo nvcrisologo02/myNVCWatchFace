@@ -31,11 +31,11 @@
                 </Expressions>
                 <Compare expression="baja">
                     <Group name="reserva_baja" x="0" y="0" width="466" height="466">
-                        <PartImage name="reserva_aguja_sombra" x="227" y="175" width="14" height="40" pivotX="0.5" pivotY="0.75">
+                        <PartImage name="reserva_aguja_sombra" x="226" y="165" width="16" height="51" pivotX="0.5" pivotY="0.784314">
                             <Transform target="angle" value="-50 + clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="nav_hand3d_reserve_low_shadow" />
                         </PartImage>
-                        <PartImage name="reserva_aguja" x="226" y="173" width="14" height="40" pivotX="0.5" pivotY="0.75">
+                        <PartImage name="reserva_aguja" x="225" y="163" width="16" height="51" pivotX="0.5" pivotY="0.784314">
                             <Transform target="angle" value="-50 + clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="nav_hand3d_reserve_low" />
                         </PartImage>
@@ -43,11 +43,11 @@
                 </Compare>
                 <Default>
                     <Group name="reserva_normal" x="0" y="0" width="466" height="466">
-                        <PartImage name="reserva_aguja_sombra" x="227" y="175" width="14" height="40" pivotX="0.5" pivotY="0.75">
+                        <PartImage name="reserva_aguja_sombra" x="226" y="165" width="16" height="51" pivotX="0.5" pivotY="0.784314">
                             <Transform target="angle" value="-50 + clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="nav_hand3d_reserve_shadow" />
                         </PartImage>
-                        <PartImage name="reserva_aguja" x="226" y="173" width="14" height="40" pivotX="0.5" pivotY="0.75">
+                        <PartImage name="reserva_aguja" x="225" y="163" width="16" height="51" pivotX="0.5" pivotY="0.784314">
                             <Transform target="angle" value="-50 + clamp([BATTERY_PERCENT], 0, 100)" />
                             <Image resource="nav_hand3d_reserve" />
                         </PartImage>
@@ -121,16 +121,16 @@
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== 6 o'clock counter: glucose gauge, centre (233, 328), r 48.
+        <!-- ===== 6 o'clock counter: glucose gauge, centre (233, 328), r 56 (enlarged 2026-11-23).
              Scale 40..300 over 270 deg is printed in the dial; the needle turns with the value
              (saturates at both ends). Window under it: value + trend arrow, coloured by range:
              < 70 red, > 180 amber, otherwise gold (design NVC §5.5). ===== -->
-        <ComplicationSlot slotId="1" displayName="Glucosa" x="185" y="280" width="96" height="96"
+        <ComplicationSlot slotId="1" displayName="Glucosa" x="177" y="272" width="112" height="112"
             supportedTypes="RANGED_VALUE EMPTY">
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.GlucoseRangeDataProviderService"
                 primaryProviderType="RANGED_VALUE" />
-            <BoundingOval x="0" y="0" width="96" height="96" />
+            <BoundingOval x="0" y="0" width="112" height="112" />
             <Complication type="RANGED_VALUE">
                 <Condition>
                     <Expressions>
@@ -138,17 +138,17 @@
                         <Expression name="hiper"><![CDATA[[COMPLICATION.RANGED_VALUE_VALUE] > 180]]></Expression>
                     </Expressions>
                     <Compare expression="hipo">
-                        <Group name="valor_hipo" x="0" y="0" width="96" height="96">
-                            <PartText x="27" y="65" width="30" height="18">
+                        <Group name="valor_hipo" x="0" y="0" width="112" height="112">
+                            <PartText x="28" y="77" width="36" height="20">
                                 <Text align="END">
-                                    <Font family="barlow_condensed_semibold" size="16" color="#ffe5483c">
+                                    <Font family="barlow_condensed_semibold" size="20" color="#ffe5483c">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="57" y="65" width="14" height="18">
+                            <PartText x="64" y="77" width="14" height="20">
                                 <Text align="START">
-                                    <Font family="SYNC_TO_DEVICE" size="13" color="#ffe5483c">
+                                    <Font family="SYNC_TO_DEVICE" size="15" color="#ffe5483c">
                                         <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
                                     </Font>
                                 </Text>
@@ -156,17 +156,17 @@
                         </Group>
                     </Compare>
                     <Compare expression="hiper">
-                        <Group name="valor_hiper" x="0" y="0" width="96" height="96">
-                            <PartText x="27" y="65" width="30" height="18">
+                        <Group name="valor_hiper" x="0" y="0" width="112" height="112">
+                            <PartText x="28" y="77" width="36" height="20">
                                 <Text align="END">
-                                    <Font family="barlow_condensed_semibold" size="16" color="#ffe3a63a">
+                                    <Font family="barlow_condensed_semibold" size="20" color="#ffe3a63a">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="57" y="65" width="14" height="18">
+                            <PartText x="64" y="77" width="14" height="20">
                                 <Text align="START">
-                                    <Font family="SYNC_TO_DEVICE" size="13" color="#ffe3a63a">
+                                    <Font family="SYNC_TO_DEVICE" size="15" color="#ffe3a63a">
                                         <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
                                     </Font>
                                 </Text>
@@ -174,17 +174,17 @@
                         </Group>
                     </Compare>
                     <Default>
-                        <Group name="valor_rango" x="0" y="0" width="96" height="96">
-                            <PartText x="27" y="65" width="30" height="18">
+                        <Group name="valor_rango" x="0" y="0" width="112" height="112">
+                            <PartText x="28" y="77" width="36" height="20">
                                 <Text align="END">
-                                    <Font family="barlow_condensed_semibold" size="16" color="#ffe6cd95">
+                                    <Font family="barlow_condensed_semibold" size="20" color="#ffe6cd95">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="57" y="65" width="14" height="18">
+                            <PartText x="64" y="77" width="14" height="20">
                                 <Text align="START">
-                                    <Font family="SYNC_TO_DEVICE" size="13" color="#ffe6cd95">
+                                    <Font family="SYNC_TO_DEVICE" size="15" color="#ffe6cd95">
                                         <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
                                     </Font>
                                 </Text>
@@ -192,27 +192,27 @@
                         </Group>
                     </Default>
                 </Condition>
-                <PartImage name="aguja_glucosa_sombra" x="41" y="7" width="16" height="56" pivotX="0.5" pivotY="0.767857">
+                <PartImage name="aguja_glucosa_sombra" x="48" y="8" width="18" height="64" pivotX="0.5" pivotY="0.78125">
                     <Transform target="angle" value="-135 + 270 * (clamp([COMPLICATION.RANGED_VALUE_VALUE], 40, 300) - 40) / 260" />
                     <Image resource="nav_hand3d_gauge_shadow" />
                 </PartImage>
-                <PartImage name="aguja_glucosa" x="40" y="5" width="16" height="56" pivotX="0.5" pivotY="0.767857">
+                <PartImage name="aguja_glucosa" x="47" y="6" width="18" height="64" pivotX="0.5" pivotY="0.78125">
                     <Transform target="angle" value="-135 + 270 * (clamp([COMPLICATION.RANGED_VALUE_VALUE], 40, 300) - 40) / 260" />
                     <Image resource="nav_hand3d_gauge" />
                 </PartImage>
             </Complication>
             <!-- No data: needle at rest, two grey dashes; never a made-up number -->
             <Complication type="EMPTY">
-                <PartText x="27" y="65" width="42" height="18">
+                <PartText x="34" y="77" width="44" height="20">
                     <Text align="CENTER">
-                        <Font family="barlow_condensed_semibold" size="16" color="#ff8c8a84">--</Font>
+                        <Font family="barlow_condensed_semibold" size="20" color="#ff8c8a84">--</Font>
                     </Text>
                 </PartText>
-                <PartImage name="aguja_glucosa_sombra" x="41" y="7" width="16" height="56" pivotX="0.5" pivotY="0.767857">
+                <PartImage name="aguja_glucosa_sombra" x="48" y="8" width="18" height="64" pivotX="0.5" pivotY="0.78125">
                     <Transform target="angle" value="-135" />
                     <Image resource="nav_hand3d_gauge_shadow" />
                 </PartImage>
-                <PartImage name="aguja_glucosa" x="40" y="5" width="16" height="56" pivotX="0.5" pivotY="0.767857">
+                <PartImage name="aguja_glucosa" x="47" y="6" width="18" height="64" pivotX="0.5" pivotY="0.78125">
                     <Transform target="angle" value="-135" />
                     <Image resource="nav_hand3d_gauge" />
                 </PartImage>

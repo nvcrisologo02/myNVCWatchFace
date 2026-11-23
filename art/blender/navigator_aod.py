@@ -53,10 +53,10 @@ def dial(art: Path, prints: Path):
             r0 = 182 if h == 6 else 176
             bar(d, deg, r0 + 3, 190, 2.4, LUME + (235,))
     out = glow(lume)
-    # glucose scale, dimmed: the printed gauge (zones and ticks) around (233, 328)
+    # glucose scale, dimmed: the printed gauge (zones and ticks) around (233, 328), r 56
     pr = Image.open(prints / "navigator_print_bg.png").convert("RGBA").resize((N, N), Image.LANCZOS)
     m = Image.new("L", (N, N), 0)
-    ImageDraw.Draw(m).ellipse([*P(-48, 95 - 48), *P(48, 95 + 48)], fill=255)
+    ImageDraw.Draw(m).ellipse([*P(-56, 95 - 56), *P(56, 95 + 56)], fill=255)
     gauge = Image.new("RGBA", (N, N), (0, 0, 0, 0))
     gauge.paste(pr, (0, 0), ImageChops.multiply(m, pr.getchannel("A")))
     gauge.putalpha(gauge.getchannel("A").point(lambda v: round(v * 0.55)))

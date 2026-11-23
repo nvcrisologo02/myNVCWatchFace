@@ -58,12 +58,12 @@ def navigator(name, m):
         wk.cylinder("cap", 0, 0, 6.5, 0.80, 0.95, m["steel"], verts=64)
     elif name == "gauge":       # glucose gauge needle, pivot at the gauge centre
         # white lacquer like an aircraft gauge: polished steel got lost on the dial (watch, 2026-11-23)
-        wk.hand(name, 0, 3.9, 0.8, 0.30, 0.12, 0.05, 0.05, m["white"])
-        wk.cylinder("gcap", 0, 0, 3.4, 0.05, 0.16, m["steel"], verts=48)
+        wk.hand(name, 0, 4.6, 0.9, 0.34, 0.13, 0.05, 0.05, m["white"])
+        wk.cylinder("gcap", 0, 0, 4.0, 0.05, 0.16, m["steel"], verts=48)
     elif name in ("reserve", "reserve_low"):   # battery power-reserve needle; red when low
         mat = m["red_metal"] if name == "reserve_low" else m["white"]
-        wk.hand(name, 0, 2.6, 0.5, 0.26, 0.10, 0.05, 0.04, mat)
-        wk.cylinder("rcap", 0, 0, 2.4, 0.05, 0.13, m["steel"], verts=48)
+        wk.hand(name, 0, 3.6, 0.6, 0.32, 0.12, 0.05, 0.04, mat)
+        wk.cylinder("rcap", 0, 0, 3.0, 0.05, 0.13, m["steel"], verts=48)
 
 
 FACES = {

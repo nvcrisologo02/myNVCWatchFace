@@ -13,6 +13,13 @@
 - Fecha girada 45° en la ventana de las 4:30: se lee.
 - Glucosa en rango (148→) en oro; tiempo 11° con icono; actividad con icono en oro.
 
+## Versión 2: glucosa y reserva más grandes
+
+![Versión 2](capturas/05-navigator-v2.png)
+
+Manómetro r 56 con ventana 44×20 y número de 20 px; reserva r 34–43. **Batería baja comprobada:**
+con el reloj al 20 % la aguja de la reserva sale en rojo (`BATTERY_IS_LOW`).
+
 ## Cómo se reconstruye
 
 ```
@@ -24,6 +31,5 @@ FACE=navigator scripts/watch.sh <serial> all <captura>
 ## Pendiente
 
 - Casos de glucosa con el proveedor falso (hipo en rojo, hiper en ámbar, sin dato, extremos).
-- Batería baja (aguja roja).
 - Always-On: a ojo, como en la NVC.
 - Fluidez y batería.

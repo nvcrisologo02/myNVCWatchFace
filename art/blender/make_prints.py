@@ -35,7 +35,7 @@ AMBER = (226, 160, 56, 255)
 GREY = (170, 170, 166, 255)
 
 # glucose gauge geometry (watch px, centre of the dial = 0,0; y down)
-GAUGE = (0.0, 95.0, 48.0)
+GAUGE = (0.0, 95.0, 56.0)  # enlarged on the user's request (2026-11-23; was r 48)
 RESERVE = (0.0, -30.0)
 
 
@@ -119,15 +119,15 @@ def navigator(out: Path):
     for v in range(40, 301, 20):
         tick(d, g2deg(v), gr - 13, gr - 8, 1.0, WHITE, gcx, gcy)
     for v in (70, 180):
-        label(img, str(v), BARLOW_M, 7, *polar(gr - 20, g2deg(v), gcx, gcy), GREY)
-    label(img, "mg/dL", BARLOW_M, 6, gcx, gcy - 16, GREY)
+        label(img, str(v), BARLOW_M, 9, *polar(gr - 22, g2deg(v), gcx, gcy), GREY)
+    label(img, "mg/dL", BARLOW_M, 8, gcx, gcy - 18, GREY)
     # power reserve (battery)
     pcx, pcy = RESERVE
     for i in range(11):
-        tick(d, -50 + i * 10, 26, 30 if i % 5 else 33, 0.9 if i % 5 else 1.4, WHITE, pcx, pcy)
-    label(img, "0", BARLOW_M, 6.5, *polar(38, -50, pcx, pcy), GREY)
-    label(img, "100", BARLOW_M, 6.5, *polar(39, 50, pcx, pcy), GREY)
-    label(img, "RESERVA", BARLOW_M, 5.5, pcx, pcy - 13, GREY)
+        tick(d, -50 + i * 10, 34, 39 if i % 5 else 43, 1.2 if i % 5 else 1.8, WHITE, pcx, pcy)  # enlarged 2026-11-23
+    label(img, "0", BARLOW_M, 8.5, *polar(49, -50, pcx, pcy), GREY)
+    label(img, "100", BARLOW_M, 8.5, *polar(51, 50, pcx, pcy), GREY)
+    label(img, "RESERVA", BARLOW_M, 7, pcx, pcy - 16, GREY)
     label(img, "NAVIGATOR", BARLOW_M, 8, 0, -84, (210, 210, 204, 255))
     img.save(out / "navigator_print_bg.png")  # production: no sample content
     # sample complication content (in the real face these come from the providers)
