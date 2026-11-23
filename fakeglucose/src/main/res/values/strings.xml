@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Glucosa falsa (pruebas)</string>
+    <string name="range_label">Glucosa falsa · rango</string>
+    <string name="text_label">Glucosa falsa · texto</string>
+    <string name="age_label">Glucosa falsa · antigüedad</string>
+</resources>

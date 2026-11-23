@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <application android:label="@string/app_name">
+
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <!-- Same types as Gluroo's GlucoseRangeDataProviderService (docs/pruebas/02-complicaciones.md) -->
+        <service
+            android:name=".FakeRangeService"
+            android:exported="true"
+            android:label="@string/range_label"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="RANGED_VALUE,SHORT_TEXT" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+
+        <!-- Like Gluroo's BglDataProviderService: text such as "176→" -->
+        <service
+            android:name=".FakeTextService"
+            android:exported="true"
+            android:label="@string/text_label"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+
+        <!-- Like Gluroo's BglTimeSinceProviderService: text such as "3m" -->
+        <service
+            android:name=".FakeAgeService"
+            android:exported="true"
+            android:label="@string/age_label"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+
+        <!--
+          adb -s <serial> shell am broadcast -a com.nvc.fakeglucose.SET -n com.nvc.fakeglucose/.SetStateReceiver \
+              [-ei value 112] [-ei age_min 4] [-es trend "→"] [-ez empty true] [-ez age_empty true]
+        -->
+        <receiver
+            android:name=".SetStateReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.nvc.fakeglucose.SET" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>

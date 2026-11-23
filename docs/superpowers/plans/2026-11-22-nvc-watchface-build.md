@@ -222,3 +222,21 @@ Requiere la decisión de antigüedad de la tarea 2.
 - [ ] **Step 3: Comparación final** con la maqueta v4, lado a lado (activo y ambiente), en `08-cierre.md`.
 - [ ] **Step 4: Prueba de reinicio**: reiniciar el reloj y comprobar que la esfera sigue seleccionada y la glucosa vuelve a aparecer.
 - [ ] **Step 5:** README, Estado en `CLAUDE.md`, commit (`docs: final verification on the watch`) y push con el visto bueno del usuario.
+
+---
+
+## Cambios durante la construcción (2026-11-23)
+
+- **Tarea 2:** Gluroo manda el rango con mín 20 y máx 400 y **sin tendencia**. La flecha sale de
+  un quinto hueco, «Tendencia», con la glucosa en texto de Gluroo (último carácter). Huecos: 1
+  glucosa, 2 tendencia, 3 antigüedad, 10 actividad, 11 tiempo.
+- **Tarea 4:** en WFF, `x`/`y` de las agujas son enteros: el generador redondea el ancho a un par.
+  Tests con `python -m pytest art/tests` (sin `-I`, pytest está en el site-packages del usuario).
+- **Tarea 6:** fuera del rango 70–180 el aro se dibuja entero en rojo o ámbar (con «saturado a
+  cero» una hipo no se vería en el aro). El color va en ramas de `Condition` porque en v2 el color
+  de un trazo no admite expresiones. El proveedor falso está en Java (`fakeglucose/`): el proyecto
+  desactiva la stdlib de Kotlin para que la esfera no lleve código.
+- **Tarea 7:** el botón de actividad sigue siendo una complicación (OHealth, entrenamiento libre,
+  icono monocromo teñido de oro). WFF v2 tiene `Launch`, pero la complicación ya funciona.
+- Nuevo: `scripts/sync_art.sh` (regenera el arte, falla si `art/out` cambia sin querer) y
+  `art/render_ambient.py`, `art/render_preview.py`.

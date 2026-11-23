@@ -16,9 +16,14 @@ El usuario escribe en español; respóndele en español.
 Diseño cerrado. Plan en `docs/superpowers/plans/2026-11-22-nvc-watchface-build.md`.
 **Tarea 1 hecha (2026-11-22):** el reloj (Wear OS 5.0, SDK 34) instala, selecciona por adb y
 dibuja una esfera WFF v2 propia; detalle y trampas en `docs/pruebas/01-instalacion.md`.
-**Tarea 2 a medias:** Gluroo sí tiene complicación de antigüedad (`BglTimeSince`) y de rango;
-falta leer el contenido exacto de cada campo. Estado y pasos en `docs/pruebas/02-complicaciones.md`.
-En el reloj está puesta la esfera de inspección (temporal) de `watchface.xml`.
+**Tarea 2 casi cerrada:** Gluroo manda rango (20–400, sin tendencia), antigüedad («3m») y
+glucosa en texto; pendiente en el reloj saber si «3m» se actualiza solo. `docs/pruebas/02-complicaciones.md`.
+**Tareas 3 a 7 construidas sin reloj (2026-11-23):** esfera completa en `watchface.xml` (fondo,
+ambiente, fecha, batería, cinco huecos, agujas), generadores de arte con tests
+(`python -m pytest art/tests`, sin `-I`: pytest está en el site-packages del usuario) y proveedor
+falso de glucosa (`fakeglucose/`, `scripts/glucose_cases.sh`). Valida y compila; **nada probado en
+el reloj todavía**. Siguiente: `scripts/watch.sh <serial> all 03-completa`, revisar capturas, y
+los casos de `docs/pruebas/06-glucosa.md`. En el reloj sigue puesta la esfera de inspección.
 Para trabajar: Bluetooth del reloj apagado (si no, suelta el Wi-Fi) y serial mDNS, no IP.
 
 Ciclo completo: `scripts/watch.sh "<serial>" all <nombre-captura>`. Serial del reloj:
