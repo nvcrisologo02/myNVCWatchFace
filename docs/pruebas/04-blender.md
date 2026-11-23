@@ -20,3 +20,12 @@ Izquierda: fondo 2D (`art/render_bg.py`). Centro: fondo y agujas de Blender (`sc
   pinte el segundo procesador (en logcat aparece `WatchFaceMcuManager`). Hay que mirarlo a ojo.
 - Fluidez y batería con el segundo reloj de sombras (tarea 8).
 - El caracoleado cónico de las sub-esferas compite algo con los iconos: valorar en el reloj.
+
+## Versión 2 (2026-11-23): ventanas 66×28 y sub-esferas 12 px más abajo
+
+![Versión 2 en el reloj](capturas/04-blender-v2.png)
+
+Instalada y comprobada en el reloj. Conexión: esta vez el reloj apareció por mDNS pero adb no se
+conectó solo; funcionó `adb connect <ip>:<puerto>` con la dirección de `adb mdns services` y
+usar esa `ip:puerto` como serial. Si la captura sale con Ajustes delante, `input keyevent
+KEYCODE_HOME` antes de capturar.
