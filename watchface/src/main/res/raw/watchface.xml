@@ -1,246 +1,363 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TEMPORARY inspection face (plan, task 2): four slots that accept every type and print each
-     field the provider sends. Data sources: developer.android.com/reference/wear-os/wff/complication/complication -->
+<!--
+  NVC watch face, Watch Face Format v2 (Wear OS 5, API 34). Design: docs/superpowers/specs/2026-11-22-nvc-watchface-design.md
+  Coordinates are watch pixels (466x466). Bitmaps are 2x and scaled down.
+
+  WFF references used (checked against developer.android.com and the google/watchface v2 schema):
+  - data sources DAY, DAY_OF_WEEK_S, BATTERY_PERCENT, BATTERY_IS_LOW:
+      developer.android.com/training/wearables/wff/common/attributes/source-type
+  - COMPLICATION.TEXT / TITLE / RANGED_VALUE_VALUE / MONOCHROMATIC_IMAGE / SMALL_IMAGE:
+      developer.android.com/reference/wear-os/wff/complication/complication
+  - expressions (clamp, ternary, subText, textLength): .../wff/common/attributes/arithmetic-expression
+  - Condition/Compare/Default: .../wff/transform/content ; Transform: .../wff/transform
+  - Variant mode="AMBIENT": .../wff/common/variant/variant ; AnalogClock/hands: .../wff/clock/analog-clock
+  In v2 a Stroke colour is not transformable (only from v4), so range colours use Condition branches.
+-->
 <WatchFace width="466" height="466" clipShape="CIRCLE">
-    <Metadata key="CLOCK_TYPE" value="DIGITAL" />
+    <Metadata key="CLOCK_TYPE" value="ANALOG" />
     <Metadata key="PREVIEW_TIME" value="10:08:32" />
+
     <Scene backgroundColor="#ff000000">
-        <DigitalClock x="0" y="20" width="466" height="44">
-            <TimeText format="h:mm" hourFormat="24" align="CENTER" x="0" y="0" width="466" height="44">
-                <Font family="SYNC_TO_DEVICE" size="34" color="#ffc9a86a" />
-            </TimeText>
-        </DigitalClock>
-        <ComplicationSlot slotId="1" displayName="Hueco 1" supportedTypes="RANGED_VALUE SHORT_TEXT LONG_TEXT SMALL_IMAGE MONOCHROMATIC_IMAGE EMPTY" x="33" y="70" width="200" height="160">
-            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" />
-            <BoundingBox x="0" y="0" width="200" height="160" />
-            <Complication type="SHORT_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SHORT_TEXT</Font></Text>
+
+        <!-- ===== Dial: generated background (active) and ambient dial ===== -->
+        <PartImage name="fondo" x="0" y="0" width="466" height="466">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <Image resource="bg_bajo" />
+        </PartImage>
+        <PartImage name="esfera_ambiente" x="0" y="0" width="466" height="466" alpha="0">
+            <Variant mode="AMBIENT" target="alpha" value="255" />
+            <Image resource="ambient_dial" />
+        </PartImage>
+
+        <!-- ===== Date window at 3 o'clock: hole centred on (371, 233), 46x19 ===== -->
+        <Group name="fecha" x="348" y="223" width="46" height="20">
+            <Variant mode="AMBIENT" target="alpha" value="150" />
+            <PartText x="0" y="0" width="26" height="20">
+                <Text align="CENTER">
+                    <Font family="barlow_condensed_semibold" size="12.5" color="#ffc9a86a">
+                        <Upper><Template>%s<Parameter expression="subText([DAY_OF_WEEK_S], 0, 3)" /></Template></Upper>
+                    </Font>
+                </Text>
             </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
+            <PartText x="24" y="0" width="20" height="20">
+                <Text align="CENTER">
+                    <Font family="barlow_condensed_semibold" size="12.5" color="#ffefede7">
+                        <Template>%s<Parameter expression="[DAY]" /></Template>
+                    </Font>
+                </Text>
             </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="LONG_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">LONG_TEXT</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="RANGED_VALUE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">RANGED_VALUE</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[v=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_VALUE]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[min=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MIN]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="76" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[max=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MAX]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="100" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="124" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
+        </Group>
+
+        <!-- ===== Battery window at 9 o'clock: hole centred on (95, 233), 46x19 ===== -->
+        <Group name="bateria" x="72" y="223" width="46" height="20">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <Condition>
+                <Expressions>
+                    <Expression name="baja"><![CDATA[[BATTERY_IS_LOW]]]></Expression>
+                </Expressions>
+                <Compare expression="baja">
+                    <Group name="bateria_baja" x="0" y="0" width="46" height="20">
+                        <PartDraw x="3" y="6" width="16" height="9">
+                            <Rectangle x="0.5" y="0.5" width="13" height="7">
+                                <Stroke color="#ffe5483c" thickness="1" />
+                            </Rectangle>
+                            <Rectangle x="14" y="2.5" width="1.5" height="3">
+                                <Fill color="#ffe5483c" />
+                            </Rectangle>
+                            <Rectangle x="2" y="2" width="10" height="4">
+                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) / 10" />
+                                <Fill color="#ffe5483c" />
+                            </Rectangle>
+                        </PartDraw>
+                        <PartText x="19" y="0" width="26" height="20">
+                            <Text align="CENTER">
+                                <Font family="barlow_condensed_semibold" size="12.5" color="#ffe5483c">
+                                    <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
+                                </Font>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Compare>
+                <Default>
+                    <Group name="bateria_normal" x="0" y="0" width="46" height="20">
+                        <PartDraw x="3" y="6" width="16" height="9">
+                            <Rectangle x="0.5" y="0.5" width="13" height="7">
+                                <Stroke color="#ffc9a86a" thickness="1" />
+                            </Rectangle>
+                            <Rectangle x="14" y="2.5" width="1.5" height="3">
+                                <Fill color="#ffc9a86a" />
+                            </Rectangle>
+                            <Rectangle x="2" y="2" width="10" height="4">
+                                <Transform target="width" value="clamp([BATTERY_PERCENT], 0, 100) / 10" />
+                                <Fill color="#ffc9a86a" />
+                            </Rectangle>
+                        </PartDraw>
+                        <PartText x="19" y="0" width="26" height="20">
+                            <Text align="CENTER">
+                                <Font family="barlow_condensed_semibold" size="12.5" color="#ffefede7">
+                                    <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
+                                </Font>
+                            </Text>
+                        </PartText>
+                    </Group>
+                </Default>
+            </Condition>
+        </Group>
+
+        <!-- ===== Left sub-dial: activity, centre (161, 295), r 36 ===== -->
+        <ComplicationSlot slotId="10" displayName="Actividad" x="125" y="259" width="72" height="72"
+            supportedTypes="MONOCHROMATIC_IMAGE SMALL_IMAGE SHORT_TEXT EMPTY">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
+                primaryProvider="com.heytap.wearable.sports/com.heytap.wearable.sports.complications.SportFreeTrainingComplicationService"
+                primaryProviderType="MONOCHROMATIC_IMAGE" />
+            <BoundingOval x="0" y="0" width="72" height="72" />
+            <!-- icon pushed left, away from the overlap with the glucose dial -->
+            <Complication type="MONOCHROMATIC_IMAGE">
+                <PartImage x="14" y="20" width="30" height="30" tintColor="#ffc9a86a">
+                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                </PartImage>
             </Complication>
             <Complication type="SMALL_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SMALL_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.SMALL_IMAGE]" /></PartImage>
+                <PartImage x="14" y="20" width="30" height="30">
+                    <Image resource="[COMPLICATION.SMALL_IMAGE]" />
+                </PartImage>
             </Complication>
-            <Complication type="MONOCHROMATIC_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">MONO_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" /></PartImage>
-            </Complication>
-        </ComplicationSlot>
-        <ComplicationSlot slotId="2" displayName="Hueco 2" supportedTypes="RANGED_VALUE SHORT_TEXT LONG_TEXT SMALL_IMAGE MONOCHROMATIC_IMAGE EMPTY" x="233" y="70" width="200" height="160">
-            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" />
-            <BoundingBox x="0" y="0" width="200" height="160" />
             <Complication type="SHORT_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SHORT_TEXT</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
+                <PartImage x="20" y="12" width="20" height="20" tintColor="#ffc9a86a">
+                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                </PartImage>
+                <PartText x="4" y="34" width="52" height="20">
+                    <Text align="CENTER" ellipsis="TRUE">
+                        <Font family="barlow_condensed_medium" size="14" color="#ffefede7">
+                            <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
+                        </Font>
+                    </Text>
+                </PartText>
             </Complication>
-            <Complication type="LONG_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">LONG_TEXT</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="RANGED_VALUE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">RANGED_VALUE</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[v=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_VALUE]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[min=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MIN]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="76" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[max=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MAX]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="100" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="124" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="SMALL_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SMALL_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.SMALL_IMAGE]" /></PartImage>
-            </Complication>
-            <Complication type="MONOCHROMATIC_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">MONO_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" /></PartImage>
-            </Complication>
+            <Complication type="EMPTY" />
         </ComplicationSlot>
-        <ComplicationSlot slotId="3" displayName="Hueco 3" supportedTypes="RANGED_VALUE SHORT_TEXT LONG_TEXT SMALL_IMAGE MONOCHROMATIC_IMAGE EMPTY" x="33" y="236" width="200" height="160">
-            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" />
-            <BoundingBox x="0" y="0" width="200" height="160" />
+
+        <!-- ===== Right sub-dial: weather, centre (305, 295), r 36 ===== -->
+        <ComplicationSlot slotId="11" displayName="Tiempo" x="269" y="259" width="72" height="72"
+            supportedTypes="SHORT_TEXT EMPTY">
+            <Variant mode="AMBIENT" target="alpha" value="0" />
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
+                primaryProvider="com.heytap.wearable.weather/com.heytap.wearable.weather.complication.wearos.WeatherProviderService"
+                primaryProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="72" height="72" />
+            <!-- icon and temperature pushed right, away from the overlap -->
             <Complication type="SHORT_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SHORT_TEXT</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
+                <PartImage x="32" y="14" width="22" height="22" tintColor="#ffc9a86a">
+                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                </PartImage>
+                <PartText x="18" y="36" width="50" height="22">
+                    <Text align="CENTER" ellipsis="TRUE">
+                        <Font family="barlow_condensed_medium" size="15" color="#ffefede7">
+                            <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
+                        </Font>
+                    </Text>
+                </PartText>
             </Complication>
-            <Complication type="LONG_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">LONG_TEXT</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="RANGED_VALUE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">RANGED_VALUE</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[v=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_VALUE]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[min=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MIN]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="76" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[max=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MAX]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="100" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="124" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="SMALL_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SMALL_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.SMALL_IMAGE]" /></PartImage>
-            </Complication>
-            <Complication type="MONOCHROMATIC_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">MONO_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" /></PartImage>
-            </Complication>
+            <Complication type="EMPTY" />
         </ComplicationSlot>
-        <ComplicationSlot slotId="4" displayName="Hueco 4" supportedTypes="RANGED_VALUE SHORT_TEXT LONG_TEXT SMALL_IMAGE MONOCHROMATIC_IMAGE EMPTY" x="233" y="236" width="200" height="160">
-            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY" />
-            <BoundingBox x="0" y="0" width="200" height="160" />
+
+        <!-- ===== Central sub-dial: glucose, centre (233, 321), r 44. Declared after the side
+             dials so it is drawn on top of them (design §5.3). Ring r 38.5, stroke 3. =====
+             Range colours (design §5.5): < 70 red, > 180 amber, otherwise gold. The ring is computed
+             from 70-180 mg/dL, NOT from the provider's min/max (Gluroo sends 20-400). Out of range
+             the ring is drawn full in the warning colour. -->
+        <ComplicationSlot slotId="1" displayName="Glucosa" x="189" y="277" width="88" height="88"
+            supportedTypes="RANGED_VALUE SHORT_TEXT EMPTY">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
+                primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.GlucoseRangeDataProviderService"
+                primaryProviderType="RANGED_VALUE" />
+            <BoundingOval x="0" y="0" width="88" height="88" />
+
+            <Complication type="RANGED_VALUE">
+                <Condition>
+                    <Expressions>
+                        <Expression name="hipo"><![CDATA[[COMPLICATION.RANGED_VALUE_VALUE] < 70]]></Expression>
+                        <Expression name="hiper"><![CDATA[[COMPLICATION.RANGED_VALUE_VALUE] > 180]]></Expression>
+                    </Expressions>
+                    <Compare expression="hipo">
+                        <Group name="glucosa_hipo" x="0" y="0" width="88" height="88">
+                            <Variant mode="AMBIENT" target="alpha" value="170" />
+                            <PartDraw x="0" y="0" width="88" height="88">
+                                <Arc centerX="44" centerY="44" width="77" height="77" startAngle="0" endAngle="360">
+                                    <Stroke color="#ffe5483c" thickness="3" />
+                                </Arc>
+                            </PartDraw>
+                            <PartText x="4" y="20" width="80" height="36">
+                                <Text align="CENTER">
+                                    <Font family="barlow_condensed_semibold" size="31" color="#ffe5483c">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Compare expression="hiper">
+                        <Group name="glucosa_hiper" x="0" y="0" width="88" height="88">
+                            <Variant mode="AMBIENT" target="alpha" value="170" />
+                            <PartDraw x="0" y="0" width="88" height="88">
+                                <Arc centerX="44" centerY="44" width="77" height="77" startAngle="0" endAngle="360">
+                                    <Stroke color="#ffe3a63a" thickness="3" />
+                                </Arc>
+                            </PartDraw>
+                            <PartText x="4" y="20" width="80" height="36">
+                                <Text align="CENTER">
+                                    <Font family="barlow_condensed_semibold" size="31" color="#ffe3a63a">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <Default>
+                        <Group name="glucosa_rango" x="0" y="0" width="88" height="88">
+                            <PartDraw x="0" y="0" width="88" height="88">
+                                <Variant mode="AMBIENT" target="alpha" value="140" />
+                                <Arc centerX="44" centerY="44" width="77" height="77" startAngle="0" endAngle="360">
+                                    <Stroke color="#ff1b1b1e" thickness="3" />
+                                </Arc>
+                                <Arc centerX="44" centerY="44" width="77" height="77" startAngle="0" endAngle="0">
+                                    <Transform target="endAngle"
+                                        value="clamp(([COMPLICATION.RANGED_VALUE_VALUE] - 70) / 110, 0, 1) * 360" />
+                                    <Stroke color="#ffc9a86a" thickness="3" cap="ROUND" />
+                                </Arc>
+                            </PartDraw>
+                            <!-- gold value when active, light grey in ambient (design §5.4) -->
+                            <PartText x="4" y="20" width="80" height="36">
+                                <Variant mode="AMBIENT" target="alpha" value="0" />
+                                <Text align="CENTER">
+                                    <Font family="barlow_condensed_semibold" size="31" color="#ffe6cd95">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            <PartText x="4" y="20" width="80" height="36" alpha="0">
+                                <Variant mode="AMBIENT" target="alpha" value="255" />
+                                <Text align="CENTER">
+                                    <Font family="barlow_condensed_semibold" size="31" color="#ffc8c6c0">
+                                        <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Default>
+                </Condition>
+                <PartText x="14" y="52" width="60" height="12">
+                    <Variant mode="AMBIENT" target="alpha" value="0" />
+                    <Text align="CENTER">
+                        <Font family="barlow_condensed_medium" size="9" color="#ff8c8a84">mg/dL</Font>
+                    </Text>
+                </PartText>
+            </Complication>
+
+            <!-- Provider without a number: show its text as is, no ring and no colour (design §5.5) -->
             <Complication type="SHORT_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SHORT_TEXT</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
+                <PartDraw x="0" y="0" width="88" height="88">
+                    <Arc centerX="44" centerY="44" width="77" height="77" startAngle="0" endAngle="360">
+                        <Stroke color="#ff1b1b1e" thickness="3" />
+                    </Arc>
+                </PartDraw>
+                <PartText x="4" y="24" width="80" height="32">
+                    <Text align="CENTER" ellipsis="TRUE">
+                        <Font family="barlow_condensed_semibold" size="26" color="#ffefede7">
+                            <Template>%s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
+                        </Font>
+                    </Text>
+                </PartText>
             </Complication>
-            <Complication type="LONG_TEXT">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">LONG_TEXT</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="RANGED_VALUE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">RANGED_VALUE</Font></Text>
-            </PartText>
-            <PartText x="6" y="28" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[v=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_VALUE]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="52" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[min=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MIN]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="76" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[max=%s]]><Parameter expression="[COMPLICATION.RANGED_VALUE_MAX]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="100" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[T=%s]]><Parameter expression="[COMPLICATION.TEXT]" /></Template></Font></Text>
-            </PartText>
-            <PartText x="6" y="124" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffefede7"><Template><![CDATA[Ti=%s]]><Parameter expression="[COMPLICATION.TITLE]" /></Template></Font></Text>
-            </PartText>
-            </Complication>
-            <Complication type="SMALL_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">SMALL_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.SMALL_IMAGE]" /></PartImage>
-            </Complication>
-            <Complication type="MONOCHROMATIC_IMAGE">
-            <PartText x="6" y="4" width="188" height="24">
-                <Text align="CENTER" ellipsis="TRUE"><Font family="SYNC_TO_DEVICE" size="17" color="#ffc9a86a">MONO_IMAGE</Font></Text>
-            </PartText>
-                <PartImage x="60" y="40" width="80" height="80"><Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" /></PartImage>
+
+            <!-- No data: never a made-up or last-known number (design §5.5) -->
+            <Complication type="EMPTY">
+                <PartDraw x="0" y="0" width="88" height="88">
+                    <Arc centerX="44" centerY="44" width="77" height="77" startAngle="0" endAngle="360">
+                        <Stroke color="#ff1b1b1e" thickness="3" />
+                    </Arc>
+                </PartDraw>
+                <PartText x="4" y="20" width="80" height="36">
+                    <Text align="CENTER">
+                        <Font family="barlow_condensed_semibold" size="31" color="#ff8c8a84">--</Font>
+                    </Text>
+                </PartText>
             </Complication>
         </ComplicationSlot>
+
+        <!-- ===== Trend arrow: last character of Gluroo's glucose text (e.g. "176→"). The ranged
+             complication carries no trend (checked on the watch 2026-11-23). ===== -->
+        <ComplicationSlot slotId="2" displayName="Tendencia" x="256" y="297" width="18" height="24"
+            supportedTypes="SHORT_TEXT EMPTY">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
+                primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.BglDataProviderService"
+                primaryProviderType="SHORT_TEXT" />
+            <BoundingBox x="0" y="0" width="18" height="24" />
+            <Complication type="SHORT_TEXT">
+                <PartText x="0" y="0" width="18" height="24">
+                    <Text align="CENTER">
+                        <Font family="SYNC_TO_DEVICE" size="16" color="#ffefede7">
+                            <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
+                        </Font>
+                    </Text>
+                </PartText>
+            </Complication>
+            <Complication type="EMPTY" />
+        </ComplicationSlot>
+
+        <!-- ===== Age of the reading under the value (design §5.5): Gluroo "BglTimeSince".
+             Shown in ambient too. Empty slot: "sin hora", never an invented time. ===== -->
+        <ComplicationSlot slotId="3" displayName="Antigüedad" x="203" y="341" width="60" height="14"
+            supportedTypes="SHORT_TEXT EMPTY">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
+                primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.BglTimeSinceProviderService"
+                primaryProviderType="SHORT_TEXT" />
+            <BoundingBox x="0" y="0" width="60" height="14" />
+            <Complication type="SHORT_TEXT">
+                <PartText x="0" y="0" width="60" height="14">
+                    <Text align="CENTER" ellipsis="TRUE">
+                        <Font family="barlow_condensed_medium" size="11" color="#ffb5b2aa">
+                            <Template>hace %s<Parameter expression="[COMPLICATION.TEXT]" /></Template>
+                        </Font>
+                    </Text>
+                </PartText>
+            </Complication>
+            <Complication type="EMPTY">
+                <PartText x="0" y="0" width="60" height="14">
+                    <Text align="CENTER">
+                        <Font family="barlow_condensed_medium" size="11" color="#ff8c8a84">sin hora</Font>
+                    </Text>
+                </PartText>
+            </Complication>
+        </ComplicationSlot>
+
+        <!-- ===== Hands (art/render_hands.py), pivot at (233, 233) ===== -->
+        <AnalogClock x="0" y="0" width="466" height="466">
+            <HourHand resource="hand_hour" x="225" y="114" width="16" height="137"
+                pivotX="0.5" pivotY="0.868613">
+                <Variant mode="AMBIENT" target="alpha" value="0" />
+            </HourHand>
+            <HourHand resource="hand_hour_aod" x="225" y="114" width="16" height="137"
+                pivotX="0.5" pivotY="0.868613" alpha="0">
+                <Variant mode="AMBIENT" target="alpha" value="255" />
+            </HourHand>
+            <MinuteHand resource="hand_minute" x="227" y="54" width="12" height="201"
+                pivotX="0.5" pivotY="0.890547">
+                <Variant mode="AMBIENT" target="alpha" value="0" />
+            </MinuteHand>
+            <MinuteHand resource="hand_minute_aod" x="227" y="54" width="12" height="201"
+                pivotX="0.5" pivotY="0.890547" alpha="0">
+                <Variant mode="AMBIENT" target="alpha" value="255" />
+            </MinuteHand>
+            <SecondHand resource="hand_second" x="225" y="42" width="16" height="230"
+                pivotX="0.5" pivotY="0.830435">
+                <Variant mode="AMBIENT" target="alpha" value="0" />
+            </SecondHand>
+        </AnalogClock>
+        <PartImage name="tapa" x="225" y="225" width="16" height="16">
+            <Image resource="hand_cap" />
+        </PartImage>
+
     </Scene>
 </WatchFace>

@@ -17,7 +17,7 @@ SERIAL="${1:?serial adb del reloj}"
 CMD="${2:-all}"
 adbw() { "$ADB" -s "$SERIAL" "$@"; }
 
-build() { "$ROOT/scripts/build.bat"; }
+build() { "$ROOT/scripts/sync_art.sh" && "$ROOT/scripts/build.bat"; }
 
 validate() {
   local out
