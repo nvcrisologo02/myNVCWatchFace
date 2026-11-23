@@ -144,10 +144,10 @@ for x, nm in [(-92, "activity"), (92, "weather")]:  # r 44 (2026-11-23; was (+-9
 # date at 4 o'clock in the chapter ring (r 178, 120 deg), turned 30 deg; moved from 6, where the
 # watch draws its notification dot (user, 2026-11-23)
 DX, DY = polar(178, 120)
-wk.boolean_cut(dial, wk.box("cut_date", DX, DY, 22, 16, -1, 1, 30, NAVY_INK, bevel=0))
-df = wk.box("date_frame", DX, DY, 25, 19, -0.02, 0.05, 30, GOLD_POL, bevel=0.02)
-wk.boolean_cut(df, wk.box("cut_date_frame", DX, DY, 22, 16, -1, 1, 30, NAVY_INK, bevel=0))
-wk.cylinder("date_disc", DX, DY, 16, -0.7, -0.6, DATE_DISC)
+wk.boolean_cut(dial, wk.box("cut_date", DX, DY, 32, 22, -1, 1, 30, NAVY_INK, bevel=0))  # 32x22 (was 22x16)
+df = wk.box("date_frame", DX, DY, 35, 25, -0.02, 0.05, 30, GOLD_POL, bevel=0.02)
+wk.boolean_cut(df, wk.box("cut_date_frame", DX, DY, 32, 22, -1, 1, 30, NAVY_INK, bevel=0))
+wk.cylinder("date_disc", DX, DY, 22, -0.7, -0.6, DATE_DISC)
 
 
 def f2deg(v):
@@ -155,8 +155,8 @@ def f2deg(v):
 
 
 if not BG:
-    wk.text_obj("date_num", str(DAY), wk.BODONI, 13, DX, DY, -0.585, NAVY_INK, rot=30)
-    wk.text_obj("gval", str(GLUCOSE), wk.BODONI, 20, 0, 132, 0.01, GLUC_TXT)
+    wk.text_obj("date_num", str(DAY), wk.BODONI, 18, DX, DY, -0.585, NAVY_INK, rot=30)
+    wk.text_obj("gval", str(GLUCOSE), wk.BODONI, 28, 0, 130, 0.01, GLUC_TXT)
     wk.text_obj("gtrend", "→", wk.SYMBOLS, 14, 26, 133, 0.01, GLUC_TXT)
     wk.hand("reserve", -60 + 1.2 * BATTERY, 3.2, 0.5, 0.22, 0.08, -0.2, 0.04, GOLD_HAND, pivot=(-92, 10))
     wk.cylinder("rcap", -92, 10, 2.6, -0.2, -0.1, GOLD_HAND, verts=48)

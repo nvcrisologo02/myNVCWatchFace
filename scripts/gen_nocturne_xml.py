@@ -49,16 +49,16 @@ def ind(block, n):
 
 def glucose_branch(name, color):
     return f'''<Group name="{name}" x="0" y="0" width="160" height="120">
-    <PartText x="36" y="84" width="48" height="26">
+    <PartText x="22" y="78" width="64" height="36">
         <Text align="END">
-            <Font family="bodoni_moda" size="22" color="{color}">
+            <Font family="bodoni_moda" size="30" color="{color}">
                 <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
             </Font>
         </Text>
     </PartText>
-    <PartText x="86" y="85" width="18" height="24">
+    <PartText x="88" y="82" width="24" height="30">
         <Text align="START">
-            <Font family="SYNC_TO_DEVICE" size="16" color="{color}">
+            <Font family="SYNC_TO_DEVICE" size="20" color="{color}">
                 <Template>%s<Parameter expression="{TREND}" /></Template>
             </Font>
         </Text>
@@ -100,10 +100,10 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
 
         <!-- ===== Date at 4 in the chapter ring (moved from 6, where the watch draws its
              notification dot): window centred on (387, 322), turned 30 deg ===== -->
-        <PartText name="fecha" x="373" y="311" width="28" height="22" angle="30">
+        <PartText name="fecha" x="367" y="307" width="40" height="30" angle="30">
             <Variant mode="AMBIENT" target="alpha" value="0" />
             <Text align="CENTER">
-                <Font family="bodoni_moda" size="15" color="#ff0d1630">
+                <Font family="bodoni_moda" size="20" color="#ff0d1630">
                     <Template>%s<Parameter expression="[DAY]" /></Template>
                 </Font>
             </Text>
@@ -211,9 +211,9 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
             </Complication>
             <!-- No data: needle at rest (240 deg), two grey dashes; never a made-up number -->
             <Complication type="EMPTY">
-                <PartText x="56" y="84" width="48" height="26">
+                <PartText x="46" y="78" width="68" height="36">
                     <Text align="CENTER">
-                        <Font family="bodoni_moda" size="22" color="{GREY}">--</Font>
+                        <Font family="bodoni_moda" size="30" color="{GREY}">--</Font>
                     </Text>
                 </PartText>
 {ind(shadowed("aguja_glucosa", "gauge", fx, fy, "240"), 16)}

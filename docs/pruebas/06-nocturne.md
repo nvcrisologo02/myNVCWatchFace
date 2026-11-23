@@ -32,6 +32,12 @@ el disco gira alrededor del centro del reloj; simulado en el PC para los días 0
 y 22 antes de instalar. La fecha pasa a las 4 (girada 30°) porque a las 6 chocaba con el punto
 de notificaciones; vuelve el VI.
 
+## Versión 4: fecha y glucosa más grandes
+
+![Versión 4](capturas/06-nocturne-v4.png)
+
+Ventana de fecha 32×22 con número de 20 px; valor de glucosa de 30 px y flecha de 20.
+
 ## Cómo se reconstruye
 
 ```
