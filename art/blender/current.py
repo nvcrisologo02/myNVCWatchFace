@@ -84,9 +84,13 @@ wk.lathe("bezel", [(220.6, 0.05), (221.3, 0.45), (223.5, 0.70), (229.5, 0.66), (
 
 CENTER = (0.0, 100.0, 50.0, 52.4)
 SIDES = [(-82.0, 74.0, 41.0, 43.2), (82.0, 74.0, 41.0, 43.2)]
-for i, (x, y, r, ro) in enumerate(SIDES + [CENTER]):
-    # gold rims; the centre one sits higher so it crosses over the side ones (design §5.3)
-    wk.torus(f"rim{i}", x, y, (r + ro) / 2, (ro - r) / 20 + 0.03, 0.22 if i == 2 else 0.0, GOLD_POL)
+# gold rims. The centre dial sits on top (design §5.3): its rim is whole and the side rims stop
+# against it, so nothing of the side dials shows inside the centre one (user, 2026-11-23).
+cx_, cy_, r_, ro_ = CENTER
+for i, (x, y, r, ro) in enumerate(SIDES):
+    rim = wk.torus(f"rim{i}", x, y, (r + ro) / 2, (ro - r) / 20 + 0.03, 0.0, GOLD_POL)
+    wk.boolean_cut(rim, wk.cylinder(f"rim_cut{i}", cx_, cy_, ro_ + 0.6, -2, 2, BLACK))
+wk.torus("rim_centre", cx_, cy_, (r_ + ro_) / 2, (ro_ - r_) / 20 + 0.03, 0.05, GOLD_POL)
 
 for i, (x, y) in enumerate([(138.0, 0.0), (-138.0, 0.0)]):
     fr = wk.box(f"win_frame{i}", x, y, 61.2, 27.2, -0.02, 0.08, 0, GOLD, bevel=0.04)

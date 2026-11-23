@@ -268,7 +268,8 @@ def current(out: Path):
     Image.fromarray((np.clip(wells, 0, 1) * 255).astype(np.uint8), "L").save(out / "current_wells.png")
     Image.fromarray((np.clip(wins, 0, 1) * 255).astype(np.uint8), "L").save(out / "current_windows.png")
     snail = np.zeros_like(land)
-    for cx, cy, r, ro in rb.WELLS:
+    # side dials first, centre last: the centre dial sits on top and its snailing wins (design §5.3)
+    for cx, cy, r, ro in list(rb.SIDE_WELLS) + [rb.CENTER_WELL]:
         d = np.hypot(xx - cx, yy - cy)
         snail = np.where(d < r + 1, 0.5 + 0.5 * np.sin(2 * math.pi * d / 1.0), snail)
     Image.fromarray((snail * 255).astype(np.uint8), "L").save(out / "current_snail.png")
