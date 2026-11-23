@@ -153,7 +153,7 @@ def navigator(out: Path):
 
 BODONI = Path(__file__).resolve().parents[2] / "nocturne/src/main/res/font/bodoni_moda.ttf"  # SIL OFL
 NGOLD = (214, 180, 112, 255)
-FAN = (0.0, 40.0, 74.0)  # pivot x, y and radius of the retrograde glucose fan
+FAN = (0.0, 32.0, 62.0)  # pivot x, y and radius of the glucose fan (2026-11-23: was (0, 40, 74), clashed with the 30 px value)
 
 
 def f2deg(v):

@@ -129,10 +129,10 @@
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== Glucose: retrograde fan, pivot (233, 273), r 74, 40 at 240 deg .. 300 at 120 deg
+        <!-- ===== Glucose: retrograde fan, pivot (233, 265), r 62, 40 at 240 deg .. 300 at 120 deg
              (scale and zones printed in the dial); value + trend under it, coloured by range:
-             < 70 red, > 180 amber, otherwise gold. Slot box: x 153..313, y 263..383. ===== -->
-        <ComplicationSlot slotId="1" displayName="Glucosa" x="153" y="263" width="160" height="120"
+             < 70 red, > 180 amber, otherwise gold. Slot box: x 153..313, y 253..373; value under the arc, y 334..370. ===== -->
+        <ComplicationSlot slotId="1" displayName="Glucosa" x="153" y="253" width="160" height="120"
             supportedTypes="RANGED_VALUE EMPTY">
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.GlucoseRangeDataProviderService"
@@ -146,14 +146,14 @@
                     </Expressions>
                     <Compare expression="hipo">
                         <Group name="valor_hipo" x="0" y="0" width="160" height="120">
-                            <PartText x="22" y="78" width="64" height="36">
+                            <PartText x="22" y="81" width="64" height="36">
                                 <Text align="END">
                                     <Font family="bodoni_moda" size="30" color="#ffe5483c">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="88" y="82" width="24" height="30">
+                            <PartText x="88" y="85" width="24" height="30">
                                 <Text align="START">
                                     <Font family="SYNC_TO_DEVICE" size="20" color="#ffe5483c">
                                         <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
@@ -164,14 +164,14 @@
                     </Compare>
                     <Compare expression="hiper">
                         <Group name="valor_hiper" x="0" y="0" width="160" height="120">
-                            <PartText x="22" y="78" width="64" height="36">
+                            <PartText x="22" y="81" width="64" height="36">
                                 <Text align="END">
                                     <Font family="bodoni_moda" size="30" color="#ffe3a63a">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="88" y="82" width="24" height="30">
+                            <PartText x="88" y="85" width="24" height="30">
                                 <Text align="START">
                                     <Font family="SYNC_TO_DEVICE" size="20" color="#ffe3a63a">
                                         <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
@@ -182,14 +182,14 @@
                     </Compare>
                     <Default>
                         <Group name="valor_rango" x="0" y="0" width="160" height="120">
-                            <PartText x="22" y="78" width="64" height="36">
+                            <PartText x="22" y="81" width="64" height="36">
                                 <Text align="END">
                                     <Font family="bodoni_moda" size="30" color="#ffe6cd95">
                                         <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
                                     </Font>
                                 </Text>
                             </PartText>
-                            <PartText x="88" y="82" width="24" height="30">
+                            <PartText x="88" y="85" width="24" height="30">
                                 <Text align="START">
                                     <Font family="SYNC_TO_DEVICE" size="20" color="#ffe6cd95">
                                         <Template>%s<Parameter expression="subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, textLength([COMPLICATION.TEXT]))" /></Template>
@@ -199,27 +199,27 @@
                         </Group>
                     </Default>
                 </Condition>
-                <PartImage name="aguja_glucosa_sombra" x="73" y="-63" width="16" height="88" pivotX="0.5" pivotY="0.852273">
+                <PartImage name="aguja_glucosa_sombra" x="73" y="-48" width="16" height="75" pivotX="0.5" pivotY="0.833333">
                     <Transform target="angle" value="240 - 120 * (clamp([COMPLICATION.RANGED_VALUE_VALUE], 40, 300) - 40) / 260" />
                     <Image resource="noc_hand3d_gauge_shadow" />
                 </PartImage>
-                <PartImage name="aguja_glucosa" x="72" y="-65" width="16" height="88" pivotX="0.5" pivotY="0.852273">
+                <PartImage name="aguja_glucosa" x="72" y="-50" width="16" height="75" pivotX="0.5" pivotY="0.833333">
                     <Transform target="angle" value="240 - 120 * (clamp([COMPLICATION.RANGED_VALUE_VALUE], 40, 300) - 40) / 260" />
                     <Image resource="noc_hand3d_gauge" />
                 </PartImage>
             </Complication>
             <!-- No data: needle at rest (240 deg), two grey dashes; never a made-up number -->
             <Complication type="EMPTY">
-                <PartText x="46" y="78" width="68" height="36">
+                <PartText x="46" y="81" width="68" height="36">
                     <Text align="CENTER">
                         <Font family="bodoni_moda" size="30" color="#ff8c8a84">--</Font>
                     </Text>
                 </PartText>
-                <PartImage name="aguja_glucosa_sombra" x="73" y="-63" width="16" height="88" pivotX="0.5" pivotY="0.852273">
+                <PartImage name="aguja_glucosa_sombra" x="73" y="-48" width="16" height="75" pivotX="0.5" pivotY="0.833333">
                     <Transform target="angle" value="240" />
                     <Image resource="noc_hand3d_gauge_shadow" />
                 </PartImage>
-                <PartImage name="aguja_glucosa" x="72" y="-65" width="16" height="88" pivotX="0.5" pivotY="0.852273">
+                <PartImage name="aguja_glucosa" x="72" y="-50" width="16" height="75" pivotX="0.5" pivotY="0.833333">
                     <Transform target="angle" value="240" />
                     <Image resource="noc_hand3d_gauge" />
                 </PartImage>

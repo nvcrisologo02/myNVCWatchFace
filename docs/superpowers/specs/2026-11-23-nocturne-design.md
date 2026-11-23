@@ -55,7 +55,7 @@ Coordenadas en píxeles del reloj, centro (233, 233), y hacia abajo.
 | Logo NVC | (233, 191), 54 de ancho, oro | fondo 3D |
 | Contador 9 h · actividad + reserva | centro **(141, 243), r 44** (agrandado el 2026-11-23; era (143, 241), r 36), hundido con caracoleado, aro de oro; arco de reserva −60°…+60° arriba; icono abajo | fondo; icono y aguja dinámicos |
 | Contador 3 h · tiempo | centro **(325, 243), r 44** (agrandado el 2026-11-23) | fondo; icono + temperatura dinámicos |
-| **Glucosa** | abanico retrógrado con pivote (233, 273), r 74, de 40 (a 240°) a 300 (a 120°); zonas rojo < 70, oro 70–180, ámbar > 180; marcas 70 y 180 | escala en el fondo; aguja azulada dinámica |
+| **Glucosa** | abanico retrógrado con pivote **(233, 265), r 62** (compactado el 2026-11-23 para que no choque con el valor de 30 px; era (233, 273), r 74), de 40 (a 240°) a 300 (a 120°); zonas rojo < 70, oro 70–180, ámbar > 180; marcas 70 y 180 | escala en el fondo; aguja azulada dinámica |
 | Valor de glucosa | (233, 359), número Bodoni **30 px** (era 20) + flecha de 20 px; color por rango; «mg/dL» impreso debajo | dinámico |
 | Fecha | **ventana a las 4** en el anillo de horas, (387, 322), **32×22** girada 30°, número de 20 px (agrandada el 2026-11-23; era 22×16), en lugar del IIII (2026-11-23: a las 6 chocaba con el punto de notificaciones del reloj); el VI vuelve | ventana en el fondo; número dinámico |
 | Agujas | Breguet de oro (anillo «pomme» cerca de la punta): horaria hasta r 112, minutero r 172; segundero de oro fino | 3D, sprites con sombra |

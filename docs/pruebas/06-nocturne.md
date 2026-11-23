@@ -38,6 +38,13 @@ de notificaciones; vuelve el VI.
 
 Ventana de fecha 32×22 con número de 20 px; valor de glucosa de 30 px y flecha de 20.
 
+## Versión 5: abanico compactado
+
+![Versión 5](capturas/06-nocturne-v5.png)
+
+Con el valor a 30 px el número chocaba con el arco y la aguja. El abanico pasa a pivote
+(233, 265) y r 62; el valor queda debajo, libre.
+
 ## Cómo se reconstruye
 
 ```

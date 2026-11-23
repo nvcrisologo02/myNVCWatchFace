@@ -81,7 +81,7 @@ def nocturne(name, m):
         wk.cylinder("cap", 0, 0, 5.0, 0.80, 0.93, gold, verts=64)
     elif name == "gauge":       # retrograde glucose needle; blued steel was invisible on the blue
         # dial on the watch (design risk 2, 2026-11-23), so polished gold like the Breguet hands
-        wk.hand(name, 0, 7.1, 0.8, 0.30, 0.10, 0.05, 0.05, gold)
+        wk.hand(name, 0, 5.9, 0.8, 0.30, 0.10, 0.05, 0.05, gold)  # fan r 62
         wk.cylinder("gcap", 0, 0, 3.2, 0.05, 0.14, gold, verts=48)
     elif name in ("reserve", "reserve_low"):
         mat = m["red_metal"] if name == "reserve_low" else gold

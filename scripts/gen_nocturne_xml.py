@@ -17,7 +17,7 @@ R_ANGLE = "-60 + 1.2 * clamp([BATTERY_PERCENT], 0, 100)"
 RED, AMBER, GOLD, GREY, CREAM = "#ffe5483c", "#ffe3a63a", "#ffe6cd95", "#ff8c8a84", "#fff0e8d4"
 TREND = ("subText([COMPLICATION.TEXT], textLength([COMPLICATION.TEXT]) - 1, "
          "textLength([COMPLICATION.TEXT]))")
-FAN_PIVOT = (80, 10)  # inside the glucose slot (x 153, y 263) -> watch (233, 273)
+FAN_PIVOT = (80, 12)  # inside the glucose slot (x 153, y 253) -> watch (233, 265)
 
 
 def hand_attrs(n):
@@ -49,14 +49,14 @@ def ind(block, n):
 
 def glucose_branch(name, color):
     return f'''<Group name="{name}" x="0" y="0" width="160" height="120">
-    <PartText x="22" y="78" width="64" height="36">
+    <PartText x="22" y="81" width="64" height="36">
         <Text align="END">
             <Font family="bodoni_moda" size="30" color="{color}">
                 <Template>%s<Parameter expression="round([COMPLICATION.RANGED_VALUE_VALUE])" /></Template>
             </Font>
         </Text>
     </PartText>
-    <PartText x="88" y="82" width="24" height="30">
+    <PartText x="88" y="85" width="24" height="30">
         <Text align="START">
             <Font family="SYNC_TO_DEVICE" size="20" color="{color}">
                 <Template>%s<Parameter expression="{TREND}" /></Template>
@@ -182,10 +182,10 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
             <Complication type="EMPTY" />
         </ComplicationSlot>
 
-        <!-- ===== Glucose: retrograde fan, pivot (233, 273), r 74, 40 at 240 deg .. 300 at 120 deg
+        <!-- ===== Glucose: retrograde fan, pivot (233, 265), r 62, 40 at 240 deg .. 300 at 120 deg
              (scale and zones printed in the dial); value + trend under it, coloured by range:
-             < 70 red, > 180 amber, otherwise gold. Slot box: x 153..313, y 263..383. ===== -->
-        <ComplicationSlot slotId="1" displayName="Glucosa" x="153" y="263" width="160" height="120"
+             < 70 red, > 180 amber, otherwise gold. Slot box: x 153..313, y 253..373; value under the arc, y 334..370. ===== -->
+        <ComplicationSlot slotId="1" displayName="Glucosa" x="153" y="253" width="160" height="120"
             supportedTypes="RANGED_VALUE EMPTY">
             <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="EMPTY"
                 primaryProvider="com.gluroo.app/com.gluroo.app.dev.providers.GlucoseRangeDataProviderService"
@@ -211,7 +211,7 @@ XML = f'''<?xml version="1.0" encoding="utf-8"?>
             </Complication>
             <!-- No data: needle at rest (240 deg), two grey dashes; never a made-up number -->
             <Complication type="EMPTY">
-                <PartText x="46" y="78" width="68" height="36">
+                <PartText x="46" y="81" width="68" height="36">
                     <Text align="CENTER">
                         <Font family="bodoni_moda" size="30" color="{GREY}">--</Font>
                     </Text>
