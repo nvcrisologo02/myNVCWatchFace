@@ -214,9 +214,42 @@ def nocturne(out: Path):
     Image.fromarray((hob * 255).astype(np.uint8), "L").save(out / "nocturne_guilloche.png")
 
 
+def current(out: Path):
+    """Height and material masks of the installed face (same geometry as art/render_bg.py)."""
+    import numpy as np
+    S = rb.S
+    assert S == N
+    yy, xx = np.mgrid[0:S, 0:S].astype(np.float32)
+    xx = (xx + 0.5 - C) / K
+    yy = (yy + 0.5 - C) / K
+    rr = np.hypot(xx, yy)
+    polys = rb.load_land(str(ART / "data/ne_50m_land.geojson"))
+    land = rb.raster(lambda d, k, c: rb.draw_land(d, k, c, polys))
+    land = np.clip((rb.gauss(land, rb.COAST_SMOOTH * K) - 0.5) / 0.10 + 0.5, 0, 1)
+    land *= np.clip((216.0 - rr) / 1.0 + 0.5, 0, 1)
+    _, y_cut = rb.proj(0.0, rb.LAT_CUT)
+    land *= np.clip((float(y_cut) - yy) / 0.5, 0, 1)
+    covers = np.zeros_like(land)
+    for cx, cy, _r, ro in rb.WELLS:
+        covers = np.maximum(covers, (np.hypot(xx - cx, yy - cy) < ro + 1.0).astype(np.float32))
+    for cx, cy in rb.WINDOWS:
+        covers = np.maximum(covers, ((np.abs(xx - cx) < rb.WIN_W / 2 + 3) & (np.abs(yy - cy) < rb.WIN_H / 2 + 3))
+                            .astype(np.float32))
+    land_v = land * (1 - covers)
+    rays = rb.raster(rb.draw_rays)
+    fade = np.clip((rr - 24.0) / 40.0, 0, 1) * np.clip((203.0 - rr) / 2.0, 0, 1)
+    rays_v = rays * fade * (1 - np.clip(land * 1.5, 0, 1)) * (1 - covers)
+    dots = rb.raster(rb.draw_dots)
+    # milled continents (deep), engraved rays and minute dots (shallow); 0.5 = dial surface
+    height = 0.5 - 0.45 * rb.gauss(land_v, 0.5 * K) - 0.12 * rb.gauss(rays_v, 0.15 * K) - 0.2 * rb.gauss(dots, 0.2 * K)
+    Image.fromarray((np.clip(height, 0, 1) * 65535).astype(np.uint16)).save(out / "current_height.png")
+    Image.fromarray((np.clip(land_v, 0, 1) * 255).astype(np.uint8), "L").save(out / "current_land.png")
+
+
 if __name__ == "__main__":
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else ART / "blender/build"
     out.mkdir(parents=True, exist_ok=True)
     navigator(out)
     nocturne(out)
+    current(out)
     print(out)
