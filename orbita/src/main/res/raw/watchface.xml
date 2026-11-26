@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NVC Orbita placeholder (plan task 2); replaced by scripts/gen_orbita_xml.py. -->
+<WatchFace width="466" height="466" clipShape="CIRCLE">
+    <Metadata key="CLOCK_TYPE" value="DIGITAL" />
+    <Scene backgroundColor="#ff000000">
+        <DigitalClock x="133" y="203" width="200" height="60">
+            <TimeText format="hh:mm" align="CENTER" x="0" y="0" width="200" height="60">
+                <Font family="barlow_condensed_semibold" size="48" color="#ffffffff" />
+            </TimeText>
+        </DigitalClock>
+    </Scene>
+</WatchFace>
