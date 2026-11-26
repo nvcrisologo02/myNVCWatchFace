@@ -1,6 +1,8 @@
 # Esfera «NVC Órbita» — diseño
 
-Fecha: 2026-11-26 · Estado: pendiente de aprobación del usuario (preguntas del revisor respondidas el mismo día).
+Fecha: 2026-11-26 · Estado: aprobado y construido; probado en el reloj el 2026-11-26 (`docs/pruebas/07-orbita.md`).
+Cambios al construir: zapatilla a −45° y pasos desde −40° (pisaba el color); el color de la glucosa
+se decide sobre el valor redondeado; el hueco de entreno trae OHealth por defecto.
 Diseño del usuario: `docs/referencias/orbita-referencia.png`. Boceto aprobado (2026-11-26):
 `docs/mockup/propuestas/orbita_3d.png` y los cinco colores en `docs/mockup/propuestas/orbita_colores.png`.
 

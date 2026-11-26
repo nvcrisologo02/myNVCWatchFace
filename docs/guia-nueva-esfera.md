@@ -88,6 +88,11 @@ Para una cara nueva `<cara>` (minúsculas) con el prefijo de recursos `<pre>_`:
 | Quitar un `ComplicationSlot` | las asignaciones del usuario **se desplazan por posición**: hay que reasignar en el reloj |
 | Comentarios XML | no pueden contener `--` (el validador falla) |
 | Always-On | `screencap` devuelve negro: sólo se comprueba **a ojo** en el reloj |
+| `ColorConfiguration` + `PartImage tintColor="[CONFIGURATION.id]"` | funciona (Órbita): color elegible en Personalizar. El tinte multiplica: se renderiza la pieza en blanco y gris con su sombreado y se ajusta cada color con `art/tint_preview.py` |
+| `PartText` > `TextCircular` | funciona para texto curvado (pasos, batería, pulso en la Órbita) |
+| Texto fijo en un `Font` con saltos de línea alrededor | **no se dibuja** en `TextCircular`, aunque el validador lo acepte: el texto fijo va en línea (`<Font …>-- BPM</Font>`) |
+| `[STEP_COUNT]`, `[STEP_PERCENT]` (0–100), `[HEART_RATE]` | funcionan sin permiso declarado; `[HEART_RATE]` vale 0 sin lectura |
+| `ComplicationSlot` con `<Complication type=…/>` vacíos | hueco invisible que sólo recoge el toque (entreno de un toque en la Órbita) |
 
 Antes de usar un elemento, atributo o fuente de datos nuevos, hay que buscarlo en la
 documentación oficial de WFF (developer.android.com/training/wearables/wff) y pasar el validador.
@@ -167,3 +172,8 @@ Son el punto de partida. Todas llegaron así después de que el usuario pidiera 
 6. Quitar un hueco sin avisar de que hay que reasignar las complicaciones en el reloj.
 7. Dar algo por bueno sin una captura del reloj. Compilar y validar no basta.
 8. Retocar PNG o XML a mano: todo sale de los scripts.
+9. Comparar el boceto con la referencia del usuario **lado a lado**. Se ven bien las diferencias sólo
+   **superponiendo** (fundido al 50 % o bordes en rojo y cian); así se vio que su globo era un mapa
+   plano agrandado y no una esfera real.
+10. Dejar iconos fijos cerca de una zona que el reloj tiñe o cambia: comprobarlo con un test sobre el
+    impreso (la zapatilla pisaba el sector de color).

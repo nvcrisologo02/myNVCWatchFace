@@ -38,3 +38,34 @@ modo `ref`). Fila de arriba: el tinte; fila de abajo: Blender.
 
 Lo único que el tinte no reproduce es el reflejo del color del anillo en el borde del globo, que en el
 render de Blender es apenas visible. Que el reloj multiplique igual que PIL se comprueba en la tarea 6.
+
+## En el reloj (tarea 6, 2026-11-26)
+
+OnePlus Watch 3, Wear OS 5, WFF v2. Ciclo: `FACE=orbita scripts/watch.sh <serial> all orbita-vN`.
+
+### v1 — `capturas/orbita-v1.png`
+- Instala, se selecciona y dibuja. Superpuesta al boceto (`art/blender/build/ovl_watch.png`), coinciden
+  anillo, números, globo, satélite, sub-esfera, textos curvados de la banda e icono de pila.
+- Datos reales: 3915 pasos, batería 48 %, 66 BPM, glucosa 138 en blanco (Gluroo). La marca de pasos
+  se coloca según `[STEP_PERCENT]`.
+- **Fallo:** la zapatilla pisaba el sector de color (lo vio el usuario).
+
+### v2 — `capturas/orbita-v2.png`, `orbita-v2b.png`
+- Zapatilla a −45° y número desde −40°: queda sobre la banda blanca. Test
+  `test_band_icons_stay_off_the_coloured_sectors`.
+- **Color:** el usuario lo cambió a naranja en Personalizar y el tinte se aplica (captura v2). El
+  enfoque A funciona en el reloj.
+- **Fallo:** el pulso desaparecía con pulso 0. Forzando la rama «sin lectura» se vio la causa: el
+  texto fijo `-- BPM` dentro de `TextCircular` con saltos de línea alrededor **no se dibuja** (el
+  validador lo acepta). En línea, sí.
+
+### v3 — `capturas/orbita-v3.png`
+- «-- BPM» visible sin lectura. Test `test_fixed_font_text_is_inline`.
+- **Entreno:** tocar los pasos abre «Entrenamiento libre» de OHealth (captura intermedia).
+- El usuario lo da por bueno: «todo listo, me gusta».
+
+### Pendiente
+- Casos de glucosa con `fakeglucose` (sin dato, 39, 69, 70, 180, 181, 401): **no se han pasado**.
+  Los umbrales de color están cubiertos por `test_glucose_thresholds` en el PC.
+- Pulso 0 con el reloj puesto: no confirmado que 0 sea siempre «sin lectura».
+- Always-On: el usuario no ha comentado nada específico (sólo se comprueba a ojo).
