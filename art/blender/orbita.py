@@ -14,7 +14,8 @@ art/blender/build/orbita_ref_grid.png.
 colour: verde (default) | naranja | rojo | amarillo | azul
 mode: sketch (default) | bg: production dial, no dynamic content, sectors in neutral silver |
       ring: only the coloured sectors in white anodised aluminium, transparent elsewhere and under
-      the printed numerals, for the watch to tint (design 2026-11-26-orbita §4 A)
+      the printed numerals, for the watch to tint (design 2026-11-26-orbita §4 A) |
+      ref: as bg but with the sectors really in <colour>, the target the tint is fitted to
 """
 import math
 import sys
@@ -29,8 +30,8 @@ argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 OUT = Path(argv[0]) if argv else wk.ROOT / "docs/mockup/propuestas/orbita_3d.png"
 SAMPLES = int(argv[1]) if len(argv) > 1 else 128
 COLOUR = argv[2] if len(argv) > 2 else "verde"
-MODE = argv[3] if len(argv) > 3 else "sketch"  # sketch | bg (production dial) | ring (tint layer)
-BG = MODE in ("bg", "ring")
+MODE = argv[3] if len(argv) > 3 else "sketch"  # sketch | bg (production dial) | ring (tint layer) | ref
+BG = MODE in ("bg", "ring", "ref")
 TIME = (10, 8, 37)  # as in the reference picture
 PRINT = wk.BUILD / ("orbita_print_bg.png" if BG else "orbita_print.png")
 

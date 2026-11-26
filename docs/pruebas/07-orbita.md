@@ -18,3 +18,23 @@ de abajo a la vez: **PASSED**.
 | Tinte del anillo | `<PartImage … tintColor="[CONFIGURATION.colorAnillo]">` con `<UserConfigurations><ColorConfiguration id="colorAnillo" displayName defaultValue><ColorOption id displayName colors="#AARRGGBB"/>` | validado |
 | `clamp`, `round` | expresiones | `clamp` ya funciona en la Nocturne en el reloj; `round` aparece en la documentación |
 | Slot invisible | `ComplicationSlot` con `<Complication type="…"/>` vacíos | validado. Falta comprobar en el reloj que el toque abre el proveedor |
+
+## Tinte del anillo (tarea 4, 2026-11-26, en el PC)
+
+`python -I art/tint_preview.py art/out/orbita art/blender/build/tintref docs/mockup/propuestas/orbita_tinte.png`
+compone en el PC lo que hará el reloj (capa `ring_tint.png` multiplicada por el color, canal a canal en
+sRGB) y ajusta cada color a la media de los sectores del render de Blender en ese color (`orbita.py`,
+modo `ref`). Fila de arriba: el tinte; fila de abajo: Blender.
+
+`RING_ARGB` (error medio por canal < 1):
+
+| Color | ARGB |
+|---|---|
+| verde | `#ff559254` |
+| naranja | `#ffdc6e0b` |
+| rojo | `#ffb10d0b` |
+| amarillo | `#ffe7bb0f` |
+| azul | `#ff0d5aac` |
+
+Lo único que el tinte no reproduce es el reflejo del color del anillo en el borde del globo, que en el
+render de Blender es apenas visible. Que el reloj multiplique igual que PIL se comprueba en la tarea 6.
