@@ -54,9 +54,10 @@ final class FakeState {
             return shortText(String.valueOf(value));
         }
         float v = Math.max(SENSOR_MIN, Math.min(SENSOR_MAX, value));
-        // Gluroo's ranged complication carries no text or title; mirror that.
+        // androidx rejects a ranged value with no text, title or image (the picker then drops the
+        // provider: watch, 2026-11-26), so carry the value as text; the faces only read the value.
         return new RangedValueComplicationData.Builder(v, SENSOR_MIN, SENSOR_MAX,
-                text(value + " mg/dL")).build();
+                text(value + " mg/dL")).setText(text(String.valueOf(value))).build();
     }
 
     ComplicationData glucoseText() {

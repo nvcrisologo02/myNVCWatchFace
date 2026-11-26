@@ -64,8 +64,29 @@ OnePlus Watch 3, Wear OS 5, WFF v2. Ciclo: `FACE=orbita scripts/watch.sh <serial
 - **Entreno:** tocar los pasos abre «Entrenamiento libre» de OHealth (captura intermedia).
 - El usuario lo da por bueno: «todo listo, me gusta».
 
+### Glucosa con `fakeglucose` (2026-11-26) — `capturas/orbita-glu-*.png`
+- **Fallo del proveedor falso, no de la esfera:** al elegirlo en Personalizar el selector se cerraba y
+  dejaba el hueco vacío. El reloj pide una vista previa y androidx la rechaza si el valor de rango no
+  lleva texto, título ni imagen (`IllegalArgumentException` en `getComplicationPreviewData`). Arreglado
+  en `FakeState.range()` (lleva el valor también como texto).
+- Resultados (Bluetooth apagado):
+
+| Caso | Se ve | Bien |
+|---|---|---|
+| 112 | 112 blanco | sí |
+| 39 | 39 rojo | sí |
+| 69 | 69 rojo | sí |
+| 70 | 70 blanco | sí |
+| 180 | 180 blanco | sí |
+| 181 | 181 ámbar | sí |
+| 400 | 400 ámbar | sí |
+| 401 | 400 ámbar (el proveedor limita a 20–400, como Gluroo) | sí |
+| sin dato (`NoData`) | sub-esfera vacía | sí: nunca un valor viejo |
+
+- **Sin dato real de Gluroo** (Bluetooth apagado, sin móvil) llega `NoDataComplicationData`: la esfera deja
+  la sub-esfera vacía. El «--» gris sólo sale con el hueco vacío a propósito (`EMPTY`); WFF no tiene tipo
+  `NO_DATA` (documentación de `Complication` y `ComplicationSlot`), así que no se puede dibujar otra cosa.
+
 ### Pendiente
-- Casos de glucosa con `fakeglucose` (sin dato, 39, 69, 70, 180, 181, 401): **no se han pasado**.
-  Los umbrales de color están cubiertos por `test_glucose_thresholds` en el PC.
 - Pulso 0 con el reloj puesto: no confirmado que 0 sea siempre «sin lectura».
-- Always-On: el usuario no ha comentado nada específico (sólo se comprueba a ojo).
+- Always-On: no está activado en el reloj; sin comprobar en pantalla.
