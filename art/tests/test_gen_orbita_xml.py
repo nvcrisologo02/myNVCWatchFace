@@ -100,3 +100,19 @@ def test_fixed_font_text_is_inline(xml):
         inner = m.group(1)
         if "<Template>" not in inner:
             assert inner == inner.strip() and "\n" not in inner, repr(inner)
+
+
+def test_glucose_colour_per_branch(tree):
+    """Each glucose branch draws its own colour: hypo red, hyper amber, in range white, no data grey."""
+    g = slot(tree, gen.GLUCOSE_SLOT)
+    ranged = next(c for c in g.findall("Complication") if c.get("type") == "RANGED_VALUE")
+    cond = ranged.find("Condition")
+    exprs = {e.get("name"): e.text.strip() for e in cond.find("Expressions")}
+    v = "round([COMPLICATION.RANGED_VALUE_VALUE])"
+    want = {f"{v} < 70": RED, f"{v} > 180": AMBER}
+    for cmp in cond.findall("Compare"):
+        colours = {f.get("color") for f in cmp.iter("Font")}
+        assert colours == {want[exprs[cmp.get("expression")]]}, exprs[cmp.get("expression")]
+    assert {f.get("color") for f in cond.find("Default").iter("Font")} == {WHITE}
+    empty = next(c for c in g.findall("Complication") if c.get("type") == "EMPTY")
+    assert {f.get("color") for f in empty.iter("Font")} == {GREY}
