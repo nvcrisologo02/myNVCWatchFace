@@ -21,7 +21,7 @@ FONT = "barlow_condensed_semibold"
 RING_ARGB = {"verde": "#ff559254", "naranja": "#ffdc6e0b", "rojo": "#ffb10d0b",
              "amarillo": "#ffe7bb0f", "azul": "#ff0d5aac"}
 TEXT_R = 213               # radius of the band texts (make_prints.OB_TEXT_R)
-STEPS_START = -43          # steps value, clockwise from here (make_prints.OB_STEPS_START)
+STEPS_START = -40          # steps value, clockwise from here (make_prints.OB_STEPS_START)
 BATT_START = 214           # battery value, counter-clockwise from here (make_prints.OB_BATT_START)
 HR_CENTRE = 149            # heart rate centred here (make_prints.OB_HR_CENTRE)
 GLU_X, GLU_Y, GLU_R = 233, 367, 46   # glucose sub-dial (dial centre + (0, 134)), dark disc radius
@@ -48,9 +48,7 @@ def circular(name, expr_template, params, start, end, direction, align, color, a
     {AMB if ambient_hidden else ""}
     <TextCircular centerX="233" centerY="233" width="{d}" height="{d}" startAngle="{start}" endAngle="{end}"
         direction="{direction}" align="{align}">
-        <Font family="{FONT}" size="28" color="{color}">
-            {body}
-        </Font>
+        <Font family="{FONT}" size="28" color="{color}">{body}</Font>
     </TextCircular>
 </PartText>'''
 

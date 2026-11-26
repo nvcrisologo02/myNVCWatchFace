@@ -48,11 +48,9 @@
         <!-- ===== Band texts: steps at 10:30 (shoe printed in the dial), battery at 7, pulse at 5 ===== -->
         <PartText name="pasos" x="0" y="0" width="466" height="466">
             <Variant mode="AMBIENT" target="alpha" value="0" />
-            <TextCircular centerX="233" centerY="233" width="426" height="426" startAngle="-43" endAngle="-3"
+            <TextCircular centerX="233" centerY="233" width="426" height="426" startAngle="-40" endAngle="0"
                 direction="CLOCKWISE" align="START">
-                <Font family="barlow_condensed_semibold" size="28" color="#ff28282a">
-                    <Template>%s<Parameter expression="[STEP_COUNT]" /></Template>
-                </Font>
+                <Font family="barlow_condensed_semibold" size="28" color="#ff28282a"><Template>%s<Parameter expression="[STEP_COUNT]" /></Template></Font>
             </TextCircular>
         </PartText>
         <Group name="bateria_grupo" x="0" y="0" width="466" height="466">
@@ -70,9 +68,7 @@
                         <Variant mode="AMBIENT" target="alpha" value="0" />
                         <TextCircular centerX="233" centerY="233" width="426" height="426" startAngle="214" endAngle="182"
                             direction="COUNTER_CLOCKWISE" align="START">
-                            <Font family="barlow_condensed_semibold" size="28" color="#ffe5483c">
-                                <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
-                            </Font>
+                            <Font family="barlow_condensed_semibold" size="28" color="#ffe5483c"><Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template></Font>
                         </TextCircular>
                     </PartText>
                 </Compare>
@@ -85,9 +81,7 @@
                         <Variant mode="AMBIENT" target="alpha" value="0" />
                         <TextCircular centerX="233" centerY="233" width="426" height="426" startAngle="214" endAngle="182"
                             direction="COUNTER_CLOCKWISE" align="START">
-                            <Font family="barlow_condensed_semibold" size="28" color="#ff28282a">
-                                <Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template>
-                            </Font>
+                            <Font family="barlow_condensed_semibold" size="28" color="#ff28282a"><Template>%s%%<Parameter expression="[BATTERY_PERCENT]" /></Template></Font>
                         </TextCircular>
                     </PartText>
                 </Default>
@@ -105,9 +99,7 @@
                         <Variant mode="AMBIENT" target="alpha" value="0" />
                         <TextCircular centerX="233" centerY="233" width="426" height="426" startAngle="171" endAngle="127"
                             direction="COUNTER_CLOCKWISE" align="CENTER">
-                            <Font family="barlow_condensed_semibold" size="28" color="#ff28282a">
-                                -- BPM
-                            </Font>
+                            <Font family="barlow_condensed_semibold" size="28" color="#ff28282a">-- BPM</Font>
                         </TextCircular>
                     </PartText>
                 </Compare>
@@ -116,9 +108,7 @@
                         <Variant mode="AMBIENT" target="alpha" value="0" />
                         <TextCircular centerX="233" centerY="233" width="426" height="426" startAngle="171" endAngle="127"
                             direction="COUNTER_CLOCKWISE" align="CENTER">
-                            <Font family="barlow_condensed_semibold" size="28" color="#ff28282a">
-                                <Template>%s BPM<Parameter expression="round([HEART_RATE])" /></Template>
-                            </Font>
+                            <Font family="barlow_condensed_semibold" size="28" color="#ff28282a"><Template>%s BPM<Parameter expression="round([HEART_RATE])" /></Template></Font>
                         </TextCircular>
                     </PartText>
                 </Default>

@@ -55,3 +55,15 @@ def test_step_marker_geometry(out):
     x0, y0, x1, y1 = a.getbbox()
     assert C - 6 * K <= x0 and x1 <= C + 6 * K
     assert C - 227 * K <= y0 and y1 <= C - 200 * K
+
+
+def test_band_icons_stay_off_the_coloured_sectors(out):
+    """Dark band ink (the shoe) must not land on the coloured sectors: the watch tints them (user, 2026-11-26)."""
+    im = Image.open(out / "orbita_print_bg.png").convert("RGBA")
+    m = Image.open(out / "orbita_ring_mask.png").convert("L")
+    for deg in range(-55, -40):  # between the 10 (whose shadow belongs on the sector) and the steps
+        for r in range(203, 224):
+            x, y = px(r, deg)
+            p = im.getpixel((x, y))
+            dark = p[3] > 64 and max(p[:3]) < 120
+            assert not (dark and m.getpixel((x, y)) > 0), (r, deg)

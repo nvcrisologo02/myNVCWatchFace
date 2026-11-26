@@ -92,3 +92,11 @@ def test_integer_geometry(tree):
             v = el.get(k)
             if v is not None and not v.startswith("["):
                 assert re.fullmatch(r"-?\d+", v), (el.tag, k, v)
+
+
+def test_fixed_font_text_is_inline(xml):
+    """A fixed text with newlines/indent round it is not drawn by the watch inside TextCircular (watch, 2026-11-26)."""
+    for m in re.finditer(r"<Font [^>]*>(.*?)</Font>", xml, re.S):
+        inner = m.group(1)
+        if "<Template>" not in inner:
+            assert inner == inner.strip() and "\n" not in inner, repr(inner)
