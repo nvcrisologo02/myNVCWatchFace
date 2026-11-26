@@ -56,11 +56,12 @@ def tick(d, deg, r0, r1, w, fill, cx=0.0, cy=0.0):
     d.polygon([P(*p) for p in pts], fill=fill)
 
 
-def label(img, txt, font, size, x, y, fill, rot=0.0):
+def label(img, txt, font, size, x, y, fill, rot=0.0, stroke=0.0):
     f = ImageFont.truetype(str(font), max(4, round(size * K)))
-    l, t, r, b = f.getbbox(txt)
+    sw = round(stroke * K)
+    l, t, r, b = f.getbbox(txt, stroke_width=sw)
     tile = Image.new("RGBA", (r - l + 8, b - t + 8), (0, 0, 0, 0))
-    ImageDraw.Draw(tile).text((4 - l, 4 - t), txt, font=f, fill=fill)
+    ImageDraw.Draw(tile).text((4 - l, 4 - t), txt, font=f, fill=fill, stroke_width=sw, stroke_fill=fill)
     if rot:
         tile = tile.rotate(-rot, resample=Image.BICUBIC, expand=True)
     px, py = P(x, y)
@@ -230,6 +231,172 @@ def nocturne(out: Path):
     Image.fromarray((hob * 255).astype(np.uint8), "L").save(out / "nocturne_guilloche.png")
 
 
+# ------------------------------------------------------------------ Orbita (sketch, 2026-11-26)
+# Geometry measured on the user's own design, docs/referencias/orbita-referencia.png, scaled to the
+# 466 px screen (grid in art/blender/build/orbita_ref_grid.png): knurled grey rim r 226..233, ring
+# r 200..226 with coloured sectors 1:40-4:20 and 7:40-10:20, dark zone with the hour ticks r 152..200,
+# globe window r 152, glucose sub-dial at (0, 134) r 62/46.
+OB_RIM_IN = 226.0
+OB_RING_IN = 200.0
+OB_TEXT_R = 213.0                  # numerals and curved texts, centred in the ring
+OB_SECTORS = ((50, 130), (230, 310))
+OB_SUB = (0.0, 134.0, 62.0, 46.0)  # sub-dial centre, outer (tick ring) and inner (dark disc) radii
+OB_ACCENT = (232, 92, 36, 255)
+INK = (40, 40, 42, 255)
+TICK_GREY = (104, 104, 102, 255)
+OB_WINDOW = 170.0  # globe window: the dark band to the ring is narrow, as in the reference
+OB_MAP = (2.75, 2.6, -12.0, -55.0, 190.0)  # px/deg lon, px/deg Mercator lat, (lon 32.5, lat 30) at, bulge R
+
+
+def arc_text(img, txt, font, size, r, deg, fill, track=1.0, stroke=0.0):
+    """Text bent along a circle, centred on deg. Upper half reads clockwise, lower half counter-clockwise.
+    Returns the angles it spans."""
+    f = ImageFont.truetype(str(font), max(4, round(size * K)))
+    widths = [f.getlength(ch) / K * track for ch in txt]
+    span = math.degrees(sum(widths) / r)
+    lower = 90 < deg % 360 < 270
+    a = deg + span / 2 if lower else deg - span / 2
+    for ch, w in zip(txt, widths):
+        step = math.degrees(w / r)
+        mid = a - step / 2 if lower else a + step / 2
+        if ch != " ":
+            label(img, ch, font, size, *polar(r, mid), fill, rot=mid + 180 if lower else mid, stroke=stroke)
+        a = a - step if lower else a + step
+    return deg - span / 2, deg + span / 2
+
+
+def icon(img, draw_fn, w, h, x, y, rot=0.0):
+    """Icon drawn by draw_fn(d, k, ox, oy) on a w x h (watch px) tile, rotated and pasted at (x, y)."""
+    tile = Image.new("RGBA", (round(w * K) + 8, round(h * K) + 8), (0, 0, 0, 0))
+    draw_fn(ImageDraw.Draw(tile), K, 4, 4)
+    if rot:
+        tile = tile.rotate(-rot, resample=Image.BICUBIC, expand=True)
+    px, py = P(x, y)
+    img.alpha_composite(tile, (round(px - tile.width / 2), round(py - tile.height / 2)))
+
+
+def battery(d, k, ox, oy, w=22.0, h=11.0, level=0.8, fill=INK):
+    d.rounded_rectangle([ox, oy, ox + w * k, oy + h * k], radius=2 * k, outline=fill, width=max(1, round(1.5 * k)))
+    d.rounded_rectangle([ox + w * k, oy + h * 0.3 * k, ox + (w + 2.2) * k, oy + h * 0.7 * k], radius=k, fill=fill)
+    d.rounded_rectangle([ox + 2.8 * k, oy + 2.8 * k, ox + (2.8 + (w - 5.6) * level) * k, oy + (h - 2.8) * k],
+                        radius=k, fill=fill)
+
+
+def shoe(d, k, ox, oy, s=18.0, fill=INK):
+    """Steps icon: a running shoe seen from the side, toe to the right (unit box 1 x 0.6)."""
+    up = [(0.00, 0.30), (0.05, 0.12), (0.13, 0.04), (0.22, 0.10), (0.30, 0.24), (0.42, 0.22), (0.55, 0.28),
+          (0.70, 0.34), (0.84, 0.38), (0.95, 0.44), (1.00, 0.50), (0.98, 0.56)]
+    sole = [(0.96, 0.60), (0.10, 0.60), (0.02, 0.56), (0.0, 0.46)]
+    d.polygon([(ox + x * s * k, oy + y * s * k) for x, y in up + sole], fill=fill)
+    # sole line and laces, cut out
+    d.line([(ox + 0.03 * s * k, oy + 0.48 * s * k), (ox + 0.97 * s * k, oy + 0.52 * s * k)], fill=(0, 0, 0, 0),
+           width=max(1, round(0.05 * s * k)))
+    for x0 in (0.36, 0.46, 0.56):
+        d.line([(ox + x0 * s * k, oy + 0.30 * s * k), (ox + (x0 + 0.05) * s * k, oy + 0.40 * s * k)],
+               fill=(0, 0, 0, 0), width=max(1, round(0.04 * s * k)))
+
+
+def orbita_map(out: Path):
+    """The globe's map as in the reference: a flat Mercator map (not a true sphere: the reference's
+    Europe and Africa are bigger), fitted on the reference by overlaying the coastlines
+    (art/blender/build/fit_flat.png), then bulged towards the window edge (planar distance s ->
+    R sin(s / R)). Writes orbita_map.png (white land with hammered grain, alpha = land, clipped to the
+    window) and orbita_map_height.png (raised land with soft edges, for the bump)."""
+    import json
+    import numpy as np
+    from PIL import ImageFilter
+    kx, ky, ox, oy, bulge = OB_MAP
+    merc = lambda lat: math.degrees(math.log(math.tan(math.pi / 4 + math.radians(max(-80.0, min(80.0, lat))) / 2)))  # noqa: E731
+    m30 = merc(30)
+
+    def pr(lon, lat):
+        x, y = ox + kx * (lon - 32.5), oy - ky * (merc(lat) - m30)
+        r = math.hypot(x, y)
+        if r > 0:
+            f = bulge * math.sin(min(r, bulge * math.pi / 2) / bulge) / r
+            x, y = x * f, y * f
+        return P(x, y)
+
+    ss = 2  # supersampling
+    m = Image.new("L", (N * ss, N * ss), 0)
+    md = ImageDraw.Draw(m)
+    with open(ART / "data/ne_50m_land.geojson", encoding="utf-8") as fh:
+        geo = json.load(fh)
+    for f in geo["features"]:
+        g = f["geometry"]
+        for rings in (g["coordinates"] if g["type"] == "MultiPolygon" else [g["coordinates"]]):
+            for i, ring in enumerate(rings):
+                pts = [pr(lo, la) for lo, la in ring if la > -60]
+                if len(pts) > 2:
+                    md.polygon([(x * ss, y * ss) for x, y in pts], fill=255 if i == 0 else 0)
+    m = m.resize((N, N), Image.LANCZOS)
+    clip = Image.new("L", (N, N), 0)
+    ImageDraw.Draw(clip).ellipse([*P(-OB_WINDOW, -OB_WINDOW), *P(OB_WINDOW, OB_WINDOW)], fill=255)
+    from PIL import ImageChops
+    m = ImageChops.multiply(m, clip)
+    # hammered grain (deterministic) and a slightly darker band just inside the coast
+    rng = np.random.default_rng(7)
+    grain = Image.fromarray((rng.random((N // 4, N // 4)) * 255).astype(np.uint8), "L").resize((N, N), Image.BICUBIC)
+    grain = np.asarray(grain.filter(ImageFilter.GaussianBlur(2))).astype(float) / 255
+    inner = np.asarray(m.filter(ImageFilter.MinFilter(9)).filter(ImageFilter.GaussianBlur(4))).astype(float) / 255
+    val = 255 * (0.80 + 0.14 * grain) * (0.86 + 0.14 * inner)
+    tone = Image.fromarray(np.clip(val, 0, 255).astype(np.uint8), "L")
+    Image.merge("RGBA", (tone, tone, tone, m)).save(out / "orbita_map.png")
+    h = np.asarray(m.filter(ImageFilter.GaussianBlur(3))).astype(float) / 255 * (0.85 + 0.15 * grain)
+    Image.fromarray((h * 255).astype(np.uint8), "L").save(out / "orbita_map_height.png")
+
+
+def orbita(out: Path):
+    img = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    rt = OB_TEXT_R
+    # ring: white numerals on the coloured sectors, a dark upright 6 on the white bottom one
+    from PIL import ImageFilter
+    sh = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    for h in (2, 3, 4, 8, 9, 10):
+        label(sh, str(h), BARLOW, 28, *polar(rt, h * 30), (0, 0, 0, 170), rot=h * 30, stroke=1.0)
+    label(sh, "6", BARLOW, 28, *polar(rt - 1, 180), (0, 0, 0, 120), stroke=1.0)
+    sh = sh.filter(ImageFilter.GaussianBlur(1.2 * K)).transform(sh.size, Image.AFFINE, (1, 0, -1.5 * K, 0, 1, -2 * K))
+    img.alpha_composite(sh)
+    for h in (2, 3, 4, 8, 9, 10):
+        label(img, str(h), BARLOW, 28, *polar(rt, h * 30), WHITE, rot=h * 30, stroke=0.6)
+    label(img, "6", BARLOW, 28, *polar(rt - 1, 180), INK, stroke=0.6)
+    # step bars centred in the band, from the steps text to the coloured sector; orange marker at 25 deg
+    for i in range(-7, 28):
+        tick(d, i * 2, 204, 223, 1.6, TICK_GREY)
+    tick(d, 25, 201, 226, 5.0, OB_ACCENT)
+    # knurled rim: a fine dark line every degree
+    for i in range(360):
+        tick(d, i, OB_RIM_IN + 0.8, 232.6, 0.9, (58, 58, 60, 255))
+    # hour ticks on the dark zone between the ring and the globe window
+    for h in range(12):
+        tick(d, h * 30, 177 if h == 0 else 180, 196 if h == 0 else 193, 4.0 if h == 0 else 3.0, WHITE)
+    # glucose sub-dial: dark ticks across its silver ring
+    sx, sy, so, si = OB_SUB
+    for i in range(36):
+        tick(d, i * 10, si + 1.5, so - 1.5, 1.8, INK, sx, sy)
+    img.save(out / "orbita_print_bg.png")  # production: no sample content
+    # sample complication content (providers in the real face): steps, battery, heart rate, glucose
+    a0, _ = arc_text(img, "8000", BARLOW, 28, rt, -33, INK, stroke=0.4)
+    icon(img, lambda dd, k, ox, oy: shoe(dd, k, ox, oy, 24), 24, 15, *polar(rt, a0 - 6.5), rot=a0 - 6.5)
+    # battery centred on 7 o'clock (icon left of the value), pulse on 5, as the reference's KCAL and BPM
+    _, a1 = arc_text(img, "80%", BARLOW, 28, rt, 206, INK, stroke=0.4)
+    icon(img, lambda dd, k, ox, oy: battery(dd, k, ox, oy, 24, 12), 26.2, 12, *polar(rt, a1 + 7), rot=a1 + 7 + 180)
+    arc_text(img, "89 BPM", BARLOW, 28, rt, 149, INK, stroke=0.4)
+    label(img, "112", BARLOW, 48, sx, sy, WHITE, stroke=0.5)
+    img.save(out / "orbita_print.png")
+
+    orbita_map(out)
+
+    # coloured sectors of the ring; white elsewhere
+    sm = Image.new("L", (N, N), 0)
+    sd = ImageDraw.Draw(sm)
+    for a0, a1 in OB_SECTORS:
+        sd.pieslice([*P(-OB_RIM_IN, -OB_RIM_IN), *P(OB_RIM_IN, OB_RIM_IN)], a0 - 90, a1 - 90, fill=255)
+    sd.ellipse([*P(-OB_RING_IN, -OB_RING_IN), *P(OB_RING_IN, OB_RING_IN)], fill=0)
+    sm.save(out / "orbita_ring_mask.png")
+
+
 def current(out: Path):
     """Displacement and material masks of the installed face (geometry of art/render_bg.py).
 
@@ -296,5 +463,6 @@ if __name__ == "__main__":
     out.mkdir(parents=True, exist_ok=True)
     navigator(out)
     nocturne(out)
+    orbita(out)
     current(out)
     print(out)

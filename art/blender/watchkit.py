@@ -319,9 +319,10 @@ def _place(ob, deg, pivot):
     ob.location = (*W(*pivot), 0)
 
 
-def hand(name, deg, length, tail, w_base, w_tip, z, thick, mat, pivot=(0.0, 0.0), lume=None, lume_mat=None):
-    """Faceted hand (two facets either side of a raised ridge), lengths in units."""
-    prof = [(-tail, w_base * 0.55), (0, w_base), (length * 0.80, w_tip), (length, 0.0)]
+def hand(name, deg, length, tail, w_base, w_tip, z, thick, mat, pivot=(0.0, 0.0), lume=None, lume_mat=None,
+         tip=0.80):
+    """Faceted hand (two facets either side of a raised ridge), lengths in units; the point starts at tip."""
+    prof = [(-tail, w_base * 0.55), (0, w_base), (length * tip, w_tip), (length, 0.0)]
     me = bpy.data.meshes.new(name)
     bm = bmesh.new()
     left = [bm.verts.new((s, -w / 2, z)) for s, w in prof]
