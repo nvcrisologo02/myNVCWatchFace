@@ -9,9 +9,12 @@ art/blender/build/orbita_ref_grid.png.
 
   python art/blender/make_prints.py
   python art/satellite_sprite.py docs/referencias/satelite.png art/blender/build/orbita_satellite.png 218 190 112 8
-  blender -b -P art/blender/orbita.py -- <out.png> [samples] [colour] [bg]
+  blender -b -P art/blender/orbita.py -- <out.png> [samples] [colour] [mode]
 
 colour: verde (default) | naranja | rojo | amarillo | azul
+mode: sketch (default) | bg: production dial, no dynamic content, sectors in neutral silver |
+      ring: only the coloured sectors in white anodised aluminium, transparent elsewhere and under
+      the printed numerals, for the watch to tint (design 2026-11-26-orbita §4 A)
 """
 import math
 import sys
@@ -26,7 +29,8 @@ argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 OUT = Path(argv[0]) if argv else wk.ROOT / "docs/mockup/propuestas/orbita_3d.png"
 SAMPLES = int(argv[1]) if len(argv) > 1 else 128
 COLOUR = argv[2] if len(argv) > 2 else "verde"
-BG = len(argv) > 3 and argv[3] == "bg"
+MODE = argv[3] if len(argv) > 3 else "sketch"  # sketch | bg (production dial) | ring (tint layer)
+BG = MODE in ("bg", "ring")
 TIME = (10, 8, 37)  # as in the reference picture
 PRINT = wk.BUILD / ("orbita_print_bg.png" if BG else "orbita_print.png")
 
@@ -37,13 +41,14 @@ RING_COLOURS = {  # linear RGB, anodised aluminium look
     "amarillo": (0.85, 0.60, 0.05, 1),
     "azul": (0.03, 0.12, 0.50, 1),
 }
+RING_WHITE = (0.9, 0.9, 0.9, 1)  # ring mode: white anodised, the watch multiplies it by the chosen colour
 RIM_IN, RING_IN, WINDOW = 226.0, 200.0, 170.0
 GLOBE_R = WINDOW / 10  # a full hemisphere filling the window: real limb shading, like the reference
 GLOBE_Z = 0.0
 
 wk.setup(SAMPLES, world_strength=1.0, key_energy=15000)
 wk.scene.view_settings.exposure = 0.8  # the reference is high-key: whites must be white
-if BG:
+if MODE == "ring":
     wk.scene.render.film_transparent = True
 
 STEEL = wk.simple("steel", **{"Base Color": (0.78, 0.78, 0.80, 1), "Metallic": 1.0, "Roughness": 0.22})
@@ -62,19 +67,39 @@ SILVER_KW = {"Base Color": (0.88, 0.88, 0.88, 1), "Metallic": 0.25, "Roughness":
 
 
 def ring_material(colour):
-    """Ring: anodised colour on the two sectors, brushed silver elsewhere, ink on top."""
+    """Ring: anodised colour on the two sectors, brushed silver elsewhere, ink on top. In bg mode the
+    sectors are silver too; in ring mode only the sectors are opaque (white, to be tinted) and the
+    printed numerals are holes, so the dial's own numerals show through the tinted layer."""
     mat = bpy.data.materials.new("ring")
     n, l = wk.nodes_of(mat)
     out = n.new("ShaderNodeOutputMaterial")
     mask = wk.projected(n, l, wk.BUILD / "orbita_ring_mask.png", "Non-Color")
-    col = wk.principled(n, **{"Base Color": colour, "Metallic": 0.8, "Roughness": 0.25, "Coat Weight": 0.3,
-                              "Anisotropic": 0.6})
+    sector = SILVER_KW if MODE == "bg" else {"Base Color": colour, "Metallic": 0.8, "Roughness": 0.25,
+                                             "Coat Weight": 0.3, "Anisotropic": 0.6}
+    col = wk.principled(n, **sector)
     silver = wk.principled(n, **SILVER_KW)
     t = n.new("ShaderNodeTangent")
     t.direction_type = "RADIAL"
     t.axis = "Z"
     for p in (col, silver):
         l.new(t.outputs["Tangent"], p.inputs["Tangent"])
+    if MODE == "ring":
+        ink = wk.projected(n, l, PRINT)
+        keep = n.new("ShaderNodeMath")
+        keep.operation = "SUBTRACT"
+        keep.inputs[0].default_value = 1.0
+        l.new(ink.outputs["Alpha"], keep.inputs[1])
+        fac = n.new("ShaderNodeMath")
+        fac.operation = "MULTIPLY"
+        l.new(mask.outputs["Color"], fac.inputs[0])
+        l.new(keep.outputs["Value"], fac.inputs[1])
+        tr = n.new("ShaderNodeBsdfTransparent")
+        mx = n.new("ShaderNodeMixShader")
+        l.new(fac.outputs["Value"], mx.inputs["Fac"])
+        l.new(tr.outputs["BSDF"], mx.inputs[1])
+        l.new(col.outputs["BSDF"], mx.inputs[2])
+        l.new(mx.outputs["Shader"], out.inputs["Surface"])
+        return mat
     mx = n.new("ShaderNodeMixShader")
     l.new(mask.outputs["Color"], mx.inputs["Fac"])
     l.new(silver.outputs["BSDF"], mx.inputs[1])
@@ -168,48 +193,6 @@ def sprite_layer(name, path, z):
     return ob
 
 
-def _arc(cx, cy, r, a0, a1, n=12):
-    return [(cx + r * math.cos(math.radians(a0 + (a1 - a0) * i / n)),
-             cy + r * math.sin(math.radians(a0 + (a1 - a0) * i / n))) for i in range(n + 1)]
-
-
-def shoulder_hand(name, deg, length, tail, w_base, base_len, w, slot, z, thick, mat, bevel=0.05, solid=False):
-    """The reference's hand: a wide block at the pivot (w_base, up to base_len of the length) that steps
-    down to a long narrower shaft (w) with a rounded tip, hollowed by a slot (width slot) along the
-    shaft. Filled 2D curve, so the slot is a real hole."""
-    cu = bpy.data.curves.new(name, "CURVE")
-    cu.dimensions = "2D"
-    cu.fill_mode = "BOTH"
-    cu.extrude = thick / 2
-    cu.bevel_depth = bevel
-    cu.bevel_resolution = 3
-    b, step = base_len * length, 0.06 * length  # the shoulder tapers over `step`
-    r = w / 2
-    outer = ([(-tail, -w_base / 2), (b, -w_base / 2), (b + step, -r), (length - r, -r)]
-             + _arc(length - r, 0, r, -90, 90) + [(b + step, r), (b, w_base / 2), (-tail, w_base / 2)])
-    splines = [outer]
-    if not solid:
-        sr, s0, s1 = slot / 2, b + step + 0.04 * length, length - r - 0.02 * length
-        splines.append(_arc(s0, 0, sr, 90, 270, 8) + _arc(s1, 0, sr, -90, 90, 8))
-    for pts in splines:
-        sp = cu.splines.new("POLY")
-        sp.points.add(len(pts) - 1)
-        for pt, (x, y) in zip(sp.points, pts):
-            pt.co = (x, y, 0, 1)
-        sp.use_cyclic_u = True
-    ob = wk.link(bpy.data.objects.new(name, cu))
-    ob.data.materials.append(mat)
-    ob.rotation_euler = (0, 0, math.radians(90 - deg))
-    ob.location = (0, 0, z)
-    return ob
-
-
-def outlined_hand(name, deg, length, tail, w_base, base_len, w, slot, z, mat, thick=0.4, outline=0.13):
-    shoulder_hand(name + "_out", deg, length + outline, tail + outline, w_base + 2 * outline, base_len,
-                  w + 2 * outline, max(slot - 2 * outline, 0.05), z - 0.05, 0.04, BLACK, bevel=0)
-    return shoulder_hand(name, deg, length, tail, w_base, base_len, w, slot, z, thick, mat)
-
-
 DIAL = wk.finish_material("dial", {"Base Color": (0.035, 0.035, 0.038, 1), "Metallic": 0.0, "Roughness": 0.5,
                                    "Specular IOR Level": 0.15}, PRINT)
 SUBRING = wk.finish_material("subring", SILVER_KW, PRINT, radial_tangent=True)
@@ -220,7 +203,7 @@ RIM = wk.finish_material("rim", {"Base Color": (0.32, 0.32, 0.33, 1), "Metallic"
 rim = wk.cylinder("rim", 0, 0, 233, -0.3, 0.30, RIM, verts=256)
 wk.boolean_cut(rim, wk.cylinder("cut_rim", 0, 0, RIM_IN, -1, 1, BLACK, verts=256))
 wk.torus("rim_edge", 0, 0, RIM_IN + 0.2, 0.06, 0.28, STEEL_POL)
-ring = wk.cylinder("ring", 0, 0, RIM_IN + 0.3, -0.3, 0.25, ring_material(RING_COLOURS[COLOUR]), verts=256)
+ring = wk.cylinder("ring", 0, 0, RIM_IN + 0.3, -0.3, 0.25, ring_material(RING_WHITE if MODE == "ring" else RING_COLOURS[COLOUR]), verts=256)
 wk.boolean_cut(ring, wk.cylinder("cut_ring", 0, 0, RING_IN, -1, 1, BLACK, verts=256))
 wk.torus("ring_edge", 0, 0, RING_IN + 0.3, 0.06, 0.22, STEEL_POL)
 wk.cylinder("dial", 0, 0, RING_IN + 0.5, -0.4, 0.02, DIAL, verts=256)
@@ -257,12 +240,17 @@ if not BG:
     wk.text_obj("gval", "112", wk.BARLOW, 48, GX, GY, GZ - 0.17, TXT)
     hd, md_, sd = wk.hand_angles(TIME)
     HZ = SZ + 0.5
-    outlined_hand("hour", hd, 14.4, 1.6, 2.0, 0.26, 1.25, 0.62, HZ, HAND_M)
-    outlined_hand("minute", md_, 20.0, 1.6, 1.8, 0.20, 1.10, 0.52, HZ + 0.45, HAND_M)
+    wk.outlined_shoulder_hand("hour", hd, *wk.ORBITA_HOUR, HZ, HAND_M, BLACK)
+    wk.outlined_shoulder_hand("minute", md_, *wk.ORBITA_MINUTE, HZ + 0.45, HAND_M, BLACK)
     wk.hand("second", sd, 22.1, 4.3, 0.40, 0.16, HZ + 0.75, 0.06, ORANGE)
     wk.cylinder("cap_ring", 0, 0, 9.5, HZ + 0.50, HZ + 0.80, BLACK, verts=64)
     wk.cylinder("cap", 0, 0, 8.0, HZ + 0.52, HZ + 0.84, ORANGE, verts=64)
     wk.cylinder("cap_in", 0, 0, 4.5, HZ + 0.84, HZ + 0.88, DARK, verts=48)
     wk.cylinder("cap_pin", 0, 0, 2.2, HZ + 0.88, HZ + 0.94, WHITE_M, verts=48)
+
+if MODE == "ring":  # the other parts still cast light/shadow context but are not seen
+    for ob in bpy.data.objects:
+        if ob.type in ("MESH", "CURVE", "FONT") and ob.name != "ring":
+            ob.hide_render = True
 
 wk.render(OUT)

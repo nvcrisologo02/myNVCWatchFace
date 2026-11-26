@@ -240,6 +240,11 @@ OB_RIM_IN = 226.0
 OB_RING_IN = 200.0
 OB_TEXT_R = 213.0                  # numerals and curved texts, centred in the ring
 OB_SECTORS = ((50, 130), (230, 310))
+OB_SHOE_DEG = -48.5        # steps icon (fixed)
+OB_STEPS_START = -43.0     # steps value starts here, clockwise (TextCircular align START)
+OB_BATT_ICON = 221.0       # battery icon (dynamic: red when low)
+OB_BATT_START = 214.0      # battery value starts here, reading counter-clockwise
+OB_HR_CENTRE = 149.0       # heart rate centred on 5 o'clock
 OB_SUB = (0.0, 134.0, 62.0, 46.0)  # sub-dial centre, outer (tick ring) and inner (dark disc) radii
 OB_ACCENT = (232, 92, 36, 255)
 INK = (40, 40, 42, 255)
@@ -294,6 +299,20 @@ def shoe(d, k, ox, oy, s=18.0, fill=INK):
     for x0 in (0.36, 0.46, 0.56):
         d.line([(ox + x0 * s * k, oy + 0.30 * s * k), (ox + (x0 + 0.05) * s * k, oy + 0.40 * s * k)],
                fill=(0, 0, 0, 0), width=max(1, round(0.04 * s * k)))
+
+
+def text_span(txt, size, r):
+    """Angle (deg) that arc_text uses for txt at radius r."""
+    f = ImageFont.truetype(str(BARLOW), max(4, round(size * K)))
+    return math.degrees(sum(f.getlength(ch) / K for ch in txt) / r)
+
+
+def battery_icon(fill):
+    """Full-frame layer with the battery icon at OB_BATT_ICON on the band, upright towards the centre."""
+    im = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    icon(im, lambda dd, k, ox, oy: battery(dd, k, ox, oy, 24, 12, fill=fill), 26.2, 12,
+         *polar(OB_TEXT_R, OB_BATT_ICON), rot=OB_BATT_ICON + 180)
+    return im
 
 
 def orbita_map(out: Path):
@@ -361,10 +380,12 @@ def orbita(out: Path):
     for h in (2, 3, 4, 8, 9, 10):
         label(img, str(h), BARLOW, 28, *polar(rt, h * 30), WHITE, rot=h * 30, stroke=0.6)
     label(img, "6", BARLOW, 28, *polar(rt - 1, 180), INK, stroke=0.6)
-    # step bars centred in the band, from the steps text to the coloured sector; orange marker at 25 deg
+    # step bars centred in the band, from the steps text to the coloured sector (the orange progress
+    # marker is a separate turning sprite, orbita_step_marker.png)
     for i in range(-7, 28):
         tick(d, i * 2, 204, 223, 1.6, TICK_GREY)
-    tick(d, 25, 201, 226, 5.0, OB_ACCENT)
+    # steps icon: fixed, left of the steps value (which starts at OB_STEPS_START)
+    icon(img, lambda dd, k, ox, oy: shoe(dd, k, ox, oy, 24), 24, 15, *polar(rt, OB_SHOE_DEG), rot=OB_SHOE_DEG)
     # knurled rim: a fine dark line every degree
     for i in range(360):
         tick(d, i, OB_RIM_IN + 0.8, 232.6, 0.9, (58, 58, 60, 255))
@@ -376,15 +397,20 @@ def orbita(out: Path):
     for i in range(36):
         tick(d, i * 10, si + 1.5, so - 1.5, 1.8, INK, sx, sy)
     img.save(out / "orbita_print_bg.png")  # production: no sample content
-    # sample complication content (providers in the real face): steps, battery, heart rate, glucose
-    a0, _ = arc_text(img, "8000", BARLOW, 28, rt, -33, INK, stroke=0.4)
-    icon(img, lambda dd, k, ox, oy: shoe(dd, k, ox, oy, 24), 24, 15, *polar(rt, a0 - 6.5), rot=a0 - 6.5)
-    # battery centred on 7 o'clock (icon left of the value), pulse on 5, as the reference's KCAL and BPM
-    _, a1 = arc_text(img, "80%", BARLOW, 28, rt, 206, INK, stroke=0.4)
-    icon(img, lambda dd, k, ox, oy: battery(dd, k, ox, oy, 24, 12), 26.2, 12, *polar(rt, a1 + 7), rot=a1 + 7 + 180)
-    arc_text(img, "89 BPM", BARLOW, 28, rt, 149, INK, stroke=0.4)
+    # sample dynamic content (the watch face draws these): steps, battery, heart rate, glucose
+    arc_text(img, "8000", BARLOW, 28, rt, OB_STEPS_START + text_span("8000", 28, rt) / 2, INK, stroke=0.4)
+    arc_text(img, "80%", BARLOW, 28, rt, OB_BATT_START - text_span("80%", 28, rt) / 2, INK, stroke=0.4)
+    img.alpha_composite(battery_icon(INK))
+    arc_text(img, "89 BPM", BARLOW, 28, rt, OB_HR_CENTRE, INK, stroke=0.4)
     label(img, "112", BARLOW, 48, sx, sy, WHITE, stroke=0.5)
     img.save(out / "orbita_print.png")
+
+    # dynamic sprites, full frame (932 px, pivot = dial centre): progress marker at 0 deg, battery icons
+    mk = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    tick(ImageDraw.Draw(mk), 0, 201, 226, 5.0, OB_ACCENT)
+    mk.save(out / "orbita_step_marker.png")
+    battery_icon(INK).save(out / "orbita_icon_battery.png")
+    battery_icon(RED).save(out / "orbita_icon_battery_low.png")
 
     orbita_map(out)
 

@@ -416,3 +416,52 @@ def logo(x, y, width, z, mat):
 def hand_angles(time):
     h, m, s = time
     return (h % 12 + m / 60) * 30, (m + s / 60) * 6, s * 6
+
+
+# NVC Orbita hand geometry (units): length, tail, w_base, base_len, w, slot (art/blender/orbita.py, hands.py)
+ORBITA_HOUR = (14.4, 1.6, 2.0, 0.26, 1.25, 0.62)
+ORBITA_MINUTE = (20.0, 1.6, 1.8, 0.20, 1.10, 0.52)
+
+
+def _arc(cx, cy, r, a0, a1, n=12):
+    return [(cx + r * math.cos(math.radians(a0 + (a1 - a0) * i / n)),
+             cy + r * math.sin(math.radians(a0 + (a1 - a0) * i / n))) for i in range(n + 1)]
+
+
+def shoulder_hand(name, deg, length, tail, w_base, base_len, w, slot, z, thick, mat, bevel=0.05, solid=False):
+    """The reference's hand: a wide block at the pivot (w_base, up to base_len of the length) that steps
+    down to a long narrower shaft (w) with a rounded tip, hollowed by a slot (width slot) along the
+    shaft. Filled 2D curve, so the slot is a real hole."""
+    cu = bpy.data.curves.new(name, "CURVE")
+    cu.dimensions = "2D"
+    cu.fill_mode = "BOTH"
+    cu.extrude = thick / 2
+    cu.bevel_depth = bevel
+    cu.bevel_resolution = 3
+    b, step = base_len * length, 0.06 * length  # the shoulder tapers over `step`
+    r = w / 2
+    outer = ([(-tail, -w_base / 2), (b, -w_base / 2), (b + step, -r), (length - r, -r)]
+             + _arc(length - r, 0, r, -90, 90) + [(b + step, r), (b, w_base / 2), (-tail, w_base / 2)])
+    splines = [outer]
+    if not solid:
+        sr, s0, s1 = slot / 2, b + step + 0.04 * length, length - r - 0.02 * length
+        splines.append(_arc(s0, 0, sr, 90, 270, 8) + _arc(s1, 0, sr, -90, 90, 8))
+    for pts in splines:
+        sp = cu.splines.new("POLY")
+        sp.points.add(len(pts) - 1)
+        for pt, (x, y) in zip(sp.points, pts):
+            pt.co = (x, y, 0, 1)
+        sp.use_cyclic_u = True
+    ob = link(bpy.data.objects.new(name, cu))
+    ob.data.materials.append(mat)
+    ob.rotation_euler = (0, 0, math.radians(90 - deg))
+    ob.location = (0, 0, z)
+    return ob
+
+
+def outlined_shoulder_hand(name, deg, length, tail, w_base, base_len, w, slot, z, mat, outline_mat,
+                           thick=0.4, outline=0.13):
+    """shoulder_hand over a thin dark outline of the same shape (NVC Orbita)."""
+    shoulder_hand(name + "_out", deg, length + outline, tail + outline, w_base + 2 * outline, base_len,
+                  w + 2 * outline, max(slot - 2 * outline, 0.05), z - 0.05, 0.04, outline_mat, bevel=0)
+    return shoulder_hand(name, deg, length, tail, w_base, base_len, w, slot, z, thick, mat)
