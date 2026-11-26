@@ -101,10 +101,30 @@ def nocturne(name, m):
                 p.use_smooth = True
 
 
+def orbita(name, m):
+    """White shoulder hands with a hollow shaft and thin black outline, orange seconds and cap
+    (design 2026-11-26-orbita §5; same geometry as the sketch, art/blender/orbita.py)."""
+    white = wk.simple("hand_m", **{"Base Color": (0.95, 0.95, 0.95, 1), "Metallic": 0.5, "Roughness": 0.25,
+                                    "Emission Color": (1, 1, 1, 1), "Emission Strength": 0.15})
+    orange = wk.simple("orange", **{"Base Color": (0.90, 0.18, 0.03, 1), "Roughness": 0.35})
+    if name == "hour":
+        wk.outlined_shoulder_hand(name, 0, *wk.ORBITA_HOUR, 0.45, white, m["black"])
+    elif name == "minute":
+        wk.outlined_shoulder_hand(name, 0, *wk.ORBITA_MINUTE, 0.60, white, m["black"])
+    elif name == "second":
+        wk.hand(name, 0, 22.1, 4.3, 0.40, 0.16, 0.80, 0.06, orange)
+    elif name == "cap":
+        wk.cylinder("cap_ring", 0, 0, 9.5, 0.80, 1.10, m["black"], verts=64)
+        wk.cylinder("cap", 0, 0, 8.0, 0.82, 1.14, orange, verts=64)
+        wk.cylinder("cap_in", 0, 0, 4.5, 1.14, 1.18, m["black"], verts=48)
+        wk.cylinder("cap_pin", 0, 0, 2.2, 1.18, 1.24, m["white"], verts=48)
+
+
 FACES = {
     "nvc": (nvc, ["hour", "minute", "second", "cap"]),
     "navigator": (navigator, ["hour", "minute", "second", "cap", "gauge", "reserve", "reserve_low"]),
     "nocturne": (nocturne, ["hour", "minute", "second", "cap", "gauge", "reserve", "reserve_low", "moon"]),
+    "orbita": (orbita, ["hour", "minute", "second", "cap"]),
 }
 
 build, names = FACES[FACE]

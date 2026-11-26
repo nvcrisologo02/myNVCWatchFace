@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build, validate, install, select and capture the NVC watch face on the watch.
-# Usage: [FACE=watchface|navigator|nocturne] scripts/watch.sh <adb-serial> [build|validate|install|select|shot <name>|all]
+# Usage: [FACE=watchface|navigator|nocturne|orbita] scripts/watch.sh <adb-serial> [build|validate|install|select|shot <name>|all]
 # The serial of a paired watch over wireless debugging ends with a dot, e.g.
 #   adb-H631104000081G14004R-e9DEII._adb-tls-connect._tcp.
 set -euo pipefail
@@ -15,6 +15,7 @@ case "$FACE" in
   watchface) PKG="com.nvc.watchface.debug"; SYNC="$ROOT/scripts/sync_art.sh" ;;
   navigator) PKG="com.nvc.navigator.debug"; SYNC="$ROOT/scripts/sync_face.sh navigator" ;;
   nocturne) PKG="com.nvc.nocturne.debug"; SYNC="$ROOT/scripts/sync_face.sh nocturne" ;;
+  orbita) PKG="com.nvc.orbita.debug"; SYNC="$ROOT/scripts/sync_face.sh orbita" ;;
   *) echo "FACE desconocida: $FACE" >&2; exit 2 ;;
 esac
 APK="$ROOT/$FACE/build/outputs/apk/debug/$FACE-debug.apk"

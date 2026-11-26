@@ -9,15 +9,22 @@ import json
 import sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 CENTER = 466  # 2x px
 ANGLES = {"hour": (10 + 8 / 60) * 30, "minute": (8 + 32 / 60) * 6, "second": 32 * 6}
+ORBITA_DEFAULT_TINT = (0x55, 0x92, 0x54)  # verde, scripts/gen_orbita_xml.py RING_ARGB
 SHADOW_OFFSET = (2, 3)  # watch px, same as the shadow clock in watchface.xml
 
 
 def render_preview(art: Path, out: Path) -> Path:
     im = Image.open(art / "bg_3d.png").convert("RGBA")
+    ring = art / "ring_tint.png"  # NVC Orbita: the watch tints this layer; the preview shows the default colour
+    if ring.exists():
+        r = Image.open(ring).convert("RGBA")
+        tint = Image.new("RGBA", r.size, ORBITA_DEFAULT_TINT + (255,))
+        im.alpha_composite(Image.merge("RGBA", (*ImageChops.multiply(r.convert("RGB"), tint.convert("RGB")).split(),
+                                                r.getchannel("A"))))
     placement = json.loads((art / "hand3d_placement.json").read_text())
 
     def put(name, angle, suffix="", dx=0, dy=0):

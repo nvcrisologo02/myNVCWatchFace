@@ -27,3 +27,6 @@ include(":fakeglucose")
 include(":navigator")
 // Third watch face (design docs/superpowers/specs/2026-11-23-nocturne-design.md).
 include(":nocturne")
+
+// Fourth watch face (design docs/superpowers/specs/2026-11-26-orbita-design.md).
+include(":orbita")

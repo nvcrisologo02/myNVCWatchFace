@@ -36,6 +36,11 @@ Para trabajar: Bluetooth del reloj apagado (si no, suelta el Wi-Fi) y serial mDN
 las dos nuevas generado con `scripts/gen_<cara>_xml.py`; instalar con `FACE=<módulo> scripts/watch.sh`.
 Registros en `docs/pruebas/04` a `06`.
 
+**Cuarta esfera (2026-11-26): Órbita** (`orbita/`, diseño `2026-11-26-orbita-design.md`), fiel a un
+diseño del propio usuario: globo plateado, satélite, anillo cuyo color se elige en Personalizar
+(tinte). Probada en el reloj y aprobada por el usuario; pendientes los casos de `fakeglucose`.
+Arte: `scripts/render_3d.sh 256 orbita`; XML: `scripts/gen_orbita_xml.py`; registro en `docs/pruebas/07-orbita.md`.
+
 Ciclo completo: `scripts/watch.sh "<serial>" all <nombre-captura>`. Serial del reloj:
 `adb-H631104000081G14004R-e9DEII._adb-tls-connect._tcp.` (con el punto final).
 
